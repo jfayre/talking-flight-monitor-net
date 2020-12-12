@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lambdas
+namespace tfm
 {
 static internal class ExpressionBuilder<t>
     {

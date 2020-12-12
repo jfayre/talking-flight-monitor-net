@@ -197,6 +197,7 @@
             this.airportsMenuItem.Name = "airportsMenuItem";
             this.airportsMenuItem.Size = new System.Drawing.Size(231, 32);
             this.airportsMenuItem.Text = "&Airports...";
+            this.airportsMenuItem.Click += new System.EventHandler(this.airportsMenuItem_Click);
             // 
             // taxiwaysMenuItem
             // 
