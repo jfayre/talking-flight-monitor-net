@@ -227,5 +227,8 @@
     <Setting Name="flight_planner" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+P</Value>
     </Setting>
+    <Setting Name="Landing_Rate" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+V</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
