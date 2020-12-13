@@ -20,57 +20,43 @@ namespace tfm
 
         private void tmrIRU_Tick(object sender, EventArgs e)
         {
-            txtIRULeft.Text = Aircraft.pmdg737.IRS_DisplayLeft.Value;
-            txtIRURight.Text = Aircraft.pmdg737.IRS_DisplayRight.Value;
+            txtDispLeft.Text = Aircraft.pmdg737.IRS_DisplayLeft.Value;
+            txtDispRight.Text = Aircraft.pmdg737.IRS_DisplayRight.Value;
             switch (Aircraft.pmdg737.IRS_ModeSelector[0].Value)
             {
                 case 0:
-                    btnIRULeftMode.AccessibleName = "Left IRS off";
+                    radIRULeftOff.Checked = true;
                     break;
                 case 1:
-                    btnIRULeftMode.AccessibleName = "Left IRS align";
+                    radIRULeftAlign.Checked = true;
                     break;
                 case 2:
-                    btnIRULeftMode.AccessibleName = "Left IRS nav";
+                    radIRULeftNav.Checked = true;
                     break;
                 case 3:
-                    btnIRULeftMode.AccessibleName = "Left IRS ATT";
+                    radIRULeftAtt.Checked = true;
                     break;
 
             }
             switch (Aircraft.pmdg737.IRS_ModeSelector[1].Value)
             {
                 case 0:
-                    btnIRURightMode.AccessibleName = "Right IRS off";
+                    radIRURightOff.Checked = true;
                     break;
                 case 1:
-                    btnIRURightMode.AccessibleName = "Right IRS align";
+                    radIRURightAlign.Checked = true;
                     break;
                 case 2:
-                    btnIRURightMode.AccessibleName = "Right IRS nav";
+                    radIRURightNav.Checked = true;
                     break;
                 case 3:
-                    btnIRURightMode.AccessibleName = "Right IRS ATT";
-                    break;
-
-            }
-            
-        }
-        private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
-                case Keys.Down:
-                    e.IsInputKey = true;
+                    radIRURightAtt.Checked = true;
                     break;
 
             }
 
         }
-
+        
         private void ctlInertialReferenceUnit_Load(object sender, EventArgs e)
         {
             tmrIRU.Start();
@@ -81,33 +67,9 @@ namespace tfm
             
         }
 
-        private void btnIRULeftMode_KeyDown(object sender, KeyEventArgs e)
+        private void radIRULeft_CheckedChanged(object sender, EventArgs e)
         {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.ClkR);
-                    break;
-            }
-
-
-            }
-
-        private void btnIRURightMode_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.ClkR);
-                    break;
-            }
-
+            RadioButton rb = sender as RadioButton;
 
         }
     }
