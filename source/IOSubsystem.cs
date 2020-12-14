@@ -1397,6 +1397,10 @@ namespace tfm
                 case "Vertical_Speed":
                     onVSpeedKey();
                     break;
+                case "Landing_Rate":
+                    onLandingRateKey();
+                    break;
+
                 case "Outside_Temperature":
                     onAirtempKey();
                     break;
@@ -2312,7 +2316,13 @@ namespace tfm
             ResetHotkeys();
 
         }
+private void onLandingRateKey()
+        {
+            // convert FSUIPC unit to expected FPM value
+            double vspd = Math.Round(Aircraft.LandingRate.Value * 60 * 3.28084 / 256);
+            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Landing Rate: {vspd} Feet per minute");
 
+        }
         private void onMachKey()
         {
             double mach = (double)Aircraft.AirspeedMach.Value / 20480d;
