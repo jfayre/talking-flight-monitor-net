@@ -48,7 +48,7 @@ switch(type)
             }
                     } // End BuildFromString.
 
-        static public Expression<Func<t, bool>> BuildFromDouble(type type, string left, double lower, double upper = 0.0)
+        static public Expression<Func<t, bool>> BuildFromDouble(type type, string left, double lower, double upper = 0.0, bool shouldRound = false)
         {
             if (string.IsNullOrWhiteSpace(left))
             {
@@ -57,15 +57,27 @@ switch(type)
            
             var parameter = Expression.Parameter(typeof(t), nameof(t));
             var _property = Expression.Property(parameter, left);
-            var _lower = Expression.Constant(lower);
-            var _upper = Expression.Constant(upper);
+                            var _lower = Expression.Constant(lower);
+                        var _upper = Expression.Constant(upper);
 
                         switch (type)
             {
                 case type.Equals:
-                    var _expression = Expression.Equal(_property, _lower);
-                    return Expression.Lambda<Func<t, bool>>(_expression, parameter);
-                case type.GreaterThan:
+
+                    if (shouldRound)
+                    {
+                        _lower = Expression.Constant(lower + 1);
+                                            var _leftOfEqualsExpression = Expression.GreaterThanOrEqual(_property, _lower);
+                                                var _rightOfEqualsExpression = Expression.LessThan(_property, _lower);
+                        var _expression = Expression.AndAlso(_leftOfEqualsExpression, _rightOfEqualsExpression);
+                        return Expression.Lambda<Func<t, bool>>(_expression, parameter);
+                    }
+                    else
+                    {
+                        var _expression = Expression.Equal(_property, _lower);
+                        return Expression.Lambda<Func<t, bool>>(_expression, parameter);
+                    }
+                                    case type.GreaterThan:
                     var _greaterThanExpression = Expression.GreaterThan(_property, _lower);
                     return Expression.Lambda<Func<t, bool>>(_greaterThanExpression, parameter);
                 case type.LessThan:

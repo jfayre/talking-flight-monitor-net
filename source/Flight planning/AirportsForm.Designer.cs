@@ -152,7 +152,7 @@ namespace tfm
             // 
             // lowerNumericSpinner
             // 
-            this.lowerNumericSpinner.AccessibleName = "Lower value";
+            this.lowerNumericSpinner.AccessibleName = "Minimum";
             this.lowerNumericSpinner.Location = new System.Drawing.Point(264, 320);
             this.lowerNumericSpinner.Maximum = new decimal(new int[] {
             99999,
@@ -166,7 +166,7 @@ namespace tfm
             // 
             // upperNumericSpinner
             // 
-            this.upperNumericSpinner.AccessibleName = "Upper value";
+            this.upperNumericSpinner.AccessibleName = "Maximum";
             this.upperNumericSpinner.Location = new System.Drawing.Point(390, 320);
             this.upperNumericSpinner.Maximum = new decimal(new int[] {
             99999,
@@ -181,6 +181,7 @@ namespace tfm
             // findButton
             // 
             this.findButton.AccessibleName = "Find airports";
+            this.findButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.findButton.Location = new System.Drawing.Point(20, 364);
             this.findButton.Name = "findButton";
             this.findButton.Size = new System.Drawing.Size(75, 23);
@@ -192,12 +193,14 @@ namespace tfm
             // closeButton
             // 
             this.closeButton.AccessibleName = "Close";
+            this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.closeButton.Location = new System.Drawing.Point(425, 364);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 9;
             this.closeButton.Text = "&Close";
             this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // AirportsForm
             // 
@@ -205,6 +208,7 @@ namespace tfm
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(502, 353);
             this.ControlBox = false;
             this.Controls.Add(this.closeButton);
@@ -217,11 +221,13 @@ namespace tfm
             this.Controls.Add(this.airportsListView);
             this.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "AirportsForm";
             this.ShowInTaskbar = false;
             this.Text = "Airports";
             this.Load += new System.EventHandler(this.AirportsForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AirportsForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.lowerNumericSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.upperNumericSpinner)).EndInit();
             this.ResumeLayout(false);

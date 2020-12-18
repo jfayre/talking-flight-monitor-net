@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DavyKager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -43,6 +44,10 @@ switch(Properties.Settings.Default.takeOffAssistMode)
 
         private void takeoffAssistDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(Tolk.DetectScreenReader() == "NVDA")
+            {
+                Tolk.Output(takeoffAssistDropDown.SelectedItem.ToString());
+            }
                         switch(takeoffAssistDropDown.SelectedIndex)
             {
                 case 0:
