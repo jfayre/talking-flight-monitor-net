@@ -247,7 +247,7 @@ airportsListView.EndUpdate();
                             airports = database.Airports.Where(a => a.City.Contains(filter)).ToList();
                             break;
                         case "State/Province":
-                            airports = database.Airports.Where(a => a.State.Contains(filter)).ToList();
+                            airports = database.Airports.Where(a => a.State != null).Where(a => a.State.Contains(filter)).ToList();
                             break;
                         case "Country":
                             airports = database.Airports.Where(a => a.Country.Contains(filter)).ToList();
@@ -265,7 +265,7 @@ airportsListView.EndUpdate();
                     airportsListView.EndUpdate();
                 } // End comparison condition.
             };
-            }
+            } // End doContains.
 
         Action<ComparisonType> doStartsWith()
         {
@@ -292,7 +292,7 @@ airportsListView.EndUpdate();
                             airports = database.Airports.Where(a => a.City.StartsWith(filter)).ToList();
                             break;
                         case "State/Province":
-                            airports = database.Airports.Where(a => a.State.StartsWith(filter)).ToList();
+                            airports = database.Airports.Where(a => a.State != null).Where(a => a.State.StartsWith(filter)).ToList();
                             break;
                         case "Country":
                             airports = database.Airports.Where(a => a.Country.StartsWith(filter)).ToList();
@@ -310,7 +310,7 @@ airportsListView.EndUpdate();
                     airportsListView.EndUpdate();
                 } // End comparison condition.
             };
-            }
+            } // End doStartsWith.
 
         Action<ComparisonType> doEndsWith()
         {
@@ -337,7 +337,7 @@ airportsListView.EndUpdate();
                             airports = database.Airports.Where(a => a.City.EndsWith(filter)).ToList();
                             break;
                         case "State/Province":
-                            airports = database.Airports.Where(a => a.State.EndsWith(filter)).ToList();
+                            airports = database.Airports.Where(a => a.State != null).Where(a => a.State.EndsWith(filter)).ToList();
                             break;
                         case "Country":
                             airports = database.Airports.Where(a => a.Country.EndsWith(filter)).ToList();
@@ -355,7 +355,7 @@ airportsListView.EndUpdate();
                     airportsListView.EndUpdate();
                 } // End comparison condition.
             };
-            }
+            } // End doEndsWith.
 
                 public AirportsForm()
         {
@@ -430,7 +430,7 @@ switch(this.fieldComboBox.SelectedItem)
                 case "City":
                     ConfigureSearch("text");
                                         break;
-                case "State / Province":
+                case "State/Province":
                     ConfigureSearch("text");
                     break;
                 case "Country":
