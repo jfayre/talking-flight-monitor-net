@@ -525,51 +525,7 @@ switch(this.searchTypeComboBox.SelectedItem)
 
         private void AirportsForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if((e.Alt && e.KeyCode == Keys.A))
-            {
-                airportsListView.Focus();
-            }
-            if((e.Alt && e.KeyCode == Keys.I))
-            {
-                fieldComboBox.Focus();
-            }
-            if((e.Alt && e.KeyCode == Keys.T))
-            {
-                searchTypeComboBox.Focus();
-            }
-            if((e.Alt && e.KeyCode == Keys.L))
-            {
-                if(textFilterTextBox.Visible == true)
-                {
-                    textFilterTextBox.Focus();
-                }
-                else
-                {
-                    Tolk.Output("The text filter field is not available. Select either Name, ICAO, City, State, or Country from the fields list.");
-                }
-            }
-                        if((e.Alt && e.KeyCode == Keys.X))
-            {
-                if(upperNumericSpinner.Visible == true)
-                {
-                    upperNumericSpinner.Focus();
-                }
-                else
-                {
-                    Tolk.Output("The maxinum value field is not available. Select Bearing, Distance, or Altitude first, then choose between as the comparison operator.");
-                }
-            }
-                        if((e.Alt && e.KeyCode == Keys.N))
-            {
-                if(lowerNumericSpinner.Visible == true)
-                {
-                    lowerNumericSpinner.Focus();
-                }
-                else
-                {
-                    Tolk.Output("The minimum value field is not available. Select Bearing, Distance, or Altitude from the fields list first.");
-                }
-            }
-                    }
+
+        }
     }
 }

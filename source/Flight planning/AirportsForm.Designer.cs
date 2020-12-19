@@ -208,7 +208,6 @@ namespace tfm
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(502, 353);
             this.ControlBox = false;
             this.Controls.Add(this.closeButton);
@@ -227,7 +226,6 @@ namespace tfm
             this.ShowInTaskbar = false;
             this.Text = "Airports";
             this.Load += new System.EventHandler(this.AirportsForm_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AirportsForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.lowerNumericSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.upperNumericSpinner)).EndInit();
             this.ResumeLayout(false);
