@@ -227,8 +227,14 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="aircraft.cs" />
-    <Compile Include="Events\PMDGPanelUpdateEvent.cs" />
-    <Compile Include="Events\PMDGPanelUpdateEventArgs.cs" />
+    <Compile Include="ComparisonTypes.cs" />
+    <Compile Include="ExpressionBuilder.cs" />
+    <Compile Include="Flight planning\AirportsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Flight planning\AirportsForm.Designer.cs">
+      <DependentUpon>AirportsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Flight planning\FlightPlan.cs" />
     <Compile Include="Flight planning\FlightPlanForm.cs">
       <SubType>Form</SubType>
@@ -249,62 +255,6 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
-    <Compile Include="PMDG\PMDG 737\frmPMDGCDU.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\frmPMDGCDU.Designer.cs">
-      <DependentUpon>frmPMDGCDU.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.Designer.cs">
-      <DependentUpon>ctlAirSystems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.Designer.cs">
-      <DependentUpon>ctlElectrical.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlEngines.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlEngines.Designer.cs">
-      <DependentUpon>ctlEngines.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlFuel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlFuel.Designer.cs">
-      <DependentUpon>ctlFuel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlHydraulics.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlHydraulics.Designer.cs">
-      <DependentUpon>ctlHydraulics.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.Designer.cs">
-      <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.Designer.cs">
-      <DependentUpon>ctlMCP.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.Designer.cs">
-      <DependentUpon>frmCockpitPanels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PMDG\PMDG 737\CockpitPanels\iPanelsPage.cs" />
-    <Compile Include="PMDG\pmdg.cs" />
     <Compile Include="Settings panels\ctlAircraft.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -448,6 +398,9 @@
     <EmbeddedResource Include="Autopilot\frmComRadios.resx">
       <DependentUpon>frmComRadios.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Flight planning\AirportsForm.resx">
+      <DependentUpon>AirportsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Flight planning\FlightPlanForm.resx">
       <DependentUpon>FlightPlanForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -471,33 +424,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OutputHistory\frmOutputHistory.resx">
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\frmPMDGCDU.resx">
-      <DependentUpon>frmPMDGCDU.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.resx">
-      <DependentUpon>ctlAirSystems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.resx">
-      <DependentUpon>ctlElectrical.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlEngines.resx">
-      <DependentUpon>ctlEngines.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlFuel.resx">
-      <DependentUpon>ctlFuel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlHydraulics.resx">
-      <DependentUpon>ctlHydraulics.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlInertialReferenceUnit.resx">
-      <DependentUpon>ctlInertialReferenceUnit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.resx">
-      <DependentUpon>ctlMCP.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.resx">
-      <DependentUpon>frmCockpitPanels.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlAircraft.resx">
       <DependentUpon>ctlAircraft.cs</DependentUpon>
@@ -641,8 +567,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.EntityFrameworkCore.Design.3.1.8\build\net461\Microsoft.EntityFrameworkCore.Design.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.EntityFrameworkCore.Design.3.1.8\build\net461\Microsoft.EntityFrameworkCore.Design.props'))" />
+    <Error Condition="!Exists('packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets'))" />
   </Target>
   <Import Project="packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets" Condition="Exists('packages\SQLitePCLRaw.lib.e_sqlite3.2.0.4\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

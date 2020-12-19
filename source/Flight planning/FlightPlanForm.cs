@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DavyKager;
+
 
 namespace tfm
 {
     public partial class FlightPlanForm : Form
     {
+        private bool isAirportsFormOpen = false;
+        
         public FlightPlanForm()
         {
             InitializeComponent();
@@ -52,5 +56,41 @@ namespace tfm
         {
             ConfigureKeyboardShortcuts(e);
         } // End KeyDown event.
+
+        private void airportsMenuItem_Click(object sender, EventArgs e)
+        {
+            
+
+            // Make sure the airports form isn't already loaded.
+            // If it is closed, it is safe to open it.
+            foreach(Form form in Application.OpenForms)
+            {
+                if(form is AirportsForm)
+                {
+                    isAirportsFormOpen = true;
+                    break;
+                }
+            }
+
+            if(isAirportsFormOpen)
+            {
+                Tolk.Output("Airports dialog is already open!");
+            }
+            else
+            {
+if(FSUIPC.FSUIPCConnection.IsOpen)
+                {
+                    AirportsForm af = new AirportsForm();
+                    af.ShowDialog();
+                }
+else
+                {
+                    Tolk.Output("Not connected to simulator!");
+                    return;
+                }
+                
+            }
+
+        }
     } // End FlightPlannerForm class.
 } // End TFM namespace.
