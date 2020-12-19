@@ -943,5 +943,17 @@ namespace tfm.Properties {
                 this["ap_PMDG_CDU"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+V")]
+        public global::System.Windows.Forms.Keys Landing_Rate {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Landing_Rate"]));
+            }
+            set {
+                this["Landing_Rate"] = value;
+            }
+        }
     }
 }
