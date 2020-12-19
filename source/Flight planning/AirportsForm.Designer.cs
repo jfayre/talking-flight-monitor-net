@@ -181,7 +181,6 @@ namespace tfm
             // findButton
             // 
             this.findButton.AccessibleName = "Find airports";
-            this.findButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.findButton.Location = new System.Drawing.Point(20, 364);
             this.findButton.Name = "findButton";
             this.findButton.Size = new System.Drawing.Size(75, 23);
@@ -226,6 +225,7 @@ namespace tfm
             this.ShowInTaskbar = false;
             this.Text = "Airports";
             this.Load += new System.EventHandler(this.AirportsForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AirportsForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.lowerNumericSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.upperNumericSpinner)).EndInit();
             this.ResumeLayout(false);
