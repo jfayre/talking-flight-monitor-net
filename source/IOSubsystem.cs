@@ -1,4 +1,5 @@
 ﻿using DavyKager;
+using BingMapsSDSToolkit.GeodataAPI;
 using FSUIPC;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -2569,7 +2570,7 @@ private void onLandingRateKey()
 
         }
 
-        private void onCurrentLocation()
+        private async void onCurrentLocation()
         {
             var database = FSUIPCConnection.AirportsDatabase;
             database.SetReferenceLocation();
@@ -2619,7 +2620,19 @@ private void onLandingRateKey()
             }
             else
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
+                var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
+                var longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
+                // Retrieve the state/province/territory.
+                var request =new  GetBoundaryRequest() {
+
+                    EntityType= BoundaryEntityType.AdminDivision2,
+                  LevelOfDetail = 3,
+                  GetAllPolygons = true,
+                  GetEntityMetadata = true,
+                  Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+                var response = await GeodataManager.GetBoundary(request, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{response[0].Name.EntityName}");
             }
         }
 
