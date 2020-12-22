@@ -2656,38 +2656,37 @@ private void onLandingRateKey()
                 Aircraft.PitotHeat.Value = 1; // On.
                 Autopilot.ApMaster = true;
                 Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
-                Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
                 Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
                 Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
                 Aircraft.ParkingBrake.Value = 0; // Off.
 
                 // Start the engines on the plane.
-                switch (Aircraft.num_engines.Value)
-                {
-                    case 1:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        break;
-                    case 2:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        Aircraft.Engine2ThrottleLever.Value = 16388;
-                        break;
-                    case 3:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        Aircraft.Engine2ThrottleLever.Value = 16388;
-                        Aircraft.Engine3ThrottleLever.Value = 16388;
-                        break;
-                    case 4:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        Aircraft.Engine2ThrottleLever.Value = 16388;
-                        Aircraft.Engine3ThrottleLever.Value = 16388;
-                        Aircraft.Engine4ThrottleLever.Value = 16388;
-                        break;
-                    case 0:
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
-                        break;
-                } // End throttle engines.
-
-                isTakeoffComplete = false;
+                //switch (Aircraft.num_engines.Value)
+                //{
+                //    case 1:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        break;
+                //    case 2:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                //        break;
+                //    case 3:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                //        Aircraft.Engine3ThrottleLever.Value = 16388;
+                //        break;
+                //    case 4:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                //        Aircraft.Engine3ThrottleLever.Value = 16388;
+                //        Aircraft.Engine4ThrottleLever.Value = 16388;
+                //        break;
+                //    case 0:
+                //        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                //        break;
+                //} // End throttle engines.
+                                isTakeoffComplete = false;
                 PostTakeOffChecklist();
             } // End takeoff mode is full.
 else if(Properties.Settings.Default.takeOffAssistMode == "partial")
@@ -2707,6 +2706,8 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                     //var airSpeed = Autopilot.ApAirspeed;
                     //Autopilot.ApAirspeed = airSpeed;
                     Autopilot.ApAirspeedHold = true;
+                Autopilot.ApAltitude = 32000;
+                Autopilot.ApAltitudeLock = true;
                     if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
                     if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
                     Aircraft.AutoBrake.Value = 1; // Off.    
