@@ -909,22 +909,19 @@ namespace tfm
                 else if (sp == 16384) fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers deployed. ");
                 else if (sp == 0)
                 {
-                    if (OldSpoilersValue == 4800)
-                    {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "arm spoilers off. ");
-                    }
-                    else
-                    {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "spoilers retracted. ");
-                    }
-                    else
-                    {
-                        uint pct = ((sp - 4800) / 16383)*100;
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers at " + pct.ToString() + ".");
-                    }
+                    if (OldSpoilersValue == 4800) fireOnScreenReaderOutputEvent(isGauge: false, output: "arm spoilers off. ");
+
+                    else fireOnScreenReaderOutputEvent(isGauge: false, output: "spoilers retracted. ");
+
+                }
+                else
+                {
+                    uint pct = ((sp - 4800) / 16383) * 100;
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers at " + pct.ToString() + ".");
+                }
                 }
             }
-        }
+        
 
         private void ReadFlaps()
         {
