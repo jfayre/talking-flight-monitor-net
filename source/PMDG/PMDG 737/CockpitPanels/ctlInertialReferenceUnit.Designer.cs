@@ -33,16 +33,16 @@
             this.grpIRUMode = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.grpIRULeft = new System.Windows.Forms.GroupBox();
-            this.grpIRURight = new System.Windows.Forms.GroupBox();
-            this.radIRURightAtt = new System.Windows.Forms.RadioButton();
-            this.radIRURightNav = new System.Windows.Forms.RadioButton();
-            this.radIRURightAlign = new System.Windows.Forms.RadioButton();
-            this.radIRURightOff = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.radIRULeftOff = new System.Windows.Forms.RadioButton();
             this.radIRULeftAlign = new System.Windows.Forms.RadioButton();
             this.radIRULeftNav = new System.Windows.Forms.RadioButton();
             this.radIRULeftAtt = new System.Windows.Forms.RadioButton();
+            this.grpIRURight = new System.Windows.Forms.GroupBox();
+            this.radIRURightAtt = new System.Windows.Forms.RadioButton();
+            this.radIRURightNav = new System.Windows.Forms.RadioButton();
+            this.radIRURightAlign = new System.Windows.Forms.RadioButton();
+            this.radIRURightOff = new System.Windows.Forms.RadioButton();
             this.grpIRUDisplay = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.grpDisplayMode = new System.Windows.Forms.GroupBox();
@@ -58,8 +58,8 @@
             this.grpIRUMode.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpIRULeft.SuspendLayout();
-            this.grpIRURight.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.grpIRURight.SuspendLayout();
             this.grpIRUDisplay.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.grpDisplayMode.SuspendLayout();
@@ -106,63 +106,6 @@
             this.grpIRULeft.TabStop = false;
             this.grpIRULeft.Text = "Left IRU";
             // 
-            // grpIRURight
-            // 
-            this.grpIRURight.Controls.Add(this.radIRURightAtt);
-            this.grpIRURight.Controls.Add(this.radIRURightNav);
-            this.grpIRURight.Controls.Add(this.radIRURightAlign);
-            this.grpIRURight.Controls.Add(this.radIRURightOff);
-            this.grpIRURight.Location = new System.Drawing.Point(218, 3);
-            this.grpIRURight.Name = "grpIRURight";
-            this.grpIRURight.Size = new System.Drawing.Size(200, 100);
-            this.grpIRURight.TabIndex = 1;
-            this.grpIRURight.TabStop = false;
-            this.grpIRURight.Text = "Right IRU";
-            // 
-            // radIRURightAtt
-            // 
-            this.radIRURightAtt.AutoSize = true;
-            this.radIRURightAtt.Location = new System.Drawing.Point(53, 54);
-            this.radIRURightAtt.Name = "radIRURightAtt";
-            this.radIRURightAtt.Size = new System.Drawing.Size(55, 24);
-            this.radIRURightAtt.TabIndex = 3;
-            this.radIRURightAtt.TabStop = true;
-            this.radIRURightAtt.Text = "Att";
-            this.radIRURightAtt.UseVisualStyleBackColor = true;
-            // 
-            // radIRURightNav
-            // 
-            this.radIRURightNav.AutoSize = true;
-            this.radIRURightNav.Location = new System.Drawing.Point(45, 46);
-            this.radIRURightNav.Name = "radIRURightNav";
-            this.radIRURightNav.Size = new System.Drawing.Size(61, 24);
-            this.radIRURightNav.TabIndex = 2;
-            this.radIRURightNav.TabStop = true;
-            this.radIRURightNav.Text = "Nav";
-            this.radIRURightNav.UseVisualStyleBackColor = true;
-            // 
-            // radIRURightAlign
-            // 
-            this.radIRURightAlign.AutoSize = true;
-            this.radIRURightAlign.Location = new System.Drawing.Point(37, 38);
-            this.radIRURightAlign.Name = "radIRURightAlign";
-            this.radIRURightAlign.Size = new System.Drawing.Size(69, 24);
-            this.radIRURightAlign.TabIndex = 1;
-            this.radIRURightAlign.TabStop = true;
-            this.radIRURightAlign.Text = "Align";
-            this.radIRURightAlign.UseVisualStyleBackColor = true;
-            // 
-            // radIRURightOff
-            // 
-            this.radIRURightOff.AutoSize = true;
-            this.radIRURightOff.Location = new System.Drawing.Point(3, 22);
-            this.radIRURightOff.Name = "radIRURightOff";
-            this.radIRURightOff.Size = new System.Drawing.Size(56, 24);
-            this.radIRURightOff.TabIndex = 0;
-            this.radIRURightOff.TabStop = true;
-            this.radIRURightOff.Text = "Off";
-            this.radIRURightOff.UseVisualStyleBackColor = true;
-            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.radIRULeftOff);
@@ -196,6 +139,7 @@
             this.radIRULeftAlign.TabStop = true;
             this.radIRULeftAlign.Text = "Align";
             this.radIRULeftAlign.UseVisualStyleBackColor = true;
+            this.radIRULeftAlign.CheckedChanged += new System.EventHandler(this.radIRULeft_CheckedChanged);
             // 
             // radIRULeftNav
             // 
@@ -207,6 +151,7 @@
             this.radIRULeftNav.TabStop = true;
             this.radIRULeftNav.Text = "Nav";
             this.radIRULeftNav.UseVisualStyleBackColor = true;
+            this.radIRULeftNav.CheckedChanged += new System.EventHandler(this.radIRULeft_CheckedChanged);
             // 
             // radIRULeftAtt
             // 
@@ -218,6 +163,68 @@
             this.radIRULeftAtt.TabStop = true;
             this.radIRULeftAtt.Text = "Att";
             this.radIRULeftAtt.UseVisualStyleBackColor = true;
+            this.radIRULeftAtt.CheckedChanged += new System.EventHandler(this.radIRULeft_CheckedChanged);
+            // 
+            // grpIRURight
+            // 
+            this.grpIRURight.Controls.Add(this.radIRURightAtt);
+            this.grpIRURight.Controls.Add(this.radIRURightNav);
+            this.grpIRURight.Controls.Add(this.radIRURightAlign);
+            this.grpIRURight.Controls.Add(this.radIRURightOff);
+            this.grpIRURight.Location = new System.Drawing.Point(218, 3);
+            this.grpIRURight.Name = "grpIRURight";
+            this.grpIRURight.Size = new System.Drawing.Size(200, 100);
+            this.grpIRURight.TabIndex = 1;
+            this.grpIRURight.TabStop = false;
+            this.grpIRURight.Text = "Right IRU";
+            // 
+            // radIRURightAtt
+            // 
+            this.radIRURightAtt.AutoSize = true;
+            this.radIRURightAtt.Location = new System.Drawing.Point(53, 54);
+            this.radIRURightAtt.Name = "radIRURightAtt";
+            this.radIRURightAtt.Size = new System.Drawing.Size(55, 24);
+            this.radIRURightAtt.TabIndex = 3;
+            this.radIRURightAtt.TabStop = true;
+            this.radIRURightAtt.Text = "Att";
+            this.radIRURightAtt.UseVisualStyleBackColor = true;
+            this.radIRURightAtt.CheckedChanged += new System.EventHandler(this.radIRURight_CheckedChanged);
+            // 
+            // radIRURightNav
+            // 
+            this.radIRURightNav.AutoSize = true;
+            this.radIRURightNav.Location = new System.Drawing.Point(45, 46);
+            this.radIRURightNav.Name = "radIRURightNav";
+            this.radIRURightNav.Size = new System.Drawing.Size(61, 24);
+            this.radIRURightNav.TabIndex = 2;
+            this.radIRURightNav.TabStop = true;
+            this.radIRURightNav.Text = "Nav";
+            this.radIRURightNav.UseVisualStyleBackColor = true;
+            this.radIRURightNav.CheckedChanged += new System.EventHandler(this.radIRURight_CheckedChanged);
+            // 
+            // radIRURightAlign
+            // 
+            this.radIRURightAlign.AutoSize = true;
+            this.radIRURightAlign.Location = new System.Drawing.Point(37, 38);
+            this.radIRURightAlign.Name = "radIRURightAlign";
+            this.radIRURightAlign.Size = new System.Drawing.Size(69, 24);
+            this.radIRURightAlign.TabIndex = 1;
+            this.radIRURightAlign.TabStop = true;
+            this.radIRURightAlign.Text = "Align";
+            this.radIRURightAlign.UseVisualStyleBackColor = true;
+            this.radIRURightAlign.CheckedChanged += new System.EventHandler(this.radIRURight_CheckedChanged);
+            // 
+            // radIRURightOff
+            // 
+            this.radIRURightOff.AutoSize = true;
+            this.radIRURightOff.Location = new System.Drawing.Point(3, 22);
+            this.radIRURightOff.Name = "radIRURightOff";
+            this.radIRURightOff.Size = new System.Drawing.Size(56, 24);
+            this.radIRURightOff.TabIndex = 0;
+            this.radIRURightOff.TabStop = true;
+            this.radIRURightOff.Text = "Off";
+            this.radIRURightOff.UseVisualStyleBackColor = true;
+            this.radIRURightOff.CheckedChanged += new System.EventHandler(this.radIRURight_CheckedChanged);
             // 
             // grpIRUDisplay
             // 
@@ -361,10 +368,10 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.grpIRULeft.ResumeLayout(false);
-            this.grpIRURight.ResumeLayout(false);
-            this.grpIRURight.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.grpIRURight.ResumeLayout(false);
+            this.grpIRURight.PerformLayout();
             this.grpIRUDisplay.ResumeLayout(false);
             this.grpIRUDisplay.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);

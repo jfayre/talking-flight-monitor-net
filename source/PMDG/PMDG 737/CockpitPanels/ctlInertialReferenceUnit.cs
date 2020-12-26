@@ -1,4 +1,5 @@
-﻿using FSUIPC;
+﻿using DavyKager;
+using FSUIPC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace tfm
 {
     public partial class ctlInertialReferenceUnit : UserControl, iPanelsPage
     {
+        pmdg pmdg = new pmdg();
         public ctlInertialReferenceUnit()
         {
             InitializeComponent();
@@ -54,7 +56,26 @@ namespace tfm
                     break;
 
             }
+switch (Aircraft.pmdg737.IRS_DisplaySelector.Value)
+            {
+                case 0:
+                    radDispTKGS.Checked = true;
+                    lblLeft.Text = "track ";
+                    lblRight.Text = "ground speed ";
+                    break;
+                case 1:
+                    radDispPPOS.Checked = true;
+                    break;
+                case 2:
+                    radDispWind.Checked = true;
+                    break;
+                case 3:
+                    radDispHDGStat.Checked = true;
+                    lblLeft.Text = "heading ";
+                    lblRight.Text = "status ";
+                    break;
 
+            }
         }
         
         private void ctlInertialReferenceUnit_Load(object sender, EventArgs e)
@@ -70,6 +91,55 @@ namespace tfm
         private void radIRULeft_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                switch (rb.Name)
+                {
+                    case "radIRULeftOff":
+                        pmdg.IRULeftOff();
+                        
+                        break;
+                    case "radIRULeftAlign":
+                        pmdg.IRULeftAlign();
+                        break;
+                    case "radIRULeftNav":
+                        pmdg.IRULeftNav();
+                        break;
+
+                    case "radIRULeftAtt":
+                        pmdg.IRULeftAtt();
+                        break;
+
+
+
+                }
+            }
+        
+        }
+
+        private void radIRURight_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                switch (rb.Name)
+                {
+                    case "radIRURightOff":
+                        pmdg.IRURightOff();
+                        break;
+                    case "radIRURightAlign":
+                        pmdg.IRURightAlign();
+                        break;
+                    case "radIRURightNav":
+                        pmdg.IRURightNav();
+                        break;
+
+                    case "radIRURightAtt":
+                        pmdg.IRURightAtt();
+                        break;
+
+                }
+            }
 
         }
     }

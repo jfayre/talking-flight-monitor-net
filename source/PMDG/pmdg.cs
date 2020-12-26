@@ -467,5 +467,86 @@ public void ElecAPUStart()
 
         }
 
+        // IRU Left
+        public void IRULeftCalc (int sel)
+        {
+            int pos = Aircraft.pmdg737.IRS_ModeSelector[0].Value;
+            if (pos > sel)
+            {
+                for (int i = 0; i < pos - sel; i++)
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Dec);
+                }
+
+            }
+            if (pos < sel)
+            {
+                for (int i = 0; i < sel - pos; i++)
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Inc);
+
+                }
+
+            }
+
+        }
+        public void IRULeftOff ()
+        {
+            IRULeftCalc(0);
+        }
+        public void IRULeftAlign ()
+        {
+            IRULeftCalc(1);
+        }
+        public void IRULeftNav()
+        {
+            IRULeftCalc(2);
+        }
+
+        public void IRULeftAtt()
+        {
+            IRULeftCalc(3   );
+        }
+        // IRU Right
+        public void IRURightCalc (int sel)
+        {
+            int pos = Aircraft.pmdg737.IRS_ModeSelector[1].Value;
+            if (pos > sel)
+            {
+                for (int i = 0; i < pos - sel; i++)
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Dec);
+                }
+
+            }
+            if (pos < sel)
+            {
+                for (int i = 0; i < sel - pos; i++)
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Inc);
+
+                }
+
+            }
+
+        }
+        public void IRURightOff ()
+        {
+            IRURightCalc(0);
+        }
+        public void IRURightAlign ()
+        {
+            IRURightCalc(1);
+        }
+        public void IRURightNav()
+        {
+            IRURightCalc(2);
+        }
+
+        public void IRURightAtt()
+        {
+            IRURightCalc(3   );
+        }
+
     }
 }
