@@ -916,7 +916,7 @@ namespace tfm
                 }
                 else
                 {
-                    uint pct = ((sp - 4800) / 16383) * 100;
+                    uint pct = ((sp - 4800) / 16384) * 100;
                     fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers at " + pct.ToString() + ".");
                 }
                 }

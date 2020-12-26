@@ -615,14 +615,15 @@ namespace tfm
                     SpoilerPercent = 0;
                     return spoilerPercent;
                 }
-                spoilerPercent = ((sp - 4800) / 16383)*100;
+                spoilerPercent = ((sp - 4800) / 16384)*100;
                 return spoilerPercent;
                             }
             set
             {
                 if (value == 0)
                 {
-                    Aircraft.Spoilers.SetValue(0);
+                    Aircraft.Spoilers.Value=0;
+                    spoilerPercent = value;
                 }
 
                 else
@@ -630,7 +631,8 @@ namespace tfm
                     double valTmp = (double)value;
                     double ret = 5620 + ((valTmp - 7) * 115.73);
                     value = (uint)Math.Truncate(ret);
-                    Aircraft.Spoilers.SetValue(value);
+                    Aircraft.Spoilers.Value=value;
+                    spoilerPercent = value;
                 }
             }
         }
