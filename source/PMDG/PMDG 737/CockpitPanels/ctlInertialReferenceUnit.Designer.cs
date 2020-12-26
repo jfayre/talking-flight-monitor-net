@@ -286,6 +286,7 @@
             this.radDispTKGS.TabStop = true;
             this.radDispTKGS.Text = "TK / GS";
             this.radDispTKGS.UseVisualStyleBackColor = true;
+            this.radDispTKGS.CheckedChanged += new System.EventHandler(this.radDisplaySelector_CheckedChanged);
             // 
             // radDispPPOS
             // 
@@ -297,6 +298,7 @@
             this.radDispPPOS.TabStop = true;
             this.radDispPPOS.Text = "PPOS";
             this.radDispPPOS.UseVisualStyleBackColor = true;
+            this.radDispPPOS.CheckedChanged += new System.EventHandler(this.radDisplaySelector_CheckedChanged);
             // 
             // radDispWind
             // 
@@ -308,6 +310,7 @@
             this.radDispWind.TabStop = true;
             this.radDispWind.Text = "Wind";
             this.radDispWind.UseVisualStyleBackColor = true;
+            this.radDispWind.CheckedChanged += new System.EventHandler(this.radDisplaySelector_CheckedChanged);
             // 
             // radDispHDGStat
             // 
@@ -319,6 +322,7 @@
             this.radDispHDGStat.TabStop = true;
             this.radDispHDGStat.Text = "HDG / Stat";
             this.radDispHDGStat.UseVisualStyleBackColor = true;
+            this.radDispHDGStat.CheckedChanged += new System.EventHandler(this.radDisplaySelector_CheckedChanged);
             // 
             // lblLeft
             // 

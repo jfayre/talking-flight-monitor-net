@@ -58,18 +58,23 @@ namespace tfm
             }
 switch (Aircraft.pmdg737.IRS_DisplaySelector.Value)
             {
-                case 0:
+                case 1:
                     radDispTKGS.Checked = true;
                     lblLeft.Text = "track ";
                     lblRight.Text = "ground speed ";
                     break;
-                case 1:
-                    radDispPPOS.Checked = true;
-                    break;
                 case 2:
-                    radDispWind.Checked = true;
+                    radDispPPOS.Checked = true;
+                    lblLeft.Text = "latitude";
+                    lblRight.Text = "Longitude";
                     break;
                 case 3:
+                    radDispWind.Checked = true;
+                    lblLeft.Text = "Wind direction";
+                    lblRight.Text = "wind speed";
+
+                    break;
+                case 4:
                     radDispHDGStat.Checked = true;
                     lblLeft.Text = "heading ";
                     lblRight.Text = "status ";
@@ -137,6 +142,32 @@ switch (Aircraft.pmdg737.IRS_DisplaySelector.Value)
                     case "radIRURightAtt":
                         pmdg.IRURightAtt();
                         break;
+
+                }
+            }
+
+        }
+
+        private void radDisplaySelector_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                switch (rb.Name)
+                {
+                    case "radDispTKGS":
+                        pmdg.IRSDisplayTrackGS();
+                        break;
+                    case "radDispPPOS":
+                        pmdg.IRSDisplayPPOS();
+                        break;
+                    case "radDispWind":
+                        pmdg.IRSDisplayWind();
+                        break;
+                    case "radDispHDGStat":
+                        pmdg.IRSDisplayHdgStat();
+                        break;
+
 
                 }
             }
