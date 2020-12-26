@@ -18,7 +18,30 @@ namespace tfm
         public const int ClkR = -2147483648;
         public const int Inc = 16384;
         public const int Dec = 8192;
+        public void CalculateSwitchPosition(PMDG_737_NGX_Control control, int pos, int sel)
+        {
+            // there are several PMDG controls that cannot be set by direct parameter entry.
+            // this function calculates the number of increment or decrement commands that need to be set in order to set a switch to a specific position.
+            // We pass in a PMDG control number, an offset to read the current switch position, and the position we want the switch set to.
+            if (pos > sel)
+            {
+                for (int i = 0; i < pos - sel; i++)
+                {
+                    FSUIPCConnection.SendControlToFS(control, Dec);
+                }
 
+            }
+            if (pos < sel)
+            {
+                for (int i = 0; i < sel - pos; i++)
+                {
+                    FSUIPCConnection.SendControlToFS(control, Inc);
+
+                }
+
+            }
+
+        }
         // overhead electrical
         // battery switch
         public void ElecBatteryOn()
@@ -468,84 +491,46 @@ public void ElecAPUStart()
         }
 
         // IRU Left
-        public void IRULeftCalc (int sel)
-        {
-            int pos = Aircraft.pmdg737.IRS_ModeSelector[0].Value;
-            if (pos > sel)
-            {
-                for (int i = 0; i < pos - sel; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Dec);
-                }
-
-            }
-            if (pos < sel)
-            {
-                for (int i = 0; i < sel - pos; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Inc);
-
-                }
-
-            }
-
-        }
+        
         public void IRULeftOff ()
         {
-            IRULeftCalc(0);
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.IRS_ModeSelector[0].Value, 0);
         }
         public void IRULeftAlign ()
         {
-            IRULeftCalc(1);
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.IRS_ModeSelector[0].Value, 1);
         }
         public void IRULeftNav()
         {
-            IRULeftCalc(2);
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.IRS_ModeSelector[0].Value, 2);
         }
 
         public void IRULeftAtt()
         {
-            IRULeftCalc(3   );
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_LEFT, Aircraft.pmdg737.IRS_ModeSelector[0].Value, 3);
         }
-        // IRU Right
-        public void IRURightCalc (int sel)
-        {
-            int pos = Aircraft.pmdg737.IRS_ModeSelector[1].Value;
-            if (pos > sel)
-            {
-                for (int i = 0; i < pos - sel; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Dec);
-                }
 
-            }
-            if (pos < sel)
-            {
-                for (int i = 0; i < sel - pos; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Inc);
-
-                }
-
-            }
-
-        }
+        
+        
         public void IRURightOff ()
         {
-            IRURightCalc(0);
+            
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.IRS_ModeSelector[1].Value, 0);
         }
-        public void IRURightAlign ()
+        public void IRURightAlign()
         {
-            IRURightCalc(1);
+            // IRURightCalc(1);
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.IRS_ModeSelector[1].Value, 1);
         }
+
         public void IRURightNav()
         {
-            IRURightCalc(2);
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.IRS_ModeSelector[1].Value, 2);
         }
 
         public void IRURightAtt()
         {
-            IRURightCalc(3   );
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_IRU_MSU_RIGHT, Aircraft.pmdg737.IRS_ModeSelector[1].Value, 3);
         }
 
     }
