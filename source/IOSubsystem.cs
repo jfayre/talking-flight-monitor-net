@@ -917,7 +917,11 @@ namespace tfm
                     {
                         fireOnScreenReaderOutputEvent(isGauge: false, output: "spoilers retracted. ");
                     }
-
+                    else
+                    {
+                        uint pct = ((sp - 4800) / 16383)*100;
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers at " + pct.ToString() + ".");
+                    }
                 }
             }
         }

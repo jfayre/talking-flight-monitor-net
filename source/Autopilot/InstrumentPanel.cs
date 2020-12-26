@@ -615,7 +615,7 @@ namespace tfm
                     SpoilerPercent = 0;
                     return spoilerPercent;
                 }
-                spoilerPercent = (sp - 4800) / 16383;
+                spoilerPercent = ((sp - 4800) / 16383)*100;
                 return spoilerPercent;
                             }
             set
