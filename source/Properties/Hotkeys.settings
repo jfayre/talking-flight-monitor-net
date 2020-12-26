@@ -230,5 +230,8 @@
     <Setting Name="Landing_Rate" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+V</Value>
     </Setting>
+    <Setting Name="ap_set_spoilers" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+P</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

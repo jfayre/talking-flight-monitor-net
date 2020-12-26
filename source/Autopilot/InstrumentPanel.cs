@@ -74,7 +74,7 @@ namespace tfm
                 return latitude;
             }
         }
-        
+
         private double longitude;
         public double Longitude
         {
@@ -84,7 +84,7 @@ namespace tfm
                 return longitude;
             }
         }
-        
+
         private double verticalSpeed;
         public double VerticalSpeed
         {
@@ -104,7 +104,7 @@ namespace tfm
             {
                 apMaster = Aircraft.ApMaster.Value != 0;
                 return apMaster;
-            }   
+            }
             set
             {
                 Aircraft.ApMaster.Value = (value) ? (uint)1 : (uint)0;
@@ -172,7 +172,7 @@ namespace tfm
                 Aircraft.ApApproachHold.Value = (value) ? (uint)1 : (uint)0;
                 apApproachHold = value;
             }
-        
+
         }
         private double apHeading;
         [DisplayName("Heading")]
@@ -216,8 +216,8 @@ namespace tfm
             }
             set
             {
-                    Aircraft.ApAltitude.Value = (uint)(value / 3.28084 * 65536);
-                    apAltitude = value;
+                Aircraft.ApAltitude.Value = (uint)(value / 3.28084 * 65536);
+                apAltitude = value;
             }
         }
         private bool apAltitudeLock;
@@ -247,8 +247,8 @@ namespace tfm
             }
             set
             {
-                    Aircraft.ApAirspeed.Value = (short)value;
-                    apAirspeed = value;
+                Aircraft.ApAirspeed.Value = (short)value;
+                apAirspeed = value;
             }
         }
         private bool apAirspeedHold;
@@ -280,9 +280,9 @@ namespace tfm
             }
             set
             {
-                    // FSUIPC needs the mach multiplied by 65536            }
-                    Aircraft.ApMach.Value = (uint)(value * 65536);
-                    apMachSpeed = value;
+                // FSUIPC needs the mach multiplied by 65536            }
+                Aircraft.ApMach.Value = (uint)(value * 65536);
+                apMachSpeed = value;
             }
         }
         private bool apMachHold;
@@ -346,14 +346,14 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com1Helper = new FsFrequencyCOM(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Com1Freq.Value = com1Helper.ToBCD();
-                    com1Freq = value;
+                // 1. Create a new instance of the COM helper class using the decimal value entered
+                FsFrequencyCOM com1Helper = new FsFrequencyCOM(value);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Aircraft.Com1Freq.Value = com1Helper.ToBCD();
+                com1Freq = value;
             }
         }
-        
+
         private decimal com1StandbyFreq;
         [DisplayName("com 1 Standby")]
         [Category("communications")]
@@ -367,11 +367,11 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com1StandbyHelper = new FsFrequencyCOM(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Com1StandbyFreq.Value = com1StandbyHelper.ToBCD();
-                    com1StandbyFreq = value;
+                // 1. Create a new instance of the COM helper class using the decimal value entered
+                FsFrequencyCOM com1StandbyHelper = new FsFrequencyCOM(value);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Aircraft.Com1StandbyFreq.Value = com1StandbyHelper.ToBCD();
+                com1StandbyFreq = value;
             }
         }
 
@@ -388,11 +388,11 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyCOM com2Helper = new FsFrequencyCOM(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Com2Freq.Value = com2Helper.ToBCD();
-                    com2Freq = value;
+                // 1. Create a new instance of the COM helper class using the decimal value entered
+                FsFrequencyCOM com2Helper = new FsFrequencyCOM(value);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Aircraft.Com2Freq.Value = com2Helper.ToBCD();
+                com2Freq = value;
             }
         }
         private int transponder;
@@ -408,12 +408,12 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the Transponder helper class using the integer that was entered
-                    //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
-                    FsTransponderCode txHelper = new FsTransponderCode((int)value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Transponder.Value = txHelper.ToBCD();
-                    transponder = value;
+                // 1. Create a new instance of the Transponder helper class using the integer that was entered
+                //    Note the number box always returns the value as a 'decimal' type. So we have to cast to Int32
+                FsTransponderCode txHelper = new FsTransponderCode((int)value);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Aircraft.Transponder.Value = txHelper.ToBCD();
+                transponder = value;
             }
         }
         private decimal adf1Freq;
@@ -432,13 +432,13 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the ADF helper class using the decimal value entered
-                    FsFrequencyADF adf1Helper = new FsFrequencyADF(value);
-                    // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
-                    //    Set the offsets to these new values
-                    Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
-                    Aircraft.adf1Extended.Value = adf1Helper.ToBCDExtended();
-                    adf1Freq = value;
+                // 1. Create a new instance of the ADF helper class using the decimal value entered
+                FsFrequencyADF adf1Helper = new FsFrequencyADF(value);
+                // 2. Now use the helper class to get the two BCD values required by FSUIPC (main and extended)
+                //    Set the offsets to these new values
+                Aircraft.adf1Main.Value = adf1Helper.ToBCDMain();
+                Aircraft.adf1Extended.Value = adf1Helper.ToBCDExtended();
+                adf1Freq = value;
             }
         }
         private double altimeterQNH;
@@ -490,11 +490,11 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the COM helper class using the decimal value entered
-                    FsFrequencyNAV nav1Helper = new FsFrequencyNAV(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Nav1Freq.Value = nav1Helper.ToBCD();
-                    nav1Freq = value;
+                // 1. Create a new instance of the COM helper class using the decimal value entered
+                FsFrequencyNAV nav1Helper = new FsFrequencyNAV(value);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Aircraft.Nav1Freq.Value = nav1Helper.ToBCD();
+                nav1Freq = value;
             }
         }
         private ushort nav1Course;
@@ -524,11 +524,11 @@ namespace tfm
             }
             set
             {
-                    // 1. Create a new instance of the NAV helper class using the decimal value entered
-                    FsFrequencyNAV nav2Helper = new FsFrequencyNAV(value);
-                    // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
-                    Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
-                    nav2Freq = value;
+                // 1. Create a new instance of the NAV helper class using the decimal value entered
+                FsFrequencyNAV nav2Helper = new FsFrequencyNAV(value);
+                // 2. Now use the helper class to get the BCD value required by FSUIPC and set the offset to this new value
+                Aircraft.Nav2Freq.Value = nav2Helper.ToBCD();
+                nav2Freq = value;
             }
         }
         private ushort nav2Course;
@@ -604,7 +604,36 @@ namespace tfm
             }
         }
 
+        private uint spoilerPercent;
+        public uint SpoilerPercent
+        {
+            get
+            {
+                uint sp = Aircraft.Spoilers.Value;
+                if (sp <= 4800)
+                {
+                    SpoilerPercent = 0;
+                    return spoilerPercent;
+                }
+                spoilerPercent = (sp - 4800) / 16383;
+                return spoilerPercent;
+                            }
+            set
+            {
+                if (value == 0)
+                {
+                    Aircraft.Spoilers.SetValue(0);
+                }
 
+                else
+                {
+                    double valTmp = (double)value;
+                    double ret = 5620 + ((valTmp - 7) * 115.73);
+                    value = (uint)Math.Truncate(ret);
+                    Aircraft.Spoilers.SetValue(value);
+                }
+            }
+        }
 
     }
 }

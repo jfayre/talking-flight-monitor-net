@@ -1307,6 +1307,10 @@ namespace tfm
                     ap = new frmAutopilot("Throttle");
                     ap.ShowDialog();
                     break;
+                case "ap_set_spoilers":
+                    ap = new frmAutopilot("Spoilers");
+                    ap.ShowDialog();
+                    break;
 
                 default:
                     Tolk.Output("key not defined");

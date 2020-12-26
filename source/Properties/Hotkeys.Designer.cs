@@ -931,5 +931,17 @@ namespace tfm.Properties {
                 this["Landing_Rate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+P")]
+        public global::System.Windows.Forms.Keys ap_set_spoilers {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_set_spoilers"]));
+            }
+            set {
+                this["ap_set_spoilers"] = value;
+            }
+        }
     }
 }

@@ -33,6 +33,10 @@ namespace tfm
             {
                 this.Text = "Set Throttle Percent (min 0, max 100)";
             }
+            else if (this.instrument == "Spoilers")
+            {
+                this.Text = "Enter spoiler percentage (0 or 7 <= percentage <= 100)";
+            }
             else
             {
                 this.Text = $"set autopilot {instrument}";
@@ -72,6 +76,10 @@ namespace tfm
                     break;
                 case "Throttle":
                     txtSetting.Text = ap.Engine1ThrottlePercent.ToString();
+                    chkLock.Visible = false;
+                    break;
+                case "Spoilers":
+                    txtSetting.Text = ap.SpoilerPercent.ToString();
                     chkLock.Visible = false;
                     break;
             }
@@ -202,6 +210,29 @@ namespace tfm
                         txtSetting.Focus();
                     }
                     break;
+
+                case "Spoilers":
+if(uint.TryParse(txtSetting.Text, out uint spPercent))
+                    {
+                        if((spPercent==0)||((7 <= spPercent)&&(spPercent <= 100)))
+                        {
+                            ap.SpoilerPercent = spPercent;
+                            this.DialogResult = DialogResult.OK;
+                        }
+                        else
+                        {
+                            Tolk.Output("Spoiler percentage can only be 0, or greater than 7 and less than 100. This is an internal limitation.");
+                            txtSetting.Text = String.Empty;
+                            txtSetting.Focus();
+                        }
+                    }
+                    else
+                    {
+                        Tolk.Output("Spoiler percentage must be 0, or a number greater than 7 and less than 100. This is an internal limitation.");
+                        txtSetting.Text = String.Empty;
+                        txtSetting.Focus();
+                    }
+                    break;  
                     }
             }
 
