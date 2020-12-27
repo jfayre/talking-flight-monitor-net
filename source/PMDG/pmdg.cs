@@ -551,5 +551,69 @@ public void ElecAPUStart()
             CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_ISDU_DSPL_SEL, Aircraft.pmdg737.IRS_DisplaySelector.Value, 4);
         }
 
+        // engine controls
+        public void Eng1StartGrd()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[0].Value, 0);
+        }
+        public void Eng1StartAuto()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[0].Value, 1);
+        }
+        public void Eng1StartCont()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[0].Value, 2);
+        }
+        public void Eng1StartFlt()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[0].Value, 3);
+        }
+        public void Eng2StartGrd()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[1].Value, 0);
+        }
+        public void Eng2StartAuto()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[1].Value, 1);
+        }
+        public void Eng2StartCont()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[1].Value, 2);
+        }
+        public void Eng2StartFlt()
+        {
+            CalculateSwitchPosition(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.pmdg737.ENG_StartSelector[1].Value, 3);
+        }
+
+        // Pedestal - Fuel Cut off
+        public void Eng1FuelIdle ()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_688_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG1_START_LEVER, ClkR);
+            }
+        }
+        public void Eng1FuelCutOff ()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_688_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG1_START_LEVER, ClkL);
+            }
+        }
+        public void Eng2FuelIdle ()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_689_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG2_START_LEVER, ClkR);
+            }
+        }
+        public void Eng2FuelCutOff ()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_689_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG2_START_LEVER, ClkL);
+            }
+        }
+
     }
 }
