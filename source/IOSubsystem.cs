@@ -2623,16 +2623,35 @@ private void onLandingRateKey()
                 var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
                 var longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
                 // Retrieve the state/province/territory.
-                var request =new  GetBoundaryRequest() {
-
-                    EntityType= BoundaryEntityType.AdminDivision2,
+                var cityRequest =new  GetBoundaryRequest() {
+                                        EntityType= BoundaryEntityType.AdminDivision2,
                   LevelOfDetail = 3,
                   GetAllPolygons = true,
                   GetEntityMetadata = true,
                   Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
                 };
-                var response = await GeodataManager.GetBoundary(request, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{response[0].Name.EntityName}");
+
+                var stateRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.AdminDivision1,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+
+                var countryRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.CountryRegion,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+                var cityResponse = await GeodataManager.GetBoundary(cityRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                var stateResponse = await GeodataManager.GetBoundary(stateRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                var countryResponse = await GeodataManager.GetBoundary(countryRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
             }
         }
 
