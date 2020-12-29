@@ -465,6 +465,7 @@ namespace tfm
             {
                 double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
                 altimeterInches = Math.Floor(((100 * AltQNH * 29.92) / 1013.2) + 0.5);
+                altimeterInches = altimeterInches / 100;
                 return altimeterInches;
             }
             set
