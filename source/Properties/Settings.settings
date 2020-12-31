@@ -77,5 +77,8 @@
     <Setting Name="takeOffAssistMode" Type="System.String" Scope="User">
       <Value Profile="(Default)">off</Value>
     </Setting>
+    <Setting Name="bingMapsAPIKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

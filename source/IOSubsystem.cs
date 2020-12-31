@@ -2620,6 +2620,11 @@ private void onLandingRateKey()
             }
             else
             {
+                if(string.IsNullOrEmpty(Properties.Settings.Default.bingMapsAPIKey))
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Please set the Bing Maps API key in settings before using the where am I feature.");
+                    return;
+                } // Sanity check on api keys.
                 var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
                 var longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
                 // Retrieve the state/province/territory.
@@ -2648,9 +2653,9 @@ private void onLandingRateKey()
                     GetEntityMetadata = true,
                     Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
                 };
-                var cityResponse = await GeodataManager.GetBoundary(cityRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                var cityResponse = await GeodataManager.GetBoundary(cityRequest, Properties.Settings.Default.bingMapsAPIKey);
                 var stateResponse = await GeodataManager.GetBoundary(stateRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
-                var countryResponse = await GeodataManager.GetBoundary(countryRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                var countryResponse = await GeodataManager.GetBoundary(countryRequest, Properties.Settings.Default.bingMapsAPIKey);
                 fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
             }
         }
