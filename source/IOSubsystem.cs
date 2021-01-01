@@ -1,5 +1,6 @@
 ﻿using DavyKager;
 using BingMapsSDSToolkit.GeodataAPI;
+using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -2654,10 +2655,64 @@ private void onLandingRateKey()
                     Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
                 };
                 var cityResponse = await GeodataManager.GetBoundary(cityRequest, Properties.Settings.Default.bingMapsAPIKey);
-                var stateResponse = await GeodataManager.GetBoundary(stateRequest, "NpTyCzHPIEJVEzEK1vNP~zT47rmXnMDsAutUXcqIclg~AqkCwo-OiHASj7cxADkpTh9zYtDI7T8SDBpdxAZL17s8PqrlMOt2XLnGQAv4omES");
+                var stateResponse = await GeodataManager.GetBoundary(stateRequest, Properties.Settings.Default.bingMapsAPIKey);
                 var countryResponse = await GeodataManager.GetBoundary(countryRequest, Properties.Settings.Default.bingMapsAPIKey);
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
-            }
+                
+                // Check for existence of a country. If none present, most likely we are in a body of water.
+                if(countryResponse == null)
+                    {
+                    if(string.IsNullOrWhiteSpace(Properties.Settings.Default.GeonamesUsername))
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "You must have a Geonames username to use this feature.");
+                        return;
+                    }
+                    try
+                    {
+                        var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}");
+                        var ocean = xmlOcean.Descendants("ocean").Select(g => new
+                        {
+                            Name = g.Element("name").Value
+                        });
+                        if (ocean.Count() > 0)
+                        {
+                            var currentOcean = ocean.First();
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{currentOcean.Name}. ");
+                        }
+                                            }
+                    catch (Exception ex)
+                    {
+                        Logger.Debug($"error retrieving oceanic info: {ex.Message}");
+
+                    }
+                }
+else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
+                }
+                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}&radius=50");
+                var timezone = xmlTimezone.Descendants("timezone").Select(g => new
+                {
+                    Name = g.Element("timezoneId").Value
+                });
+                if (timezone.Count() > 0)
+                {
+                    var currentTimezone = timezone.First();
+                    if (currentTimezone.Name != oldTimezone)
+                    {
+                        try
+                        {
+                            string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{tzName}. ");
+                        }
+                        catch (Exception)
+                        {
+
+                            Logger.Debug($"cannot convert timezone: {currentTimezone.Name}");
+                        }
+                    }
+                        oldTimezone = currentTimezone.Name;
+                    }
+                }
         }
 
         private void onTakeOffAssistant()
