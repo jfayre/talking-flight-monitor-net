@@ -1,4 +1,6 @@
 ﻿using DavyKager;
+using BingMapsSDSToolkit.GeodataAPI;
+using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -2773,7 +2775,7 @@ private void onLandingRateKey()
 
         }
 
-        private void onCurrentLocation()
+        private async void onCurrentLocation()
         {
             var database = FSUIPCConnection.AirportsDatabase;
             database.SetReferenceLocation();
@@ -2823,8 +2825,98 @@ private void onLandingRateKey()
             }
             else
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
-            }
+                if(string.IsNullOrEmpty(Properties.Settings.Default.bingMapsAPIKey))
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Please set the Bing Maps API key in settings before using the where am I feature.");
+                    return;
+                } // Sanity check on api keys.
+                var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
+                var longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
+                // Retrieve the state/province/territory.
+                var cityRequest =new  GetBoundaryRequest() {
+                                        EntityType= BoundaryEntityType.AdminDivision2,
+                  LevelOfDetail = 3,
+                  GetAllPolygons = true,
+                  GetEntityMetadata = true,
+                  Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+
+                var stateRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.AdminDivision1,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+
+                var countryRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.CountryRegion,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+                var cityResponse = await GeodataManager.GetBoundary(cityRequest, Properties.Settings.Default.bingMapsAPIKey);
+                var stateResponse = await GeodataManager.GetBoundary(stateRequest, Properties.Settings.Default.bingMapsAPIKey);
+                var countryResponse = await GeodataManager.GetBoundary(countryRequest, Properties.Settings.Default.bingMapsAPIKey);
+                
+                // Check for existence of a country. If none present, most likely we are in a body of water.
+                if(countryResponse == null)
+                    {
+                    if(string.IsNullOrWhiteSpace(Properties.Settings.Default.GeonamesUsername))
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "You must have a Geonames username to use this feature.");
+                        return;
+                    }
+                    try
+                    {
+                        var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}");
+                        var ocean = xmlOcean.Descendants("ocean").Select(g => new
+                        {
+                            Name = g.Element("name").Value
+                        });
+                        if (ocean.Count() > 0)
+                        {
+                            var currentOcean = ocean.First();
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{currentOcean.Name}. ");
+                        }
+                                            }
+                    catch (Exception ex)
+                    {
+                        Logger.Debug($"error retrieving oceanic info: {ex.Message}");
+
+                    }
+                }
+else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
+                }
+                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}&radius=50");
+                var timezone = xmlTimezone.Descendants("timezone").Select(g => new
+                {
+                    Name = g.Element("timezoneId").Value
+                });
+                if (timezone.Count() > 0)
+                {
+                    var currentTimezone = timezone.First();
+                    if (currentTimezone.Name != oldTimezone)
+                    {
+                        try
+                        {
+                            string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{tzName}. ");
+                        }
+                        catch (Exception)
+                        {
+
+                            Logger.Debug($"cannot convert timezone: {currentTimezone.Name}");
+                        }
+                    }
+                        oldTimezone = currentTimezone.Name;
+                    }
+                }
         }
 
         private void onTakeOffAssistant()
@@ -2847,38 +2939,37 @@ private void onLandingRateKey()
                 Aircraft.PitotHeat.Value = 1; // On.
                 Autopilot.ApMaster = true;
                 Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
-                Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
                 Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
                 Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
                 Aircraft.ParkingBrake.Value = 0; // Off.
 
                 // Start the engines on the plane.
-                switch (Aircraft.num_engines.Value)
-                {
-                    case 1:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        break;
-                    case 2:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        Aircraft.Engine2ThrottleLever.Value = 16388;
-                        break;
-                    case 3:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        Aircraft.Engine2ThrottleLever.Value = 16388;
-                        Aircraft.Engine3ThrottleLever.Value = 16388;
-                        break;
-                    case 4:
-                        Aircraft.Engine1ThrottleLever.Value = 16388;
-                        Aircraft.Engine2ThrottleLever.Value = 16388;
-                        Aircraft.Engine3ThrottleLever.Value = 16388;
-                        Aircraft.Engine4ThrottleLever.Value = 16388;
-                        break;
-                    case 0:
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
-                        break;
-                } // End throttle engines.
-
-                isTakeoffComplete = false;
+                //switch (Aircraft.num_engines.Value)
+                //{
+                //    case 1:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        break;
+                //    case 2:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                //        break;
+                //    case 3:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                //        Aircraft.Engine3ThrottleLever.Value = 16388;
+                //        break;
+                //    case 4:
+                //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                //        Aircraft.Engine3ThrottleLever.Value = 16388;
+                //        Aircraft.Engine4ThrottleLever.Value = 16388;
+                //        break;
+                //    case 0:
+                //        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                //        break;
+                //} // End throttle engines.
+                                isTakeoffComplete = false;
                 PostTakeOffChecklist();
             } // End takeoff mode is full.
 else if(Properties.Settings.Default.takeOffAssistMode == "partial")
@@ -2898,6 +2989,8 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                     //var airSpeed = Autopilot.ApAirspeed;
                     //Autopilot.ApAirspeed = airSpeed;
                     Autopilot.ApAirspeedHold = true;
+                Autopilot.ApAltitude = 32000;
+                Autopilot.ApAltitudeLock = true;
                     if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
                     if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
                     Aircraft.AutoBrake.Value = 1; // Off.    
