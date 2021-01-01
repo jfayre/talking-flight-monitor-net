@@ -62,12 +62,11 @@
             this.altitudeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.courseColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.frequencyColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.proceduresTabControl = new System.Windows.Forms.TabControl();
-            this.sidTabPage = new System.Windows.Forms.TabPage();
-            this.starsTabPage = new System.Windows.Forms.TabPage();
             this.waypointRestrictionsTextBox = new System.Windows.Forms.TextBox();
+            this.missedApproachTextBox = new System.Windows.Forms.TextBox();
+            this.flyPlanCheckBox = new System.Windows.Forms.CheckBox();
+            this.flyMissedApproachCheckBox = new System.Windows.Forms.CheckBox();
             this.mainMenu.SuspendLayout();
-            this.proceduresTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -324,49 +323,48 @@
             this.frequencyColumnHeader.Text = "Frequency";
             this.frequencyColumnHeader.Width = 70;
             // 
-            // proceduresTabControl
-            // 
-            this.proceduresTabControl.AccessibleName = "Procedures";
-            this.proceduresTabControl.Controls.Add(this.sidTabPage);
-            this.proceduresTabControl.Controls.Add(this.starsTabPage);
-            this.proceduresTabControl.Location = new System.Drawing.Point(600, 46);
-            this.proceduresTabControl.Name = "proceduresTabControl";
-            this.proceduresTabControl.SelectedIndex = 0;
-            this.proceduresTabControl.Size = new System.Drawing.Size(400, 500);
-            this.proceduresTabControl.TabIndex = 2;
-            // 
-            // sidTabPage
-            // 
-            this.sidTabPage.AccessibleName = "Sids";
-            this.sidTabPage.Location = new System.Drawing.Point(4, 35);
-            this.sidTabPage.Name = "sidTabPage";
-            this.sidTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.sidTabPage.Size = new System.Drawing.Size(392, 461);
-            this.sidTabPage.TabIndex = 0;
-            this.sidTabPage.Text = "Sids";
-            this.sidTabPage.UseVisualStyleBackColor = true;
-            // 
-            // starsTabPage
-            // 
-            this.starsTabPage.AccessibleName = "Stars";
-            this.starsTabPage.Location = new System.Drawing.Point(4, 35);
-            this.starsTabPage.Name = "starsTabPage";
-            this.starsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.starsTabPage.Size = new System.Drawing.Size(392, 461);
-            this.starsTabPage.TabIndex = 1;
-            this.starsTabPage.Text = "Stars";
-            this.starsTabPage.UseVisualStyleBackColor = true;
-            // 
             // waypointRestrictionsTextBox
             // 
             this.waypointRestrictionsTextBox.AccessibleName = "Waypoint restrictions";
-            this.waypointRestrictionsTextBox.Location = new System.Drawing.Point(650, 552);
+            this.waypointRestrictionsTextBox.Location = new System.Drawing.Point(600, 46);
             this.waypointRestrictionsTextBox.Multiline = true;
             this.waypointRestrictionsTextBox.Name = "waypointRestrictionsTextBox";
             this.waypointRestrictionsTextBox.ReadOnly = true;
             this.waypointRestrictionsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.waypointRestrictionsTextBox.Size = new System.Drawing.Size(150, 150);
             this.waypointRestrictionsTextBox.TabIndex = 3;
+            // 
+            // missedApproachTextBox
+            // 
+            this.missedApproachTextBox.AccessibleName = "missed approach";
+            this.missedApproachTextBox.Location = new System.Drawing.Point(756, 46);
+            this.missedApproachTextBox.Multiline = true;
+            this.missedApproachTextBox.Name = "missedApproachTextBox";
+            this.missedApproachTextBox.ReadOnly = true;
+            this.missedApproachTextBox.Size = new System.Drawing.Size(150, 150);
+            this.missedApproachTextBox.TabIndex = 4;
+            // 
+            // flyPlanCheckBox
+            // 
+            this.flyPlanCheckBox.AccessibleName = "fly plan";
+            this.flyPlanCheckBox.AutoSize = true;
+            this.flyPlanCheckBox.Location = new System.Drawing.Point(606, 206);
+            this.flyPlanCheckBox.Name = "flyPlanCheckBox";
+            this.flyPlanCheckBox.Size = new System.Drawing.Size(77, 31);
+            this.flyPlanCheckBox.TabIndex = 5;
+            this.flyPlanCheckBox.Text = "Plan";
+            this.flyPlanCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // flyMissedApproachCheckBox
+            // 
+            this.flyMissedApproachCheckBox.AccessibleName = "Fly missed approach";
+            this.flyMissedApproachCheckBox.AutoSize = true;
+            this.flyMissedApproachCheckBox.Location = new System.Drawing.Point(713, 206);
+            this.flyMissedApproachCheckBox.Name = "flyMissedApproachCheckBox";
+            this.flyMissedApproachCheckBox.Size = new System.Drawing.Size(197, 31);
+            this.flyMissedApproachCheckBox.TabIndex = 6;
+            this.flyMissedApproachCheckBox.Text = "Missed approach";
+            this.flyMissedApproachCheckBox.UseVisualStyleBackColor = true;
             // 
             // FlightPlanForm
             // 
@@ -376,8 +374,10 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1300, 731);
+            this.Controls.Add(this.flyMissedApproachCheckBox);
+            this.Controls.Add(this.flyPlanCheckBox);
+            this.Controls.Add(this.missedApproachTextBox);
             this.Controls.Add(this.waypointRestrictionsTextBox);
-            this.Controls.Add(this.proceduresTabControl);
             this.Controls.Add(this.waypointsListView);
             this.Controls.Add(this.mainMenu);
             this.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -392,7 +392,6 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FlightPlanForm_KeyDown);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
-            this.proceduresTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -431,9 +430,9 @@
         private System.Windows.Forms.ColumnHeader altitudeColumnHeader;
         private System.Windows.Forms.ColumnHeader courseColumnHeader;
         private System.Windows.Forms.ColumnHeader frequencyColumnHeader;
-        private System.Windows.Forms.TabControl proceduresTabControl;
-        private System.Windows.Forms.TabPage sidTabPage;
-        private System.Windows.Forms.TabPage starsTabPage;
         private System.Windows.Forms.TextBox waypointRestrictionsTextBox;
+        private System.Windows.Forms.TextBox missedApproachTextBox;
+        private System.Windows.Forms.CheckBox flyPlanCheckBox;
+        private System.Windows.Forms.CheckBox flyMissedApproachCheckBox;
     }
 }
