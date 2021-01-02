@@ -2735,12 +2735,11 @@ else
                 Aircraft.PitotHeat.Value = 1; // On.
                 Autopilot.ApMaster = true;
                 Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
-                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
                 Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
                 Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
                 Aircraft.ParkingBrake.Value = 0; // Off.
-
-                // Start the engines on the plane.
+                                // Start the engines on the plane.
                 //switch (Aircraft.num_engines.Value)
                 //{
                 //    case 1:
@@ -2780,7 +2779,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         {
           double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
-            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+                            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
             {
                     //var airSpeed = Autopilot.ApAirspeed;
                     //Autopilot.ApAirspeed = airSpeed;
