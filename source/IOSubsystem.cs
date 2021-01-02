@@ -1,5 +1,5 @@
 ﻿using DavyKager;
-using BingMapsSDSToolkit.GeodataAPI;
+    using BingMapsSDSToolkit.GeodataAPI;
 using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
 using NAudio.Wave;
@@ -724,6 +724,7 @@ namespace tfm
             double elevator = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.ElevatorTrim.Value);
             double aileron = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.AileronTrim.Value);
             if (Aircraft.ElevatorTrim.ValueChanged && Aircraft.ApMaster.Value != 1 && TrimEnabled)
+            
             {
                 if (elevator < 0)
                 {
