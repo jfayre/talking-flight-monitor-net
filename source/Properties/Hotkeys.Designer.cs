@@ -931,5 +931,29 @@ namespace tfm.Properties {
                 this["Landing_Rate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("B")]
+        public global::System.Windows.Forms.Keys ap_Get_Altimeter {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Altimeter"]));
+            }
+            set {
+                this["ap_Get_Altimeter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+B")]
+        public global::System.Windows.Forms.Keys ap_Set_Altimeter {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Altimeter"]));
+            }
+            set {
+                this["ap_Set_Altimeter"] = value;
+            }
+        }
     }
 }

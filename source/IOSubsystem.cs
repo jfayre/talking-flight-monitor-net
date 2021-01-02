@@ -381,7 +381,7 @@ namespace tfm
                 ReadAutoBrake();
                 ReadSpoilers();
                 ReadTrim();
-                ReadAltimeter();
+                ReadAltimeter(TriggeredByKey: false);
                 NextWaypoint();
                 ReadLights();
                 ReadDoors();
@@ -594,9 +594,9 @@ namespace tfm
             }
         }
 
-        private void ReadAltimeter()
+        private void ReadAltimeter(bool TriggeredByKey)
         {
-            if (Aircraft.Altimeter.ValueChanged)
+            if (Aircraft.Altimeter.ValueChanged || TriggeredByKey)
             {
                 double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
                 double AltHPA = Math.Floor(AltQNH + 0.5);
@@ -1188,6 +1188,7 @@ namespace tfm
             frmAutopilot ap;
             frmComRadios com;
             frmNavRadios nav;
+            frmAltimeter alt;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1206,6 +1207,14 @@ namespace tfm
                     ap = new frmAutopilot("Altitude");
                     ap.ShowDialog();
                     break;
+                case "ap_Get_Altimeter":
+                    ReadAltimeter(true);
+                    break;
+                case "ap_Set_Altimeter":
+                    alt = new frmAltimeter();
+                    alt.ShowDialog();
+                    break;
+
                 case "ap_Get_Heading":
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
