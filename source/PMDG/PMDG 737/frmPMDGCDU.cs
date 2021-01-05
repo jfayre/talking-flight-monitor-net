@@ -58,19 +58,6 @@ namespace tfm
         }
 
         
-        
-        private void btnExec_Click(object sender, EventArgs e)
-        {
-            if (Aircraft.pmdg737.CDU_annunEXEC[0].Value == 1)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_EXEC, Aircraft.ClkL);
-                RefreshCDU();
-            }
-            else
-            {
-                Tolk.Output("execute key not available");
-            }
-        }
 
         private void CDUForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -78,79 +65,68 @@ namespace tfm
             // menu key
             if ((e.Alt && e.KeyCode == Keys.M))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_MENU, Aircraft.ClkL);
-                RefreshCDU();
+                btnMenu.PerformClick();
             }
             // Execute
             if ((e.Alt && e.KeyCode == Keys.E))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_EXEC, Aircraft.ClkL);
-                RefreshCDU();
+                btnExec.PerformClick();
             }
             // dep arr
             if ((e.Alt && e.KeyCode == Keys.D))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DEP_ARR, Aircraft.ClkL);
+                btnDepArr.PerformClick();
                 RefreshCDU();
             }
             // init ref
             if ((e.Alt && e.KeyCode == Keys.I))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_INIT_REF, Aircraft.ClkL);
-                RefreshCDU();
+                btnInitRef.PerformClick();
             }
             // prog
             if ((e.Alt && e.KeyCode == Keys.P))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PROG, Aircraft.ClkL);
-                RefreshCDU();
+                btnProg.PerformClick();
             }
             // RTE
             if ((e.Alt && e.KeyCode == Keys.R))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_RTE, Aircraft.ClkL);
-                RefreshCDU();
+                btnRte.PerformClick();
             }
             // CLB
             if ((e.Alt && e.KeyCode == Keys.C))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CLB, Aircraft.ClkL);
-                RefreshCDU();
+                btnClb.PerformClick();
             }
             // CRZ
             if ((e.Alt && e.KeyCode == Keys.Z))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CRZ, Aircraft.ClkL);
-                RefreshCDU();
+                btnCrz.PerformClick();
             }
             // DES
             if ((e.Alt && e.KeyCode == Keys.L))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DES, Aircraft.ClkL);
-                RefreshCDU();
+                btnDes.PerformClick();
             }
             // legs
             if ((e.Alt && e.KeyCode == Keys.G))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_LEGS, Aircraft.ClkL);
-                RefreshCDU();
+                btnLegs.PerformClick();
             }
             // hold
             if ((e.Alt && e.KeyCode == Keys.H))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_HOLD, Aircraft.ClkL);
-                RefreshCDU();
+                btnHold.PerformClick();
             }
             // N1 Limit
             if ((e.Alt && e.KeyCode == Keys.N))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_N1_LIMIT, Aircraft.ClkL);
-                RefreshCDU();
+                btnN1Limit.PerformClick();
             }
             // fix
             if ((e.Alt && e.KeyCode == Keys.F))
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_FIX, Aircraft.ClkL);
+                btnFix.PerformClick();
                 RefreshCDU();
             }
 
@@ -384,6 +360,111 @@ namespace tfm
         {
             FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CLR, Aircraft.ClkL);
             RefreshCDU();
+        }
+
+        private void btnInitRef_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_INIT_REF, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnRte_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_RTE, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnClb_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CLB, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnCrz_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CRZ, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnDes_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DES, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_MENU, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnLegs_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_LEGS, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnDepArr_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DEP_ARR, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnHold_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_HOLD, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnProg_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PROG, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnExec_Click_1(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_EXEC, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnN1Limit_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_N1_LIMIT, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnFix_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_FIX, Aircraft.ClkL);
+            RefreshCDU();
+
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_NEXT_PAGE, 0x20000000);
+            RefreshCDU();
+
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PREV_PAGE, 0x20000000);
+            RefreshCDU();
+
         }
     }
 }
