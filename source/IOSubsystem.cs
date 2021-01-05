@@ -381,7 +381,7 @@ namespace tfm
                 ReadAutoBrake();
                 ReadSpoilers();
                 ReadTrim();
-                ReadAltimeter();
+                ReadAltimeter(TriggeredByKey: false);
                 NextWaypoint();
                 ReadLights();
                 ReadDoors();
@@ -749,9 +749,9 @@ namespace tfm
             }
         }
 
-        private void ReadAltimeter()
+        private void ReadAltimeter(bool TriggeredByKey)
         {
-            if (Aircraft.Altimeter.ValueChanged)
+            if (Aircraft.Altimeter.ValueChanged || TriggeredByKey)
             {
                 double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
                 double AltHPA = Math.Floor(AltQNH + 0.5);
@@ -1385,6 +1385,7 @@ namespace tfm
             frmComRadios com;
             frmNavRadios nav;
             frmPMDGCDU cdu;
+            frmAltimeter alt;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1403,6 +1404,14 @@ namespace tfm
                     ap = new frmAutopilot("Altitude");
                     ap.ShowDialog();
                     break;
+                case "ap_Get_Altimeter":
+                    ReadAltimeter(true);
+                    break;
+                case "ap_Set_Altimeter":
+                    alt = new frmAltimeter();
+                    alt.ShowDialog();
+                    break;
+
                 case "ap_Get_Heading":
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
@@ -2940,12 +2949,11 @@ else
                 Aircraft.PitotHeat.Value = 1; // On.
                 Autopilot.ApMaster = true;
                 Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
-                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
                 Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
                 Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
                 Aircraft.ParkingBrake.Value = 0; // Off.
-
-                // Start the engines on the plane.
+                                // Start the engines on the plane.
                 //switch (Aircraft.num_engines.Value)
                 //{
                 //    case 1:
@@ -2985,7 +2993,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         {
           double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
-            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+                            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
             {
                     //var airSpeed = Autopilot.ApAirspeed;
                     //Autopilot.ApAirspeed = airSpeed;
