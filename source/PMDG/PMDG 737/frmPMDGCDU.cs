@@ -38,7 +38,7 @@ namespace tfm
             int lskCounter = 1;
             if (cdu.Powered)
             {
-                this.Text = cdu.Rows[0].ToString().Trim() + " - " + this.Text;
+                this.Text = cdu.Rows[0].ToString().Trim() + " - " + "737 CDU";
             }
             foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
             {
