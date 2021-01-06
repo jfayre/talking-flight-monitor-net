@@ -36,7 +36,10 @@ namespace tfm
             cdu.RefreshData();
             int rowCounter = 1;
             int lskCounter = 1;
-
+            if (cdu.Powered)
+            {
+                this.Text = cdu.Rows[0].ToString().Trim() + " - " + this.Text;
+            }
             foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
             {
                 if (new int [] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
