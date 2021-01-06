@@ -39,11 +39,19 @@ namespace tfm
             if (cdu.Powered)
             {
                 this.Text = cdu.Rows[0].ToString().Trim() + " - " + "737 CDU";
+
             }
             foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
             {
                 if (new int [] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
                 {
+                    for (int i = 0; i <= 23; i++)
+                    {
+                        if (Convert.ToInt32(row.Cells[i].Symbol) == 234)
+                        {
+                            row.Cells[i].Symbol = '_';
+                        }
+                    }
                     txtCDU.Text += $"{lskCounter}: {row.ToString()}\r\n";
                     lskCounter++;
                 }
@@ -230,9 +238,8 @@ namespace tfm
         private void btnSend_Click(object sender, EventArgs e)
         {
             if (txtEntry.Text == "") return;
-            // first clear the scratchpad on the CDU
-            // FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_CLR, Aircraft.ClkL);
-            // Thread.Sleep(50);
+            // clear the entry textbox
+            txtEntry.Clear();
             // convert the entered text to an array so we can get at each character
             char [] charArray = txtEntry.Text.ToUpper().ToCharArray();
             foreach (char ch in charArray)
