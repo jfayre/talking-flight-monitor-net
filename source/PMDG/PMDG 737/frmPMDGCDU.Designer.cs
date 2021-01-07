@@ -32,6 +32,9 @@
             this.txtCDU = new System.Windows.Forms.TextBox();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
+            this.cduGrid = new System.Windows.Forms.DataGridView();
+            this.leftColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rightColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtEntry = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -52,6 +55,7 @@
             this.btnRte = new System.Windows.Forms.Button();
             this.btnInitRef = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cduGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -63,10 +67,11 @@
             this.flowLayoutPanel1.Controls.Add(this.txtCDU);
             this.flowLayoutPanel1.Controls.Add(this.btnRefresh);
             this.flowLayoutPanel1.Controls.Add(this.btnClear);
+            this.flowLayoutPanel1.Controls.Add(this.cduGrid);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(723, 172);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(969, 172);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // txtCDU
@@ -100,11 +105,46 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // cduGrid
+            // 
+            this.cduGrid.AccessibleName = "PMDG 737 CDU";
+            this.cduGrid.AllowUserToAddRows = false;
+            this.cduGrid.AllowUserToDeleteRows = false;
+            this.cduGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cduGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.leftColumn,
+            this.rightColumn});
+            this.cduGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.cduGrid.Location = new System.Drawing.Point(726, 3);
+            this.cduGrid.Name = "cduGrid";
+            this.cduGrid.ReadOnly = true;
+            this.cduGrid.Size = new System.Drawing.Size(240, 150);
+            this.cduGrid.TabIndex = 3;
+            this.cduGrid.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.cduGrid_CellEnter);
+            // 
+            // leftColumn
+            // 
+            this.leftColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.leftColumn.HeaderText = "";
+            this.leftColumn.Name = "leftColumn";
+            this.leftColumn.ReadOnly = true;
+            this.leftColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.leftColumn.Width = 5;
+            // 
+            // rightColumn
+            // 
+            this.rightColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.rightColumn.HeaderText = "";
+            this.rightColumn.Name = "rightColumn";
+            this.rightColumn.ReadOnly = true;
+            this.rightColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.rightColumn.Width = 5;
+            // 
             // txtEntry
             // 
             this.txtEntry.Location = new System.Drawing.Point(5, 175);
             this.txtEntry.Name = "txtEntry";
-            this.txtEntry.Size = new System.Drawing.Size(100, 40);
+            this.txtEntry.Size = new System.Drawing.Size(100, 29);
             this.txtEntry.TabIndex = 1;
             // 
             // btnSend
@@ -124,7 +164,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(5, 205);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(333, 158);
+            this.groupBox1.Size = new System.Drawing.Size(333, 147);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -313,7 +353,7 @@
             // 
             // frmPMDGCDU
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -330,6 +370,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CDUForm_KeyDown);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cduGrid)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -363,6 +404,9 @@
         private System.Windows.Forms.Button btnClb;
         private System.Windows.Forms.Button btnRte;
         private System.Windows.Forms.Button btnInitRef;
+        private System.Windows.Forms.DataGridView cduGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn leftColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rightColumn;
     }
 }
 

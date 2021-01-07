@@ -32,6 +32,8 @@ namespace tfm
         private void RefreshCDU()
         {
             txtCDU.Clear();
+            cduGrid.Rows.Clear();
+
             Thread.Sleep(500);
             cdu.RefreshData();
             int rowCounter = 1;
@@ -45,11 +47,54 @@ namespace tfm
                 if (new int [] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
                 {
                     txtCDU.Text += $"{lskCounter}: {row.ToString()}\r\n";
-                    lskCounter++;
+
+                    int spacesCounter = 0;
+                    int splitIndex = 0;
+                    string leftSide;
+                    string rightSide;
+
+                    for(int index = 0; index <= row.Cells.Count()-1; index++)
+                    {
+                        var letter = row.Cells[index].ToString();
+                        if(string.IsNullOrWhiteSpace(letter))
+                        {
+                            spacesCounter++;
+                        }
+                        if(spacesCounter == 3)
+                        {
+                            splitIndex = index;
+                            break;
+                        }
+                    }
+                    leftSide = row.ToString().Substring(0, splitIndex).Trim();
+                    rightSide = row.ToString().Substring(splitIndex + 1).Trim();
+                    cduGrid.Rows.Add(leftSide, rightSide);
+                                                                                                                                                                                                        lskCounter++;
                 }
                 else
                 {
                     txtCDU.Text += $"{row.ToString()}\r\n";
+                    int spacesCounter = 0;
+                    int splitIndex = 0;
+                    string leftSide;
+                    string rightSide;
+
+                    for (int index = 0; index <= row.Cells.Count() - 1; index++)
+                    {
+                        var letter = row.Cells[index].ToString();
+                        if (string.IsNullOrWhiteSpace(letter))
+                        {
+                            spacesCounter++;
+                        }
+                        if (spacesCounter == 3)
+                        {
+                            splitIndex = index;
+                            break;
+                        }
+                    }
+                    leftSide = row.ToString().Substring(0, splitIndex).Trim();
+                    rightSide = row.ToString().Substring(splitIndex + 1).Trim();
+                    cduGrid.Rows.Add(leftSide, rightSide);
                 }
                 rowCounter++;
             }
@@ -468,6 +513,19 @@ namespace tfm
             FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PREV_PAGE, 0x20000000);
             RefreshCDU();
 
+        }
+
+        private void cduGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.RowIndex == 0 && e.ColumnIndex == 1)
+            {
+                Tolk.Silence();
+                Tolk.Output($"Page title.");
+            }
+            if(e.RowIndex == 2 && e.ColumnIndex == 0)
+            {
+                Tolk.Output("lsk1l");
+            }
         }
     }
 }
