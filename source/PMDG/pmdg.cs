@@ -615,5 +615,181 @@ public void ElecAPUStart()
             }
         }
 
+        // Overhead window heat
+        // left side
+        public void WindowHeatLeftSideOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_135_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_1, ClkL);
+            }
+
+        }
+
+        public void WindowHeatLeftSideOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_135_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_1, ClkR);
+            }
+
+        }
+        // left forward
+        public void WindowHeatLeftForwardOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_136_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_2, ClkL);
+            }
+
+        }
+
+        public void WindowHeatLeftForwardOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_136_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_2, ClkR);
+            }
+
+        }
+
+        // right forward
+        public void WindowHeatRightForwardOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_138_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_3, ClkL);
+            }
+
+        }
+
+        public void WindowHeatRightForwardOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_138_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_3, ClkR);
+            }
+
+        }
+
+        // right side
+        public void WindowHeatRightSideOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_139_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_4, ClkL);
+            }
+
+        }
+
+        public void WindowHeatRightSideOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_139_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WINDOW_HEAT_4, ClkR);
+            }
+
+        }
+
+        // overhead probe heat
+        // left
+        public void ProbeHeatLeftOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_140_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_PROBE_HEAT_1, ClkL);
+            }
+
+        }
+
+        public void ProbeHeatLeftOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_140_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_PROBE_HEAT_1, ClkR);
+            }
+
+        }
+
+        // right
+        public void ProbeHeatRightOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_141_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_PROBE_HEAT_2, ClkL);
+            }
+
+        }
+
+        public void ProbeHeatRightOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_141_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_PROBE_HEAT_2, ClkR);
+            }
+
+        }
+
+
+        // wing anti-ice
+        public void WingAntiIceOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_156_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WING_ANTIICE, ClkL);
+            }
+
+        }
+
+        public void WingAntiIceOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_156_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_WING_ANTIICE, ClkR);
+            }
+
+        }
+
+        // engine 1 anti-ice
+        public void Engine1AntiIceOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_157_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_ENGINE_ANTIICE_1, ClkL);
+            }
+
+        }
+
+        public void Engine1AntiIceOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_157_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_ENGINE_ANTIICE_1, ClkR);
+            }
+
+        }
+
+        // engine 2 anti-ice
+        public void Engine2AntiIceOn()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_158_73X") != 100)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_ENGINE_ANTIICE_2, ClkL);
+            }
+
+        }
+
+        public void Engine2AntiIceOff()
+        {
+            if (FSUIPCConnection.ReadLVar("switch_158_73X") != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_ICE_ENGINE_ANTIICE_2, ClkR);
+            }
+
+        }
+
+
+
+
     }
 }

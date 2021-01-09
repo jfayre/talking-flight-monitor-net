@@ -284,6 +284,12 @@
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.Designer.cs">
       <DependentUpon>ctlAirSystems.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAntiIce.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAntiIce.Designer.cs">
+      <DependentUpon>ctlAntiIce.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -509,6 +515,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.resx">
       <DependentUpon>ctlAirSystems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlAntiIce.resx">
+      <DependentUpon>ctlAntiIce.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.resx">
       <DependentUpon>ctlElectrical.cs</DependentUpon>
