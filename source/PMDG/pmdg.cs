@@ -789,7 +789,164 @@ public void ElecAPUStart()
         }
 
 
+        // air systems panel
+// trim air
+public void TrimAirOn()
+        {
+            if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_AIRCOND_TRIM_AIR_SWITCH_800, Aircraft.ClkL);
+            }
 
+        }
+
+        public void TrimAirOff()
+        {
+            if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_AIRCOND_TRIM_AIR_SWITCH_800, Aircraft.ClkR);
+            }
+
+        }
+
+        // left recirculation fan
+        public void RecircLeftOn()
+        {
+            if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_L_SWITCH, Aircraft.ClkL);
+            }
+
+        }
+        public void RecircLeftOff()
+        {
+            if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_L_SWITCH, Aircraft.ClkR);
+            }
+
+        }
+        // right recirculation fan
+        public void RecircRightOn()
+        {
+            if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_R_SWITCH, Aircraft.ClkL);
+            }
+
+        }
+        public void RecircRightOff()
+        {
+            if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_R_SWITCH, Aircraft.ClkR);
+            }
+
+        }
+
+        // left aircon pack
+        public void PackLeftHigh()
+        {
+if (Aircraft.pmdg737.AIR_PackSwitch[0].Value != 2)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
+
+            }
+        }
+
+        public void PackLeftAuto()
+        {
+            if (Aircraft.pmdg737.AIR_PackSwitch[0].Value > 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkR);
+            }
+            if (Aircraft.pmdg737.AIR_PackSwitch[0].Value < 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
+            }
+
+        }
+
+        public void PackLeftOff()
+        {
+            if (Aircraft.pmdg737.AIR_PackSwitch[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
+
+            }
+
+        }
+        // right aircon pack
+        public void PackRightHigh()
+        {
+if (Aircraft.pmdg737.AIR_PackSwitch[1].Value != 2)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
+
+            }
+        }
+
+        public void PackRightAuto()
+        {
+            if (Aircraft.pmdg737.AIR_PackSwitch[1].Value > 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkR);
+            }
+            if (Aircraft.pmdg737.AIR_PackSwitch[1].Value < 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
+            }
+
+        }
+
+        public void PackRightOff()
+        {
+            if (Aircraft.pmdg737.AIR_PackSwitch[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
+
+            }
+
+        }
+        // isolation valve
+        public void IsolValveOpen()
+        {
+if (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value != 2)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkL);
+
+            }
+        }
+
+        public void IsolValveAuto()
+        {
+            if (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value > 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkR);
+            }
+            if (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value < 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkL);
+            }
+
+        }
+
+        public void IsolValveOff()
+        {
+            if (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkL);
+                
+
+            }
+
+        }
 
     }
 }
