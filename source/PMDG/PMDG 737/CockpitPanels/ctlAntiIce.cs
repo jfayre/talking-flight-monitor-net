@@ -134,11 +134,53 @@ namespace tfm
             // the .net library is missing the offsets for the probe heat switches, so we need to get these using l:vars
             UpdateToggleControl(FSUIPCConnection.ReadLVar("switch_140_73X") == 100, chkProbeHeatLeft);
             UpdateToggleControl(FSUIPCConnection.ReadLVar("switch_141_73X") == 100, chkProbeHeatRight);
-        }
+            UpdateToggleControl(Aircraft.pmdg737.ICE_WingAntiIceSw.Value > 0, chkWingAntiIce);
+            UpdateToggleControl(Aircraft.pmdg737.ICE_EngAntiIceSw[0].Value > 0, chkEng1AntiIce);
+            UpdateToggleControl(Aircraft.pmdg737.ICE_EngAntiIceSw[1].Value > 0, chkEng2AntiIce);
+
+        }   
 
         private void ctlAntiIce_Load(object sender, EventArgs e)
         {
             tmrAntiIce.Start();
+        }
+
+        private void chkWingAntiIce_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkWingAntiIce.Checked)
+            {
+                pmdg.WingAntiIceOn();
+            }
+            else
+            {
+                pmdg.WingAntiIceOff();
+            }
+        }
+
+        private void chkEng1AntiIce_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng1AntiIce.Checked)
+            {
+                pmdg.Engine1AntiIceOn();
+            }
+            else
+            {
+                pmdg.Engine1AntiIceOff();
+            }
+
+        }
+
+        private void chkEng2AntiIce_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng2AntiIce.Checked)
+            {
+                pmdg.Engine2AntiIceOn();
+            }
+            else
+            {
+                pmdg.Engine2AntiIceOff();
+            }
+
         }
     }
 }

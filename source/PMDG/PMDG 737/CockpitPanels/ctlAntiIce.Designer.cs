@@ -41,10 +41,17 @@ namespace tfm
             this.chkProbeHeatLeft = new System.Windows.Forms.CheckBox();
             this.chkProbeHeatRight = new System.Windows.Forms.CheckBox();
             this.tmrAntiIce = new System.Windows.Forms.Timer(this.components);
+            this.chkWingAntiIce = new System.Windows.Forms.CheckBox();
+            this.grpEngAntiIce = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.chkEng1AntiIce = new System.Windows.Forms.CheckBox();
+            this.chkEng2AntiIce = new System.Windows.Forms.CheckBox();
             this.grpWindowHeat.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpProbeHeat.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.grpEngAntiIce.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpWindowHeat
@@ -169,18 +176,71 @@ namespace tfm
             this.tmrAntiIce.Interval = 1000;
             this.tmrAntiIce.Tick += new System.EventHandler(this.tmrAntiIce_Tick);
             // 
+            // chkWingAntiIce
+            // 
+            this.chkWingAntiIce.AutoSize = true;
+            this.chkWingAntiIce.Location = new System.Drawing.Point(542, 5);
+            this.chkWingAntiIce.Name = "chkWingAntiIce";
+            this.chkWingAntiIce.Size = new System.Drawing.Size(191, 37);
+            this.chkWingAntiIce.TabIndex = 2;
+            this.chkWingAntiIce.Text = "Wing anti-ice";
+            this.chkWingAntiIce.UseVisualStyleBackColor = true;
+            this.chkWingAntiIce.CheckedChanged += new System.EventHandler(this.chkWingAntiIce_CheckedChanged);
+            // 
+            // grpEngAntiIce
+            // 
+            this.grpEngAntiIce.Controls.Add(this.flowLayoutPanel3);
+            this.grpEngAntiIce.Location = new System.Drawing.Point(8, 250);
+            this.grpEngAntiIce.Name = "grpEngAntiIce";
+            this.grpEngAntiIce.Size = new System.Drawing.Size(200, 100);
+            this.grpEngAntiIce.TabIndex = 3;
+            this.grpEngAntiIce.TabStop = false;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.chkEng1AntiIce);
+            this.flowLayoutPanel3.Controls.Add(this.chkEng2AntiIce);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel3.TabIndex = 0;
+            // 
+            // chkEng1AntiIce
+            // 
+            this.chkEng1AntiIce.AutoSize = true;
+            this.chkEng1AntiIce.Location = new System.Drawing.Point(3, 3);
+            this.chkEng1AntiIce.Name = "chkEng1AntiIce";
+            this.chkEng1AntiIce.Size = new System.Drawing.Size(140, 37);
+            this.chkEng1AntiIce.TabIndex = 0;
+            this.chkEng1AntiIce.Text = "Engine 1";
+            this.chkEng1AntiIce.UseVisualStyleBackColor = true;
+            this.chkEng1AntiIce.CheckedChanged += new System.EventHandler(this.chkEng1AntiIce_CheckedChanged);
+            // 
+            // chkEng2AntiIce
+            // 
+            this.chkEng2AntiIce.AutoSize = true;
+            this.chkEng2AntiIce.Location = new System.Drawing.Point(3, 46);
+            this.chkEng2AntiIce.Name = "chkEng2AntiIce";
+            this.chkEng2AntiIce.Size = new System.Drawing.Size(140, 37);
+            this.chkEng2AntiIce.TabIndex = 1;
+            this.chkEng2AntiIce.Text = "Engine 2";
+            this.chkEng2AntiIce.UseVisualStyleBackColor = true;
+            this.chkEng2AntiIce.CheckedChanged += new System.EventHandler(this.chkEng2AntiIce_CheckedChanged);
+            // 
             // ctlAntiIce
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.grpEngAntiIce);
+            this.Controls.Add(this.chkWingAntiIce);
             this.Controls.Add(this.grpProbeHeat);
             this.Controls.Add(this.grpWindowHeat);
             this.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "ctlAntiIce";
-            this.Size = new System.Drawing.Size(574, 226);
+            this.Size = new System.Drawing.Size(736, 353);
             this.Load += new System.EventHandler(this.ctlAntiIce_Load);
             this.grpWindowHeat.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -188,6 +248,9 @@ namespace tfm
             this.grpProbeHeat.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.grpEngAntiIce.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -206,5 +269,10 @@ namespace tfm
         private System.Windows.Forms.CheckBox chkProbeHeatLeft;
         private System.Windows.Forms.CheckBox chkProbeHeatRight;
         private System.Windows.Forms.Timer tmrAntiIce;
+        private System.Windows.Forms.CheckBox chkWingAntiIce;
+        private System.Windows.Forms.GroupBox grpEngAntiIce;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.CheckBox chkEng1AntiIce;
+        private System.Windows.Forms.CheckBox chkEng2AntiIce;
     }
 }
