@@ -872,8 +872,8 @@ if (Aircraft.pmdg737.AIR_PackSwitch[0].Value != 2)
         {
             if (Aircraft.pmdg737.AIR_PackSwitch[0].Value != 0)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkR);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, ClkR);
 
             }
 
@@ -906,8 +906,8 @@ if (Aircraft.pmdg737.AIR_PackSwitch[1].Value != 2)
         {
             if (Aircraft.pmdg737.AIR_PackSwitch[1].Value != 0)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkL);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkR);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, ClkR);
 
             }
 
@@ -944,6 +944,57 @@ if (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value != 2)
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, ClkL);
                 
 
+            }
+
+        }
+
+        // air bleeds
+        public void APUBleedOn()
+        {
+            if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_APU_SWITCH, ClkL);
+            }
+
+        }
+
+        public void APUBleedOff()
+        {
+            if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_APU_SWITCH, ClkR);
+            }
+        }
+
+        public void Engine1BleedOn()
+        {
+            if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_1_SWITCH, ClkL);
+            }
+
+        }
+        public void Engine1BleedOff()
+        {
+            if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_1_SWITCH, ClkR);
+            }
+
+        }
+        public void Engine2BleedOn()
+        {
+            if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value != 1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, ClkL);
+            }
+
+        }
+        public void Engine2BleedOff()
+        {
+            if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value != 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, ClkR);
             }
 
         }

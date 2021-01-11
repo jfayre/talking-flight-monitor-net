@@ -255,8 +255,10 @@ namespace tfm
         public static Offset<ushort> SimulationRate = new Offset<ushort>(0x0c1a);
         // PMDG offsets. These are all read-only. Writing is done via the PMDG control codes.
         public static PMDG_737_NGX_Offsets pmdg737 = new PMDG_737_NGX_Offsets();
-        // public static Offset<string> ELEC_MeterDisplayTop = new Offset<string>("pmdg", 0x6c40, 13);
-        // public static Offset<string> ELEC_MeterDisplayBottom = new Offset<string>("pmdg", 0x6c4d, 13);
+        // define a few PMDG offsets that aren't included in the .net library.
+        public static Offset<string> AIR_DisplayFltAlt = new Offset<string>(0x6C82, 6);
+        public static Offset<string> AIR_DisplayLandAlt = new Offset<string>(0x6C88, 6);
+
 
         // constants for PMDG mouse click parameters
         public const int ClkL = 536870912;

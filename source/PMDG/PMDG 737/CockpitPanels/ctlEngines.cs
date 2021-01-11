@@ -24,76 +24,37 @@ namespace tfm
             
         }
 
+        
         private void ctlEngines_Load(object sender, EventArgs e)
         {
-
+            tmrEngines.Start();
         }
         
 
         private void tmrEngines_Tick(object sender, EventArgs e)
         {
+            Aircraft.pmdg737.RefreshData();
+            // engine 1 starter
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[0].Value == 0, radEng1Grd);
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[0].Value == 1, radEng1Auto);
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[0].Value == 2, radEng1Cont);
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[0].Value == 3, radEng1Flt);
+            // engine 2 starter
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[1].Value == 0, radEng2Grd);
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[1].Value == 1, radEng2Auto);
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[1].Value == 2, radEng2Cont);
+            utility.UpdateControl(Aircraft.pmdg737.ENG_StartSelector[1].Value == 3, radEng2Flt);
+            // engine 1 fuel
+            utility.UpdateControl(FSUIPCConnection.ReadLVar("switch_688_73X") == 100, radEng1CutOff);
+            utility.UpdateControl(FSUIPCConnection.ReadLVar("switch_688_73X") == 0, radEng1Idle);
+            // engine 2 fuel
+            utility.UpdateControl(FSUIPCConnection.ReadLVar("switch_689_73X") == 100, radEng2CutOff);
+            utility.UpdateControl(FSUIPCConnection.ReadLVar("switch_689_73X") == 0, radEng2Idle);
+
 
         }
 
-        private void btnEng1Start_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_L_ENGINE_START, Aircraft.ClkR);
-                    break;
-            }
-        }
-
-        private void btnEng1Fuel_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG1_START_LEVER, Aircraft.ClkL);
-                    break;
-
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG1_START_LEVER, Aircraft.ClkR);
-                    break;
-
-            }
-
-        }
-
-        private void btnEng2Start_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_LIGHTS_R_ENGINE_START, Aircraft.ClkR);
-                    break;
-            }
-        }
-
-    private void btnEng2Fuel_KeyDown(object sender, KeyEventArgs e)
-    {
-
-        switch (e.KeyCode)
-        {
-            case Keys.Left:
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG2_START_LEVER, Aircraft.ClkL);
-                break;
-
-            case Keys.Right:
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CONTROL_STAND_ENG2_START_LEVER, Aircraft.ClkR);
-                break;
-
-        }
-    }
-
+        
         private void radEng1Start_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rb = sender as RadioButton;

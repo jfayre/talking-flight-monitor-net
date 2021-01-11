@@ -35,9 +35,10 @@
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("IRU");
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Engines");
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Hydraulics");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Air systems");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("air systems");
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Anti-ice");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Overhead", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Pressurization");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Overhead", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
@@ -46,7 +47,8 @@
             treeNode6,
             treeNode7,
             treeNode8,
-            treeNode9});
+            treeNode9,
+            treeNode10});
             this.tvPanels = new System.Windows.Forms.TreeView();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.SuspendLayout();
@@ -71,13 +73,15 @@
             treeNode7.Name = "nodHydraulics";
             treeNode7.Text = "Hydraulics";
             treeNode8.Name = "nodAirSystems";
-            treeNode8.Text = "Air systems";
+            treeNode8.Text = "air systems";
             treeNode9.Name = "nodAntiIce";
             treeNode9.Text = "Anti-ice";
-            treeNode10.Name = "nodOverhead";
-            treeNode10.Text = "Overhead";
+            treeNode10.Name = "nodPressurization";
+            treeNode10.Text = "Pressurization";
+            treeNode11.Name = "nodOverhead";
+            treeNode11.Text = "Overhead";
             this.tvPanels.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode10});
+            treeNode11});
             this.tvPanels.Size = new System.Drawing.Size(121, 97);
             this.tvPanels.TabIndex = 1;
             this.tvPanels.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPanels_AfterSelect);

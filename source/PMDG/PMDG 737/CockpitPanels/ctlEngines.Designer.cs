@@ -62,7 +62,7 @@
             // 
             // tmrEngines
             // 
-            this.tmrEngines.Interval = 500;
+            this.tmrEngines.Interval = 1000;
             this.tmrEngines.Tick += new System.EventHandler(this.tmrEngines_Tick);
             // 
             // grpEng1Start
@@ -75,7 +75,7 @@
             this.grpEng1Start.Size = new System.Drawing.Size(209, 147);
             this.grpEng1Start.TabIndex = 0;
             this.grpEng1Start.TabStop = false;
-            this.grpEng1Start.Text = "groupBox1";
+            this.grpEng1Start.Text = "Engine 1 start";
             // 
             // flowLayoutPanel1
             // 
@@ -262,7 +262,7 @@
             this.grpEng2Fuel.Size = new System.Drawing.Size(209, 147);
             this.grpEng2Fuel.TabIndex = 3;
             this.grpEng2Fuel.TabStop = false;
-            this.grpEng2Fuel.Text = "Engine 1 fuel";
+            this.grpEng2Fuel.Text = "Engine 2 fuel";
             // 
             // flowLayoutPanel4
             // 

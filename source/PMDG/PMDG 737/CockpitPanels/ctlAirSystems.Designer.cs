@@ -20,7 +20,7 @@
             base.Dispose(disposing);
         }
 
-        #region Component Designer generated code
+                                                    #region Component Designer generated code
 
         /// <summary> 
         /// Required method for Designer support - do not modify 
@@ -52,6 +52,9 @@
             this.chkAPUBleed = new System.Windows.Forms.CheckBox();
             this.chkEng1Bleed = new System.Windows.Forms.CheckBox();
             this.chkEng2Bleed = new System.Windows.Forms.CheckBox();
+            this.lvLights = new System.Windows.Forms.ListView();
+            this.colLight = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.flowLayoutPanel1.SuspendLayout();
             this.grpPackLeft.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -66,7 +69,7 @@
             // 
             // tmrAir
             // 
-            this.tmrAir.Interval = 500;
+            this.tmrAir.Interval = 1000;
             this.tmrAir.Tick += new System.EventHandler(this.tmrAir_Tick);
             // 
             // flowLayoutPanel1
@@ -77,7 +80,7 @@
             this.flowLayoutPanel1.Controls.Add(this.grpPackRight);
             this.flowLayoutPanel1.Controls.Add(this.chkTrimAir);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(8, 8);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(821, 175);
             this.flowLayoutPanel1.TabIndex = 0;
@@ -86,9 +89,9 @@
             // 
             this.grpPackLeft.Controls.Add(this.flowLayoutPanel2);
             this.grpPackLeft.Location = new System.Drawing.Point(5, 5);
-            this.grpPackLeft.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpPackLeft.Margin = new System.Windows.Forms.Padding(5);
             this.grpPackLeft.Name = "grpPackLeft";
-            this.grpPackLeft.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpPackLeft.Padding = new System.Windows.Forms.Padding(5);
             this.grpPackLeft.Size = new System.Drawing.Size(333, 165);
             this.grpPackLeft.TabIndex = 0;
             this.grpPackLeft.TabStop = false;
@@ -100,7 +103,7 @@
             this.flowLayoutPanel2.Controls.Add(this.radPackLeftAuto);
             this.flowLayoutPanel2.Controls.Add(this.radPackLeftHigh);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(5, 5);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(333, 165);
             this.flowLayoutPanel2.TabIndex = 0;
@@ -109,7 +112,7 @@
             // 
             this.radPackLeftOff.AutoSize = true;
             this.radPackLeftOff.Location = new System.Drawing.Point(5, 5);
-            this.radPackLeftOff.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radPackLeftOff.Margin = new System.Windows.Forms.Padding(5);
             this.radPackLeftOff.Name = "radPackLeftOff";
             this.radPackLeftOff.Size = new System.Drawing.Size(77, 37);
             this.radPackLeftOff.TabIndex = 0;
@@ -122,7 +125,7 @@
             // 
             this.radPackLeftAuto.AutoSize = true;
             this.radPackLeftAuto.Location = new System.Drawing.Point(92, 5);
-            this.radPackLeftAuto.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radPackLeftAuto.Margin = new System.Windows.Forms.Padding(5);
             this.radPackLeftAuto.Name = "radPackLeftAuto";
             this.radPackLeftAuto.Size = new System.Drawing.Size(95, 37);
             this.radPackLeftAuto.TabIndex = 1;
@@ -135,7 +138,7 @@
             // 
             this.radPackLeftHigh.AutoSize = true;
             this.radPackLeftHigh.Location = new System.Drawing.Point(197, 5);
-            this.radPackLeftHigh.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radPackLeftHigh.Margin = new System.Windows.Forms.Padding(5);
             this.radPackLeftHigh.Name = "radPackLeftHigh";
             this.radPackLeftHigh.Size = new System.Drawing.Size(94, 37);
             this.radPackLeftHigh.TabIndex = 2;
@@ -148,9 +151,9 @@
             // 
             this.grpPackRight.Controls.Add(this.flowLayoutPanel3);
             this.grpPackRight.Location = new System.Drawing.Point(348, 5);
-            this.grpPackRight.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpPackRight.Margin = new System.Windows.Forms.Padding(5);
             this.grpPackRight.Name = "grpPackRight";
-            this.grpPackRight.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpPackRight.Padding = new System.Windows.Forms.Padding(5);
             this.grpPackRight.Size = new System.Drawing.Size(333, 165);
             this.grpPackRight.TabIndex = 1;
             this.grpPackRight.TabStop = false;
@@ -162,7 +165,7 @@
             this.flowLayoutPanel3.Controls.Add(this.radPackRightAuto);
             this.flowLayoutPanel3.Controls.Add(this.radPackRightHigh);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(5, 5);
-            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(333, 165);
             this.flowLayoutPanel3.TabIndex = 0;
@@ -171,7 +174,7 @@
             // 
             this.radPackRightOff.AutoSize = true;
             this.radPackRightOff.Location = new System.Drawing.Point(5, 5);
-            this.radPackRightOff.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radPackRightOff.Margin = new System.Windows.Forms.Padding(5);
             this.radPackRightOff.Name = "radPackRightOff";
             this.radPackRightOff.Size = new System.Drawing.Size(77, 37);
             this.radPackRightOff.TabIndex = 0;
@@ -184,7 +187,7 @@
             // 
             this.radPackRightAuto.AutoSize = true;
             this.radPackRightAuto.Location = new System.Drawing.Point(92, 5);
-            this.radPackRightAuto.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radPackRightAuto.Margin = new System.Windows.Forms.Padding(5);
             this.radPackRightAuto.Name = "radPackRightAuto";
             this.radPackRightAuto.Size = new System.Drawing.Size(95, 37);
             this.radPackRightAuto.TabIndex = 1;
@@ -197,7 +200,7 @@
             // 
             this.radPackRightHigh.AutoSize = true;
             this.radPackRightHigh.Location = new System.Drawing.Point(197, 5);
-            this.radPackRightHigh.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radPackRightHigh.Margin = new System.Windows.Forms.Padding(5);
             this.radPackRightHigh.Name = "radPackRightHigh";
             this.radPackRightHigh.Size = new System.Drawing.Size(94, 37);
             this.radPackRightHigh.TabIndex = 2;
@@ -330,18 +333,43 @@
             this.chkEng2Bleed.UseVisualStyleBackColor = true;
             this.chkEng2Bleed.CheckedChanged += new System.EventHandler(this.chkEng2Bleed_CheckedChanged);
             // 
+            // lvLights
+            // 
+            this.lvLights.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colLight,
+            this.colState});
+            this.lvLights.HideSelection = false;
+            this.lvLights.Location = new System.Drawing.Point(8, 289);
+            this.lvLights.MultiSelect = false;
+            this.lvLights.Name = "lvLights";
+            this.lvLights.ShowGroups = false;
+            this.lvLights.Size = new System.Drawing.Size(121, 97);
+            this.lvLights.TabIndex = 9;
+            this.lvLights.UseCompatibleStateImageBehavior = false;
+            this.lvLights.View = System.Windows.Forms.View.Details;
+            // 
+            // colLight
+            // 
+            this.colLight.Text = "Light";
+            // 
+            // colState
+            // 
+            this.colState.Text = "State";
+            // 
             // ctlAirSystems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.lvLights);
             this.Controls.Add(this.flowLayoutPanel4);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "ctlAirSystems";
-            this.Size = new System.Drawing.Size(1063, 284);
+            this.Size = new System.Drawing.Size(1063, 389);
+            this.Load += new System.EventHandler(this.ctlAirSystems_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.grpPackLeft.ResumeLayout(false);
@@ -390,5 +418,8 @@
         private System.Windows.Forms.CheckBox chkAPUBleed;
         private System.Windows.Forms.CheckBox chkEng1Bleed;
         private System.Windows.Forms.CheckBox chkEng2Bleed;
+        private System.Windows.Forms.ListView lvLights;
+        private System.Windows.Forms.ColumnHeader colLight;
+        private System.Windows.Forms.ColumnHeader colState;
     }
 }
