@@ -346,6 +346,7 @@
       <DependentUpon>frmPMDGCDU.cs</DependentUpon>
     </Compile>
     <Compile Include="PMDG\pmdg.cs" />
+    <Compile Include="PMDG\PMDGLight.cs" />
     <Compile Include="Settings panels\ctlAircraft.cs">
       <SubType>UserControl</SubType>
     </Compile>

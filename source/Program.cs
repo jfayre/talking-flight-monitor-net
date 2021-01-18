@@ -12,11 +12,22 @@ namespace tfm
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if (args.Length > 0 && args[0] == "/debug")
+            {
+                utility.DebugEnabled = true;
+            }
+            else
+            {
+                utility.DebugEnabled = false;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TFMMainForm());
+            
+
         }
     }
 }

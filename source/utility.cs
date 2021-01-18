@@ -9,6 +9,8 @@ namespace tfm
 {
     public static class utility
     {
+        public static bool DebugEnabled { get; internal set; }
+
         public static void UpdateControl(bool toggleStateOn, CheckBox ctrl)
         {
 

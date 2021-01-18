@@ -14,6 +14,12 @@ namespace tfm
     public partial class ctlAirSystems : UserControl, iPanelsPage
     {
         pmdg pmdg = new pmdg();
+        Dictionary<Offset, PMDGLight> lights = new Dictionary<Offset, PMDGLight>()
+        {
+            { Aircraft.pmdg737.AIR_annunZoneTemp[0], new PMDGLight() { Name = "zone 1 temp"  } },
+        };
+
+
 
         public ctlAirSystems()
         {
@@ -28,34 +34,37 @@ namespace tfm
 
         private void RefreshLights()
         {
-            Dictionary<string, bool> PanelLights = new Dictionary<string, bool>()
-{
-    {"zone 1 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[0].Value > 0 },
-    {"zone 2 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[1].Value > 0 },
-    {"zone 3 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[2].Value > 0 },
-                { "dual bleed", Aircraft.pmdg737.AIR_annunDualBleed.Value > 0 },
-                { "Ram door left", Aircraft.pmdg737.AIR_annunRamDoorL.Value > 0 },
-                { "Ram door right", Aircraft.pmdg737.AIR_annunRamDoorR.Value > 0 },
-                { "Pack left tripped", Aircraft.pmdg737.AIR_annunPackTripOff[0].Value > 0 },
-                { "Pack right tripped", Aircraft.pmdg737.AIR_annunPackTripOff[1].Value > 0 },
-                { "left wing body overheat", Aircraft.pmdg737.AIR_annunWingBodyOverheat[0].Value > 0 },
-                { "right wing body overheat", Aircraft.pmdg737.AIR_annunWingBodyOverheat[1].Value > 0 },
-                { "Air bleed 1 trip", Aircraft.pmdg737.AIR_annunBleedTripOff[0].Value > 0 },
-                        { "Air bleed 2 trip", Aircraft.pmdg737.AIR_annunBleedTripOff[1].Value > 0 },
+            //            Dictionary<string, bool> PanelLights = new Dictionary<string, bool>()
+            //{
+            //    {"zone 1 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[0].Value > 0 },
+            //    {"zone 2 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[1].Value > 0 },
+            //    {"zone 3 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[2].Value > 0 },
+                //                { "dual bleed", Aircraft.pmdg737.AIR_annunDualBleed.Value > 0 },
+            //                { "Ram door left", Aircraft.pmdg737.AIR_annunRamDoorL.Value > 0 },
+            //                { "Ram door right", Aircraft.pmdg737.AIR_annunRamDoorR.Value > 0 },
+            //                { "Pack left tripped", Aircraft.pmdg737.AIR_annunPackTripOff[0].Value > 0 },
+            //                { "Pack right tripped", Aircraft.pmdg737.AIR_annunPackTripOff[1].Value > 0 },
+            //                { "left wing body overheat", Aircraft.pmdg737.AIR_annunWingBodyOverheat[0].Value > 0 },
+            //                { "right wing body overheat", Aircraft.pmdg737.AIR_annunWingBodyOverheat[1].Value > 0 },
+            //                { "Air bleed 1 trip", Aircraft.pmdg737.AIR_annunBleedTripOff[0].Value > 0 },
+            //                        { "Air bleed 2 trip", Aircraft.pmdg737.AIR_annunBleedTripOff[1].Value > 0 },
 
 
-};
-            foreach (string item in PanelLights.Keys)
-            {
-                if (PanelLights[item])
-                {
-                    lvLights.Items.Add(item).SubItems.Add("On");
-                }
-                else
-                {
-                    lvLights.Items.Add(item).SubItems.Add("Off");
-                }
-            }
+            //};
+            //foreach (string item in PanelLights.Keys)
+            //{
+            //    if (PanelLights[item])
+            //    {
+            //        lvLights.Items.Add(item).SubItems.Add("On");
+
+            //    }
+            //    else
+            //    {
+            //        lvLights.Items.Add(item).SubItems.Add("Off");
+
+
+            //    }
+            //}
     }
         private void tmrAir_Tick(object sender, EventArgs e)
         {
