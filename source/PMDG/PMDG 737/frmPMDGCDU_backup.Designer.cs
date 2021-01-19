@@ -148,7 +148,7 @@
             // 
             this.txtEntry.Location = new System.Drawing.Point(5, 175);
             this.txtEntry.Name = "txtEntry";
-            this.txtEntry.Size = new System.Drawing.Size(100, 34);
+            this.txtEntry.Size = new System.Drawing.Size(100, 29);
             this.txtEntry.TabIndex = 1;
             // 
             // btnSend
@@ -168,7 +168,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(5, 205);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(333, 152);
+            this.groupBox1.Size = new System.Drawing.Size(333, 147);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -355,9 +355,9 @@
             this.btnInitRef.UseVisualStyleBackColor = true;
             this.btnInitRef.Click += new System.EventHandler(this.btnInitRef_Click);
             // 
-            // frmPMDGCDU
+            // frmPMDGCDU_backup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -369,7 +369,7 @@
             this.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(5);
-            this.Name = "frmPMDGCDU";
+            this.Name = "frmPMDGCDU_backup";
             this.Text = "737 CDU";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CDUForm_KeyDown);
             this.flowLayoutPanel1.ResumeLayout(false);
