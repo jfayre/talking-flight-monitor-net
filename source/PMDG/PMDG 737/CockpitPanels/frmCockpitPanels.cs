@@ -31,6 +31,8 @@ namespace tfm
             pages.Add("nodHydraulics", new ctlHydraulics());
             pages.Add("nodEngines", new ctlEngines());      
             pages.Add("nodAirSystems", new ctlAirSystems());
+            pages.Add("nodAntiIce", new ctlAntiIce());
+            pages.Add("nodPressurization", new ctlPressurization());
             // set the parent and hide them all
             foreach (iPanelsPage page in this.pages.Values)
             {

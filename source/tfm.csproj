@@ -287,6 +287,12 @@
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.Designer.cs">
       <DependentUpon>ctlAirSystems.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAntiIce.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlAntiIce.Designer.cs">
+      <DependentUpon>ctlAntiIce.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -323,6 +329,12 @@
     <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.Designer.cs">
       <DependentUpon>ctlMCP.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlPressurization.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\CockpitPanels\ctlPressurization.Designer.cs">
+      <DependentUpon>ctlPressurization.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -344,6 +356,7 @@
     </Compile>
     <Compile Include="PMDG\PMDG 737\StyleGenerator.cs" />
     <Compile Include="PMDG\pmdg.cs" />
+    <Compile Include="PMDG\PMDGLight.cs" />
     <Compile Include="Settings panels\ctlAircraft.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -478,6 +491,7 @@
       <DependentUpon>Hotkeys.settings</DependentUpon>
     </Compile>
     <Compile Include="sounds\SineWaveProvider.cs" />
+    <Compile Include="utility.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -520,6 +534,9 @@
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlAirSystems.resx">
       <DependentUpon>ctlAirSystems.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlAntiIce.resx">
+      <DependentUpon>ctlAntiIce.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlElectrical.resx">
       <DependentUpon>ctlElectrical.cs</DependentUpon>
     </EmbeddedResource>
@@ -537,6 +554,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlMCP.resx">
       <DependentUpon>ctlMCP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\ctlPressurization.resx">
+      <DependentUpon>ctlPressurization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.resx">
       <DependentUpon>frmCockpitPanels.cs</DependentUpon>

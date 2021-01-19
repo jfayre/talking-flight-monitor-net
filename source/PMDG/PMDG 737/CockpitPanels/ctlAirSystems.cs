@@ -13,299 +13,214 @@ namespace tfm
 {
     public partial class ctlAirSystems : UserControl, iPanelsPage
     {
+        pmdg pmdg = new pmdg();
+        Dictionary<Offset, PMDGLight> lights = new Dictionary<Offset, PMDGLight>()
+        {
+            { Aircraft.pmdg737.AIR_annunZoneTemp[0], new PMDGLight() { Name = "zone 1 temp"  } },
+        };
+
+
+
         public ctlAirSystems()
         {
             InitializeComponent();
-            tmrAir.Start();
+
         }
 
         public void SetDocking()
         {
-            
+
         }
 
+        private void RefreshLights()
+        {
+            //            Dictionary<string, bool> PanelLights = new Dictionary<string, bool>()
+            //{
+            //    {"zone 1 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[0].Value > 0 },
+            //    {"zone 2 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[1].Value > 0 },
+            //    {"zone 3 temperature", Aircraft.pmdg737.AIR_annunZoneTemp[2].Value > 0 },
+                //                { "dual bleed", Aircraft.pmdg737.AIR_annunDualBleed.Value > 0 },
+            //                { "Ram door left", Aircraft.pmdg737.AIR_annunRamDoorL.Value > 0 },
+            //                { "Ram door right", Aircraft.pmdg737.AIR_annunRamDoorR.Value > 0 },
+            //                { "Pack left tripped", Aircraft.pmdg737.AIR_annunPackTripOff[0].Value > 0 },
+            //                { "Pack right tripped", Aircraft.pmdg737.AIR_annunPackTripOff[1].Value > 0 },
+            //                { "left wing body overheat", Aircraft.pmdg737.AIR_annunWingBodyOverheat[0].Value > 0 },
+            //                { "right wing body overheat", Aircraft.pmdg737.AIR_annunWingBodyOverheat[1].Value > 0 },
+            //                { "Air bleed 1 trip", Aircraft.pmdg737.AIR_annunBleedTripOff[0].Value > 0 },
+            //                        { "Air bleed 2 trip", Aircraft.pmdg737.AIR_annunBleedTripOff[1].Value > 0 },
+
+
+            //};
+            //foreach (string item in PanelLights.Keys)
+            //{
+            //    if (PanelLights[item])
+            //    {
+            //        lvLights.Items.Add(item).SubItems.Add("On");
+
+            //    }
+            //    else
+            //    {
+            //        lvLights.Items.Add(item).SubItems.Add("Off");
+
+
+            //    }
+            //}
+    }
         private void tmrAir_Tick(object sender, EventArgs e)
         {
-            if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value == 0)
+            Aircraft.pmdg737.RefreshData();
+            // update controls on the form based on current aircraft status
+            // left aircon pack
+            utility.UpdateControl(Aircraft.pmdg737.AIR_PackSwitch[0].Value == 0, radPackLeftOff);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_PackSwitch[0].Value == 1, radPackLeftAuto);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_PackSwitch[0].Value == 2, radPackLeftHigh);
+            // right aircon pack
+            utility.UpdateControl(Aircraft.pmdg737.AIR_PackSwitch[1].Value == 0, radPackRightOff);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_PackSwitch[1].Value == 1, radPackRightAuto);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_PackSwitch[1].Value == 2, radPackRightHigh);
+            // recirc fans
+            utility.UpdateControl(Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value > 0, chkRecircLeft);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value > 0, chkRecircRight);
+            // trim air
+            utility.UpdateControl(Aircraft.pmdg737.AIR_TrimAirSwitch.Value > 0, chkTrimAir);
+            // air bleeds
+            utility.UpdateControl(Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value > 0, chkAPUBleed);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value > 0, chkEng1Bleed);
+            utility.UpdateControl(Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value > 0, chkEng2Bleed);
+
+
+        }
+
+        private void radPacLeft_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
             {
-                btnTrimAir.AccessibleDescription = "off";
+                switch (rb.Name)
+                {
+                    case "radPackLeftOff":
+                        pmdg.PackLeftOff();
+                        break;
+                    case "radPackLeftAuto":
+                        pmdg.PackLeftAuto();
+                        break;
+                    case "radPackLeftHigh":
+                        pmdg.PackLeftHigh();
+                        break;
+
+                }
+            }
+
+
+        }
+
+        private void radPacRight_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+            if (rb.Checked)
+            {
+                switch (rb.Name)
+                {
+                    case "radPackRightOff":
+                        pmdg.PackRightOff();
+                        break;
+                    case "radPackRightAuto":
+                        pmdg.PackRightAuto();
+                        break;
+                    case "radPackRightHigh":
+                        pmdg.PackRightHigh();
+                        break;
+
+                }
+            }
+
+
+        }
+
+        private void chkTrimAir_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTrimAir.Checked)
+            {
+                pmdg.TrimAirOn();
             }
             else
             {
-                btnTrimAir.AccessibleDescription = "on";
+                pmdg.TrimAirOff();
             }
-            if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value == 0)
+
+        }
+
+        private void chkRecircLeft_CheckedChanged(object sender, EventArgs e)
+        {
+if (chkRecircLeft.Checked)
             {
-                btnRecircLeft.AccessibleDescription = "off";
+                pmdg.RecircLeftOn();
+
             }
             else
             {
-                btnRecircLeft.AccessibleDescription = "on";
+                pmdg.RecircLeftOff();
             }
-            if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value == 0)
+
+        }
+
+        private void chkRecircRight_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkRecircRight.Checked)
             {
-                btnRecircRight.AccessibleDescription = "off";
+                pmdg.RecircRightOn();
             }
             else
             {
-                btnRecircRight.AccessibleDescription = "on";
+                pmdg.RecircRightOff();
             }
-            switch (Aircraft.pmdg737.AIR_PackSwitch[0].Value)
+
+        }
+
+        private void chkAPUBleed_CheckedChanged(object sender, EventArgs e)
+        {
+if (chkAPUBleed.Checked)
             {
-                case 0:
-                    btnPacLeft.AccessibleDescription = "off";
-                    break;
-                case 1:
-                    btnPacLeft.AccessibleDescription = "auto";
-                    break;
-                case 2:
-                    btnPacLeft.AccessibleDescription = "high";
-                    break;
-            }
-            switch (Aircraft.pmdg737.AIR_PackSwitch[1].Value)
-            {
-                case 0:
-                    btnPacRight.AccessibleDescription = "off";
-                    break;
-                case 1:
-                    btnPacRight.AccessibleDescription = "auto";
-                    break;
-                case 2:
-                    btnPacRight.AccessibleDescription = "high";
-                    break;
-            }
-switch (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value)
-            {
-                case 0:
-                    btnIsolValve.AccessibleDescription = "off";
-                    break;
-                case 1:
-                    btnIsolValve.AccessibleDescription = "auto";
-                    break;
-                case 2:
-                    btnIsolValve.AccessibleDescription = "on";
-                    break;
-            }
-            if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value == 0)
-            {
-                btnBleed1.AccessibleDescription = "off";
+                pmdg.APUBleedOn();
             }
             else
             {
-                btnBleed1.AccessibleDescription = "on";
+                pmdg.APUBleedOff();
             }
-            if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value == 0)
+        }
+
+        private void chkEng1Bleed_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng1Bleed.Checked)
             {
-                btnBleed2.AccessibleDescription = "off";
+                pmdg.Engine1BleedOn();
             }
             else
             {
-                btnBleed2.AccessibleDescription = "on";
+                pmdg.Engine1BleedOff();
             }
-            if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value == 0)
+
+        }
+
+        private void chkEng2Bleed_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEng2Bleed.Checked)
             {
-                btnAPUBleed.AccessibleDescription = "off";
+                pmdg.Engine2BleedOn();
             }
             else
             {
-                btnAPUBleed.AccessibleDescription = "on";
+                pmdg.Engine2BleedOff();
             }
+
+
         }
 
-        private void btnTrimAir_KeyDown(object sender, KeyEventArgs e)
+        private void ctlAirSystems_Load(object sender, EventArgs e)
         {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_AIRCOND_TRIM_AIR_SWITCH_800, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.AIR_TrimAirSwitch.Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_AIRCOND_TRIM_AIR_SWITCH_800, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
+            tmrAir.Start();
+            RefreshLights();
 
         }
-
-        private void btnRecircLeft_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_L_SWITCH, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[0].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_L_SWITCH, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-
-        }
-
-        private void btnPacLeft_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_L_SWITCH, Aircraft.ClkR);
-                    break;
-            }
-        }
-
-        private void btnIsolValve_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ISOLATION_VALVE_SWITCH, Aircraft.ClkR);
-                    break;
-            }
-        }
-
-        private void btnBleed1_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_1_SWITCH, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_1_SWITCH, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-
-        }
-
-        private void btnBleed2_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-
-        }
-
-        private void btnAPUBleed_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_APU_SWITCH, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value != 0)
-                    {
-                                   FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_APU_SWITCH, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-
-        }
-
-        private void btnRecircRight_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value != 1)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_R_SWITCH, Aircraft.ClkL);
-                    }
-                    break;
-                case Keys.Down:
-                    if (Aircraft.pmdg737.AIR_RecircFanSwitch[1].Value != 0)
-                    {
-                        FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_RECIRC_FAN_R_SWITCH, Aircraft.ClkR);
-                    }
-                    break;
-
-            }
-
-
-        }
-
-        private void btnPacRight_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, Aircraft.ClkL);
-                    break;
-                case Keys.Right:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_PACK_R_SWITCH, Aircraft.ClkR);
-                    break;
-            }
-        }
-        
-        private void event_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
-                case Keys.Down:
-                    e.IsInputKey = true;
-                    break;
-
-            }
-
-        }
-
     }
 }

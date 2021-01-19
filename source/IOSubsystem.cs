@@ -1303,7 +1303,7 @@ namespace tfm
         private void commandMode(object sender, HotkeyEventArgs e)
         {
             // Check to see if we are connected to the sim
-            if (FSUIPCConnection.IsOpen)
+            if (FSUIPCConnection.IsOpen || utility.DebugEnabled)
             {
                 // remove the left bracket autopilot command
                 HotkeyManager.Current.Remove("ap_Command_Key");
@@ -1345,7 +1345,7 @@ namespace tfm
             // unregister the right bracket command key so it isn't pressed by accident
             HotkeyManager.Current.Remove("Command_Key");
             // Check to see if we are connected to the sim
-            if (FSUIPCConnection.IsOpen)
+            if (FSUIPCConnection.IsOpen || utility.DebugEnabled)
             {
                 // play the command sound
                 // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
@@ -1375,7 +1375,7 @@ namespace tfm
             }
             else
             {
-                Tolk.Output("not connected to simulator");
+                Tolk.Output("not connected to simulator. ");
 
             }
 
