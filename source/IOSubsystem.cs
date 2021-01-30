@@ -2592,11 +2592,6 @@ private void onLandingRateKey()
         private void onHeadingKey()
         {
             double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
-            if (localiserDetected)
-            {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + hdgTrue.ToString("F0") + "true, " + Aircraft.CompassHeading.Value.ToString("F0") + " Magnetic. ");
-
-            }
             fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Autopilot.Heading);
             ResetHotkeys();
         }
