@@ -99,8 +99,10 @@ namespace tfm
         MixingSampleProvider mixer;
 
         // initialize sound objects
-        readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
-        readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
+        // readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        // readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
+        WaveFileReader cmdSound;
+        WaveFileReader apCmdSound;
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         List<string> autopilotHotkeys = new List<string>();
@@ -255,6 +257,7 @@ namespace tfm
         private bool apuOff = true;
         private bool fuelManagerActive;
         OutputHistory history = new OutputHistory();
+        WaveFileReader gpwsSound;
 
         public IOSubsystem()
         {
@@ -262,8 +265,9 @@ namespace tfm
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
+            // Initialize audio output
+            SetupAudio();
             var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
-            fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
@@ -283,6 +287,18 @@ namespace tfm
                 altitudeCalloutFlags.Add(i, false);
             }
             pmdg = new PMDGPanelUpdateEvent();
+        }
+
+        private void SetupAudio()
+        {
+            driverOut = new WaveOutEvent() { DesiredLatency = 50 };
+            
+            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            mixer.ReadFully = true;
+            driverOut.Init(mixer);
+            // start the mixer. We can then add audio sources as needed.
+            driverOut.Play();
+
         }
 
         private void onWaypointTransitionTimerTick(object sender, ElapsedEventArgs e)
@@ -687,18 +703,34 @@ namespace tfm
                     }
                 }
             }
-            if (radioAlt < 10000 && vSpeed < -50)
+            try
             {
-                var gpwsKeys = new List<int>(gpwsFlags.Keys);
-                foreach (int key in gpwsKeys)
+                if (radioAlt < 10000 && vSpeed < -50)
                 {
-                    if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                    var gpwsKeys = new List<int>(gpwsFlags.Keys);
+                    foreach (int key in gpwsKeys)
                     {
-                        SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
-                        snd.Play();
-                        gpwsFlags[key] = true;
+                        if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                        {
+                            gpwsSound = new WaveFileReader("sounds\\" + key.ToString() + ".wav");
+                            // SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
+                            // snd.Play();
+                            mixer.AddMixerInput(gpwsSound.ToSampleProvider().ToStereo());
+                            gpwsFlags[key] = true;
+                        }
+                        else
+                        {
+                            if (radioAlt > key + 50)
+                            {
+                                gpwsFlags[key] = false;
+                            }
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}");
             }
         }
 
@@ -1308,8 +1340,8 @@ namespace tfm
                 // remove the left bracket autopilot command
                 HotkeyManager.Current.Remove("ap_Command_Key");
                 // play the command sound
-                // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                cmdSound.Play();
+                cmdSound = new WaveFileReader(@"sounds\command.wav");
+                mixer.AddMixerInput(cmdSound);
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -1349,7 +1381,8 @@ namespace tfm
             {
                 // play the command sound
                 // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                apCmdSound.Play();
+                apCmdSound = new WaveFileReader(@"sounds\ap_command.wav");
+                mixer.AddMixerInput(apCmdSound);
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -2058,12 +2091,6 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
                 // we use an OffsetSampleProvider to allow playing beep tones
-                driverOut = new WaveOutEvent();
-                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-                mixer.ReadFully = true;
-                driverOut.Init(mixer);
-                // start the mixer. We can then add audio sources as needed.
-                driverOut.Play();
                 RunwayGuidanceTimer.Enabled = true;
             }
             else
@@ -2178,19 +2205,12 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
 
-                driverOut = new WaveOutEvent();
-                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-                mixer.ReadFully = true;
-                driverOut.Init(mixer);
                 pitchSineProvider = new SineWaveProvider();
                 // bankSineProvider = new SineWaveProvider();
-                // start the mixer. We can then add audio sources as needed.
-                driverOut.Play();
                 AttitudeTimer.Enabled = true;
             }
             else
             {
-                driverOut.Stop();
                 mixer.RemoveAllMixerInputs();
                 AttitudePitchPlaying = false;
                 AttitudeBankLeftPlaying = false;
