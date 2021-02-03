@@ -279,6 +279,7 @@ namespace tfm
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             ilsTimer.Elapsed += onILSTimerTick;
             waypointTransitionTimer.Elapsed += onWaypointTransitionTimerTick;
+            WarningsTimer.Elapsed += WarningsTimer_Tick;
             // start the flight following timer if it is enabled in settings
             SetupFlightFollowing();
             // populate the dictionary for the altitude callout flags
@@ -581,7 +582,7 @@ namespace tfm
                 if (Aircraft.StallWarning.Value == 1 || Aircraft.OverSpeedWarning.Value == 1)
                 {
                     WarningFlag = true;
-                    WarningsTimer.Elapsed += WarningsTimer_Tick;
+                    
                     WarningsTimer.AutoReset = true;
                     WarningsTimer.Enabled = true;
                 }
