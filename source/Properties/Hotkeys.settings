@@ -227,8 +227,20 @@
     <Setting Name="flight_planner" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+P</Value>
     </Setting>
+    <Setting Name="ap_PMDG_Panels" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+P</Value>
+    </Setting>
+    <Setting Name="ap_PMDG_CDU" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+C</Value>
+    </Setting>
     <Setting Name="Landing_Rate" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+V</Value>
+    </Setting>
+    <Setting Name="ap_Get_Altimeter" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">B</Value>
+    </Setting>
+    <Setting Name="ap_Set_Altimeter" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+B</Value>
     </Setting>
   </Settings>
 </SettingsFile>

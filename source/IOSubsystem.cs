@@ -1,4 +1,6 @@
 ﻿using DavyKager;
+    using BingMapsSDSToolkit.GeodataAPI;
+using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -41,7 +43,7 @@ namespace tfm
         // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
+        public PMDGPanelUpdateEvent pmdg;
         // The event that handles speech/braille output.
         public event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
 
@@ -97,8 +99,10 @@ namespace tfm
         MixingSampleProvider mixer;
 
         // initialize sound objects
-        readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
-        readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
+        // readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        // readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
+        WaveFileReader cmdSound;
+        WaveFileReader apCmdSound;
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         List<string> autopilotHotkeys = new List<string>();
@@ -253,6 +257,7 @@ namespace tfm
         private bool apuOff = true;
         private bool fuelManagerActive;
         OutputHistory history = new OutputHistory();
+        WaveFileReader gpwsSound;
 
         public IOSubsystem()
         {
@@ -260,8 +265,9 @@ namespace tfm
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
+            // Initialize audio output
+            SetupAudio();
             var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
-            fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
@@ -273,6 +279,7 @@ namespace tfm
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             ilsTimer.Elapsed += onILSTimerTick;
             waypointTransitionTimer.Elapsed += onWaypointTransitionTimerTick;
+            WarningsTimer.Elapsed += WarningsTimer_Tick;
             // start the flight following timer if it is enabled in settings
             SetupFlightFollowing();
             // populate the dictionary for the altitude callout flags
@@ -280,6 +287,18 @@ namespace tfm
             {
                 altitudeCalloutFlags.Add(i, false);
             }
+            pmdg = new PMDGPanelUpdateEvent();
+        }
+
+        private void SetupAudio()
+        {
+            driverOut = new WaveOutEvent() { DesiredLatency = 50 };
+            
+            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            mixer.ReadFully = true;
+            driverOut.Init(mixer);
+            // start the mixer. We can then add audio sources as needed.
+            driverOut.Play();
 
         }
 
@@ -379,7 +398,7 @@ namespace tfm
                 ReadAutoBrake();
                 ReadSpoilers();
                 ReadTrim();
-                ReadAltimeter();
+                ReadAltimeter(TriggeredByKey: false);
                 NextWaypoint();
                 ReadLights();
                 ReadDoors();
@@ -390,6 +409,162 @@ namespace tfm
                 readWarnings();
 
                 // TODO: engine select
+                if (Aircraft.AircraftName.Value.Contains("PMDG"))
+                {   
+                    // electrical panel
+                    ReadPMDGToggle(Aircraft.pmdg737.ELEC_BatSelector, Aircraft.pmdg737.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
+                    ReadToggle(Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE, Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
+                    ReadToggle(Aircraft.pmdg737.ELEC_CabUtilSw, Aircraft.pmdg737.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.ELEC_IFEPassSeatSw, Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value > 0, "passenger seat power", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "engine generator off bus light", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE, Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.ELEC_BusTransSw_AUTO, Aircraft.pmdg737.ELEC_BusTransSw_AUTO.Value > 0, "auto bus transfer", "on", "off");
+                    // standby power switch
+                    if (Aircraft.pmdg737.ELEC_StandbyPowerSelector.ValueChanged)
+                    {
+                        switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
+                        {
+                            case 0:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Battery");
+                                break;
+                            case 1:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Off");
+                                break;
+                            case 2:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Auto");
+                                break;
+                        }
+
+                    }
+                    // ADIRU
+                    ReadToggle(Aircraft.pmdg737.IRS_aligned, Aircraft.pmdg737.IRS_aligned.Value > 0, "IRS", "aligned", "");
+
+                    // MCP
+
+                    // flight director
+                    ReadToggle(Aircraft.pmdg737.MCP_FDSw[0], Aircraft.pmdg737.MCP_FDSw[0].Value > 0, "left flight director", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_FDSw[1], Aircraft.pmdg737.MCP_FDSw[1].Value > 0, "right flight director", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_annunFD[0], Aircraft.pmdg737.MCP_annunFD[0].Value > 0, "left fd master", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_annunFD[1], Aircraft.pmdg737.MCP_annunFD[1].Value > 0, "right   fd master", "on", "off");
+                    // auto throttle arm
+                    ReadToggle(Aircraft.pmdg737.MCP_ATArmSw, Aircraft.pmdg737.MCP_ATArmSw.Value > 0, "autothrottle arm switch", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_annunATArm, Aircraft.pmdg737.MCP_annunATArm.Value > 0, "Auto throttle light", "on", "off");
+                    // N1 button
+                    ReadToggle(Aircraft.pmdg737.MCP_annunN1, Aircraft.pmdg737.MCP_annunN1.Value > 0, "N1 light", "on", "off");
+                    // speed
+                    ReadToggle(Aircraft.pmdg737.MCP_annunSPEED, Aircraft.pmdg737.MCP_annunSPEED.Value > 0, "speed light", "on", "off");
+                    // LNAV
+                    ReadToggle(Aircraft.pmdg737.MCP_annunLNAV, Aircraft.pmdg737.MCP_annunLNAV.Value > 0, "L Nav light", "on", "off");
+                    // VNAV
+                    ReadToggle(Aircraft.pmdg737.MCP_annunVNAV, Aircraft.pmdg737.MCP_annunVNAV.Value > 0, "V Nav light", "on", "off");
+                    // Autopilot CMD buttons
+                    ReadToggle(Aircraft.pmdg737.MCP_annunCMD_A, Aircraft.pmdg737.MCP_annunCMD_A.Value > 0, "CMD A", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_annunCMD_B, Aircraft.pmdg737.MCP_annunCMD_B.Value > 0, "CMD B", "on", "off");
+                    // autopilot heading select
+                    ReadToggle(Aircraft.pmdg737.MCP_annunHDG_SEL, Aircraft.pmdg737.MCP_annunHDG_SEL.Value > 0, "heading select", "on", "off");
+                    // level change
+                    ReadToggle(Aircraft.pmdg737.MCP_annunLVL_CHG, Aircraft.pmdg737.MCP_annunLVL_CHG.Value > 0, "level change", "on", "off");
+                    // altitude hold
+                    ReadToggle(Aircraft.pmdg737.MCP_annunALT_HOLD, Aircraft.pmdg737.MCP_annunALT_HOLD.Value > 0, "Altitude hold", "on", "off");
+                    // approach mode
+                    ReadToggle(Aircraft.pmdg737.MCP_annunAPP, Aircraft.pmdg737.MCP_annunAPP.Value > 0, "approach", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_annunVOR_LOC, Aircraft.pmdg737.MCP_annunVOR_LOC.Value > 0, "vor loc", "on", "off");
+                    // CWS mode
+                    ReadToggle(Aircraft.pmdg737.MCP_annunCWS_A, Aircraft.pmdg737.MCP_annunCWS_A.Value > 0, "CWS A", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.MCP_annunCWS_B, Aircraft.pmdg737.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
+                    // CDU exec button light
+                    ReadToggle(Aircraft.pmdg737.CDU_annunEXEC[0], Aircraft.pmdg737.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
+                    // CDU message light
+                    ReadToggle(Aircraft.pmdg737.CDU_annunMSG[0], Aircraft.pmdg737.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared");
+                    // fuel panel
+                    ReadToggle(Aircraft.pmdg737.FUEL_CrossFeedSw, Aircraft.pmdg737.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[0], Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, "left forward fuel pump", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[1], Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value > 0, "right forward fuel pump", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[1], Aircraft.pmdg737.FUEL_PumpAftSw[1].Value > 0, "right aft fuel pump", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[0], Aircraft.pmdg737.FUEL_PumpAftSw[0].Value > 0, "left aft fuel pump", "on", "off");
+                    ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[0], Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value > 0, "center left fuel pump");
+                    ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[1], Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value > 0, "center right fuel pump");
+
+                    // fuel crossfeed valve
+                    if (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
+                        
+                    {
+                        switch (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.Value)
+                        {
+                            case 0:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve closed");
+                                break;
+                            case 1:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve open");
+                                break;
+                            case 2:
+                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve in transit");
+                                break;
+                        }
+                    }
+                }
+                // hydraulics
+                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[1], Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, "electrical hydraulic pump 1", "on", "off");
+                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[0], Aircraft.pmdg737.HYD_PumpSw_elec[0].Value > 0, "electrical hydraulic pump 2", "on", "off");
+                if (Aircraft.pmdg737.AIR_PackSwitch[0].ValueChanged)
+                {
+                    string pck = null;
+                    switch (Aircraft.pmdg737.AIR_PackSwitch[0].Value)
+                    {
+                        case 0:
+                            pck = "off";
+                            break;
+                        case 1:
+                            pck = "auto";
+                            break;
+                        case 2:
+                            pck = "high";
+                            break;
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"left pack {pck}");
+                }
+                if (Aircraft.pmdg737.AIR_IsolationValveSwitch.ValueChanged)
+                {
+                    string isol = null;
+                    switch (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value)
+                    {
+                        case 0:
+                            isol = "off";
+                            break;
+                        case 1:
+                            isol = "auto";
+                            break;
+                        case 2:
+                            isol = "on";
+                            break;
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"isolation valve {isol}");
+                }
+                if (Aircraft.pmdg737.AIR_PackSwitch[1].ValueChanged)
+                {
+                    string pck = null;
+                    switch (Aircraft.pmdg737.AIR_PackSwitch[1].Value)
+                    {
+                        case 0:
+                            pck = "off";
+                            break;
+                        case 1:
+                            pck = "auto";
+                            break;
+                        case 2:
+                            pck = "high";
+                            break;
+
+                    }
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"right pack {pck}");
+                }
+                ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[1], Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value > 0, "engine 2 bleed", "on", "off");
+                ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[0], Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value > 0, "engine 1 bleed", "on", "off");
+                ReadToggle(Aircraft.pmdg737.AIR_APUBleedAirSwitch, Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value > 0, "APU bleed", "on", "off");
             }
             else
             {
@@ -407,7 +582,7 @@ namespace tfm
                 if (Aircraft.StallWarning.Value == 1 || Aircraft.OverSpeedWarning.Value == 1)
                 {
                     WarningFlag = true;
-                    WarningsTimer.Elapsed += WarningsTimer_Tick;
+                    
                     WarningsTimer.AutoReset = true;
                     WarningsTimer.Enabled = true;
                 }
@@ -529,18 +704,34 @@ namespace tfm
                     }
                 }
             }
-            if (radioAlt < 10000 && vSpeed < -50)
+            try
             {
-                var gpwsKeys = new List<int>(gpwsFlags.Keys);
-                foreach (int key in gpwsKeys)
+                if (radioAlt < 10000 && vSpeed < -50)
                 {
-                    if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                    var gpwsKeys = new List<int>(gpwsFlags.Keys);
+                    foreach (int key in gpwsKeys)
                     {
-                        SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
-                        snd.Play();
-                        gpwsFlags[key] = true;
+                        if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                        {
+                            gpwsSound = new WaveFileReader("sounds\\" + key.ToString() + ".wav");
+                            // SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
+                            // snd.Play();
+                            mixer.AddMixerInput(gpwsSound.ToSampleProvider().ToStereo());
+                            gpwsFlags[key] = true;
+                        }
+                        else
+                        {
+                            if (radioAlt > key + 50)
+                            {
+                                gpwsFlags[key] = false;
+                            }
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}");
             }
         }
 
@@ -568,6 +759,7 @@ namespace tfm
             double elevator = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.ElevatorTrim.Value);
             double aileron = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.AileronTrim.Value);
             if (Aircraft.ElevatorTrim.ValueChanged && Aircraft.ApMaster.Value != 1 && TrimEnabled)
+            
             {
                 if (elevator < 0)
                 {
@@ -592,9 +784,9 @@ namespace tfm
             }
         }
 
-        private void ReadAltimeter()
+        private void ReadAltimeter(bool TriggeredByKey)
         {
-            if (Aircraft.Altimeter.ValueChanged)
+            if (Aircraft.Altimeter.ValueChanged || TriggeredByKey)
             {
                 double AltQNH = (double)Aircraft.Altimeter.Value / 16d;
                 double AltHPA = Math.Floor(AltQNH + 0.5);
@@ -970,12 +1162,26 @@ namespace tfm
             string gaugeValue;
             bool isGauge = true;
             // heading
-            if (Aircraft.ApHeading.ValueChanged)
+            if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                gaugeName = "AP heading";
-                gaugeValue = Autopilot.ApHeading.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                if (Aircraft.pmdg737.MCP_Heading.ValueChanged)
+                {
+                    gaugeName = "AP heading";
+                    gaugeValue = Aircraft.pmdg737.MCP_Heading.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
             }
+            else
+            {
+                if (Aircraft.ApHeading.ValueChanged)
+                {
+                    gaugeName = "AP heading";
+                    gaugeValue = Autopilot.ApHeading.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                }
+            }
+
             // airspeed
             if (Aircraft.ApAirspeed.ValueChanged)
             {
@@ -996,13 +1202,24 @@ namespace tfm
             // Altitude
             var gaugeName = "AP altitude";
             var isGauge = true;
-
-            if (Aircraft.ApAltitude.ValueChanged)
+            if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                var gaugeValue = Autopilot.ApAltitude.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                if (Aircraft.pmdg737.MCP_Altitude.ValueChanged)
+                {
+                    var gaugeValue = Aircraft.pmdg737.MCP_Altitude.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
+            }
+            else
+            {
+                if (Aircraft.ApAltitude.ValueChanged)
+                {
+                    var gaugeValue = Autopilot.ApAltitude.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
 
 
+                }
             }
 
         }
@@ -1074,7 +1291,7 @@ namespace tfm
             }
         }
 
-        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg, string OffMsg)
+        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off")
         {
             if (instrument.ValueChanged)
             {
@@ -1088,6 +1305,22 @@ namespace tfm
                 }
             }
         }
+        private void ReadPMDGToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off")
+        {
+            if (instrument.ValueChanged)
+            {
+                if (toggleStateOn)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OnMsg}");
+                    pmdg.fireOnPMDGPanelUpdateEvent("on");
+                }
+                else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OffMsg}");
+                }
+            }
+        }
+        
         public static double mapOneRangeToAnother(double sourceNumber, double fromA, double fromB, double toA, double toB, int decimalPrecision)
         {
             double deltaA = fromB - fromA;
@@ -1103,13 +1336,13 @@ namespace tfm
         private void commandMode(object sender, HotkeyEventArgs e)
         {
             // Check to see if we are connected to the sim
-            if (FSUIPCConnection.IsOpen)
+            if (FSUIPCConnection.IsOpen || utility.DebugEnabled)
             {
                 // remove the left bracket autopilot command
                 HotkeyManager.Current.Remove("ap_Command_Key");
                 // play the command sound
-                // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                cmdSound.Play();
+                cmdSound = new WaveFileReader(@"sounds\command.wav");
+                mixer.AddMixerInput(cmdSound);
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -1145,11 +1378,12 @@ namespace tfm
             // unregister the right bracket command key so it isn't pressed by accident
             HotkeyManager.Current.Remove("Command_Key");
             // Check to see if we are connected to the sim
-            if (FSUIPCConnection.IsOpen)
+            if (FSUIPCConnection.IsOpen || utility.DebugEnabled)
             {
                 // play the command sound
                 // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                apCmdSound.Play();
+                apCmdSound = new WaveFileReader(@"sounds\ap_command.wav");
+                mixer.AddMixerInput(apCmdSound);
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -1175,7 +1409,7 @@ namespace tfm
             }
             else
             {
-                Tolk.Output("not connected to simulator");
+                Tolk.Output("not connected to simulator. ");
 
             }
 
@@ -1186,6 +1420,8 @@ namespace tfm
             frmAutopilot ap;
             frmComRadios com;
             frmNavRadios nav;
+            frmPMDGCDU cdu;
+            frmAltimeter alt;
             string gaugeName;
             string gaugeValue;
             bool isGauge = true;
@@ -1204,6 +1440,14 @@ namespace tfm
                     ap = new frmAutopilot("Altitude");
                     ap.ShowDialog();
                     break;
+                case "ap_Get_Altimeter":
+                    ReadAltimeter(true);
+                    break;
+                case "ap_Set_Altimeter":
+                    alt = new frmAltimeter();
+                    alt.ShowDialog();
+                    break;
+
                 case "ap_Get_Heading":
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
@@ -1306,6 +1550,14 @@ namespace tfm
                 case "ap_Set_Throttle":
                     ap = new frmAutopilot("Throttle");
                     ap.ShowDialog();
+                    break;
+                case "ap_PMDG_CDU":
+                    cdu = new frmPMDGCDU();
+                    cdu.Show();
+                    break;
+                case "ap_PMDG_Panels":
+                    frmCockpitPanels pnl = new frmCockpitPanels();
+                    pnl.Show();
                     break;
 
                 default:
@@ -1840,12 +2092,6 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
                 // we use an OffsetSampleProvider to allow playing beep tones
-                driverOut = new WaveOutEvent();
-                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-                mixer.ReadFully = true;
-                driverOut.Init(mixer);
-                // start the mixer. We can then add audio sources as needed.
-                driverOut.Play();
                 RunwayGuidanceTimer.Enabled = true;
             }
             else
@@ -1960,19 +2206,12 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
 
-                driverOut = new WaveOutEvent();
-                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-                mixer.ReadFully = true;
-                driverOut.Init(mixer);
                 pitchSineProvider = new SineWaveProvider();
                 // bankSineProvider = new SineWaveProvider();
-                // start the mixer. We can then add audio sources as needed.
-                driverOut.Play();
                 AttitudeTimer.Enabled = true;
             }
             else
             {
-                driverOut.Stop();
                 mixer.RemoveAllMixerInputs();
                 AttitudePitchPlaying = false;
                 AttitudeBankLeftPlaying = false;
@@ -2354,11 +2593,6 @@ private void onLandingRateKey()
         private void onHeadingKey()
         {
             double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
-            if (localiserDetected)
-            {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + hdgTrue.ToString("F0") + "true, " + Aircraft.CompassHeading.Value.ToString("F0") + " Magnetic. ");
-
-            }
             fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Autopilot.Heading);
             ResetHotkeys();
         }
@@ -2569,7 +2803,7 @@ private void onLandingRateKey()
 
         }
 
-        private void onCurrentLocation()
+        private async void onCurrentLocation()
         {
             var database = FSUIPCConnection.AirportsDatabase;
             database.SetReferenceLocation();
@@ -2619,8 +2853,98 @@ private void onLandingRateKey()
             }
             else
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.aircraftLat.Value}, {Aircraft.aircraftLon.Value}");
-            }
+                if(string.IsNullOrEmpty(Properties.Settings.Default.bingMapsAPIKey))
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Please set the Bing Maps API key in settings before using the where am I feature.");
+                    return;
+                } // Sanity check on api keys.
+                var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
+                var longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
+                // Retrieve the state/province/territory.
+                var cityRequest =new  GetBoundaryRequest() {
+                                        EntityType= BoundaryEntityType.AdminDivision2,
+                  LevelOfDetail = 3,
+                  GetAllPolygons = true,
+                  GetEntityMetadata = true,
+                  Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+
+                var stateRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.AdminDivision1,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+
+                var countryRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.CountryRegion,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                };
+                var cityResponse = await GeodataManager.GetBoundary(cityRequest, Properties.Settings.Default.bingMapsAPIKey);
+                var stateResponse = await GeodataManager.GetBoundary(stateRequest, Properties.Settings.Default.bingMapsAPIKey);
+                var countryResponse = await GeodataManager.GetBoundary(countryRequest, Properties.Settings.Default.bingMapsAPIKey);
+                
+                // Check for existence of a country. If none present, most likely we are in a body of water.
+                if(countryResponse == null)
+                    {
+                    if(string.IsNullOrWhiteSpace(Properties.Settings.Default.GeonamesUsername))
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "You must have a Geonames username to use this feature.");
+                        return;
+                    }
+                    try
+                    {
+                        var xmlOcean = XElement.Load($"http://api.geonames.org/ocean?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}");
+                        var ocean = xmlOcean.Descendants("ocean").Select(g => new
+                        {
+                            Name = g.Element("name").Value
+                        });
+                        if (ocean.Count() > 0)
+                        {
+                            var currentOcean = ocean.First();
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{currentOcean.Name}. ");
+                        }
+                                            }
+                    catch (Exception ex)
+                    {
+                        Logger.Debug($"error retrieving oceanic info: {ex.Message}");
+
+                    }
+                }
+else
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
+                }
+                var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}&radius=50");
+                var timezone = xmlTimezone.Descendants("timezone").Select(g => new
+                {
+                    Name = g.Element("timezoneId").Value
+                });
+                if (timezone.Count() > 0)
+                {
+                    var currentTimezone = timezone.First();
+                    if (currentTimezone.Name != oldTimezone)
+                    {
+                        try
+                        {
+                            string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{tzName}. ");
+                        }
+                        catch (Exception)
+                        {
+
+                            Logger.Debug($"cannot convert timezone: {currentTimezone.Name}");
+                        }
+                    }
+                        oldTimezone = currentTimezone.Name;
+                    }
+                }
         }
 
         private void onTakeOffAssistant()
@@ -2643,12 +2967,11 @@ private void onLandingRateKey()
                 Aircraft.PitotHeat.Value = 1; // On.
                 Autopilot.ApMaster = true;
                 Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
-                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
                 Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
                 Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
                 Aircraft.ParkingBrake.Value = 0; // Off.
-
-                // Start the engines on the plane.
+                                // Start the engines on the plane.
                 //switch (Aircraft.num_engines.Value)
                 //{
                 //    case 1:
@@ -2688,7 +3011,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         {
           double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
-            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+                            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
             {
                     //var airSpeed = Autopilot.ApAirspeed;
                     //Autopilot.ApAirspeed = airSpeed;

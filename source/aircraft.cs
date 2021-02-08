@@ -36,6 +36,7 @@ namespace tfm
         public static  Offset<short> ParkingBrake = new Offset<short>(0x0bc8);
         public static  Offset<uint> LandingGear = new Offset<uint>(0x0bec);
         public static Offset<uint> LandingGearControl = new Offset<uint>(0x0BE8);
+        public static Offset<uint> ElevatorControll = new Offset<uint>(0x0BB2);
         public static  Offset<int> Altitude = new Offset<int>(0x3324);
         public static  Offset<int> GroundAltitude = new Offset<int>(0x0020);
         public static  Offset<uint> SpoilersArm = new Offset<uint>(0x0bcc);
@@ -252,7 +253,19 @@ namespace tfm
         public static Offset<int> AttitudeBank = new Offset<int>("attitude", 0x057c);
         public static  TextMenu textMenu = new TextMenu();
         public static Offset<ushort> SimulationRate = new Offset<ushort>(0x0c1a);
-        
+        // PMDG offsets. These are all read-only. Writing is done via the PMDG control codes.
+        public static PMDG_737_NGX_Offsets pmdg737 = new PMDG_737_NGX_Offsets();
+        // define a few PMDG offsets that aren't included in the .net library.
+        public static Offset<string> AIR_DisplayFltAlt = new Offset<string>(0x6C82, 6);
+        public static Offset<string> AIR_DisplayLandAlt = new Offset<string>(0x6C88, 6);
+
+
+        // constants for PMDG mouse click parameters
+        public const int ClkL = 536870912;
+        public const int ClkR = -2147483648;
+        public const int Inc = 16384;
+        public const int Dec = 8192;
+
         public static void InitOffsets()
         {
             // forces static fields to be initialised.

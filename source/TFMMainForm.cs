@@ -34,6 +34,7 @@ namespace tfm
         private IOSubsystem inst = new IOSubsystem();
         private InstrumentPanel Autopilot = new InstrumentPanel();
         private OutputHistory history = new OutputHistory();
+        
         public TFMMainForm()
         {
             InitializeComponent();
@@ -41,6 +42,14 @@ namespace tfm
             // upgrade settings
             Properties.Settings.Default.Upgrade();
             synth.Rate = Properties.Settings.Default.SAPISpeechRate;
+            // speak a debug message via SAPI if debug mode is turned on
+            if (utility.DebugEnabled)
+            {
+                Tolk.PreferSAPI(true);
+                Tolk.Output("Debug mode");
+                Tolk.PreferSAPI(false);
+            }
+
             if (Properties.Settings.Default.GeonamesUsername == "")
             {
                 MessageBox.Show("Geonames username has not been configured. Flight following features will not function.\nGo to the General section in settings to add your Geonames user name\n", "error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -101,6 +110,10 @@ namespace tfm
             try
             {
                 FSUIPCConnection.Process();
+                if (Aircraft.AircraftName.Value.Contains("PMDG"))
+                {
+                    Aircraft.pmdg737.RefreshData();
+                }
                 inst.ReadAircraftState();
                 if(!inst.PostTakeOffChecklist())
                 {
