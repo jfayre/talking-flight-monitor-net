@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Sid waypoints", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("In route waypoints", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Star waypoints", System.Windows.Forms.HorizontalAlignment.Left);
@@ -66,6 +67,7 @@
             this.missedApproachTextBox = new System.Windows.Forms.TextBox();
             this.flyPlanCheckBox = new System.Windows.Forms.CheckBox();
             this.flyMissedApproachCheckBox = new System.Windows.Forms.CheckBox();
+            this.cntWaypointList = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +83,7 @@
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.Padding = new System.Windows.Forms.Padding(13, 3, 0, 3);
-            this.mainMenu.Size = new System.Drawing.Size(1300, 40);
+            this.mainMenu.Size = new System.Drawing.Size(1300, 45);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "Main menu";
             // 
@@ -99,7 +101,7 @@
             this.toolStripSeparator3,
             this.closeMenuItem});
             this.planMenu.Name = "planMenu";
-            this.planMenu.Size = new System.Drawing.Size(69, 34);
+            this.planMenu.Size = new System.Drawing.Size(81, 39);
             this.planMenu.Text = "&Plan";
             // 
             // NewMenu
@@ -109,70 +111,70 @@
             this.simBriefMenuItem,
             this.openMenuItem});
             this.NewMenu.Name = "NewMenu";
-            this.NewMenu.Size = new System.Drawing.Size(224, 32);
+            this.NewMenu.Size = new System.Drawing.Size(270, 42);
             this.NewMenu.Text = "&New";
             // 
             // simBriefMenuItem
             // 
             this.simBriefMenuItem.AccessibleName = "From Simbrief...";
             this.simBriefMenuItem.Name = "simBriefMenuItem";
-            this.simBriefMenuItem.Size = new System.Drawing.Size(254, 32);
+            this.simBriefMenuItem.Size = new System.Drawing.Size(303, 42);
             this.simBriefMenuItem.Text = "From &Simbrief...";
             // 
             // openMenuItem
             // 
             this.openMenuItem.AccessibleName = "Open...";
             this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(254, 32);
+            this.openMenuItem.Size = new System.Drawing.Size(303, 42);
             this.openMenuItem.Text = "&Open...";
             // 
             // openPlanMenuItem
             // 
             this.openPlanMenuItem.AccessibleName = "Open...";
             this.openPlanMenuItem.Name = "openPlanMenuItem";
-            this.openPlanMenuItem.Size = new System.Drawing.Size(224, 32);
+            this.openPlanMenuItem.Size = new System.Drawing.Size(270, 42);
             this.openPlanMenuItem.Text = "&Open...";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(267, 6);
             // 
             // saveMenuItem
             // 
             this.saveMenuItem.AccessibleRole = System.Windows.Forms.AccessibleRole.Equation;
             this.saveMenuItem.Name = "saveMenuItem";
-            this.saveMenuItem.Size = new System.Drawing.Size(224, 32);
+            this.saveMenuItem.Size = new System.Drawing.Size(270, 42);
             this.saveMenuItem.Text = "&Save";
             // 
             // saveAsMenuItem
             // 
             this.saveAsMenuItem.AccessibleName = "Save as...";
             this.saveAsMenuItem.Name = "saveAsMenuItem";
-            this.saveAsMenuItem.Size = new System.Drawing.Size(224, 32);
+            this.saveAsMenuItem.Size = new System.Drawing.Size(270, 42);
             this.saveAsMenuItem.Text = "Save &as...";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(267, 6);
             // 
             // aircraftMenuItem
             // 
             this.aircraftMenuItem.AccessibleName = "Aircraft...";
             this.aircraftMenuItem.Name = "aircraftMenuItem";
-            this.aircraftMenuItem.Size = new System.Drawing.Size(224, 32);
+            this.aircraftMenuItem.Size = new System.Drawing.Size(270, 42);
             this.aircraftMenuItem.Text = "&Aircraft...";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(267, 6);
             // 
             // closeMenuItem
             // 
             this.closeMenuItem.Name = "closeMenuItem";
-            this.closeMenuItem.Size = new System.Drawing.Size(224, 32);
+            this.closeMenuItem.Size = new System.Drawing.Size(270, 42);
             this.closeMenuItem.Text = "&Close";
             // 
             // proceduresMenu
@@ -187,14 +189,14 @@
             this.starsMenuItem,
             this.approachesMenuItem});
             this.proceduresMenu.Name = "proceduresMenu";
-            this.proceduresMenu.Size = new System.Drawing.Size(134, 34);
+            this.proceduresMenu.Size = new System.Drawing.Size(154, 39);
             this.proceduresMenu.Text = "P&rocedures";
             // 
             // airportsMenuItem
             // 
             this.airportsMenuItem.AccessibleName = "Airports...";
             this.airportsMenuItem.Name = "airportsMenuItem";
-            this.airportsMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.airportsMenuItem.Size = new System.Drawing.Size(272, 42);
             this.airportsMenuItem.Text = "&Airports...";
             this.airportsMenuItem.Click += new System.EventHandler(this.airportsMenuItem_Click);
             // 
@@ -202,42 +204,42 @@
             // 
             this.taxiwaysMenuItem.AccessibleName = "Taxiways...";
             this.taxiwaysMenuItem.Name = "taxiwaysMenuItem";
-            this.taxiwaysMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.taxiwaysMenuItem.Size = new System.Drawing.Size(272, 42);
             this.taxiwaysMenuItem.Text = "&Taxiways...";
             // 
             // gatesMenuItem
             // 
             this.gatesMenuItem.AccessibleName = "Gates...";
             this.gatesMenuItem.Name = "gatesMenuItem";
-            this.gatesMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.gatesMenuItem.Size = new System.Drawing.Size(272, 42);
             this.gatesMenuItem.Text = "&Gates...";
             // 
             // runwaysMenuItem
             // 
             this.runwaysMenuItem.AccessibleName = "Runways...";
             this.runwaysMenuItem.Name = "runwaysMenuItem";
-            this.runwaysMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.runwaysMenuItem.Size = new System.Drawing.Size(272, 42);
             this.runwaysMenuItem.Text = "&Runways...";
             // 
             // sidsMenuItem
             // 
             this.sidsMenuItem.AccessibleName = "Sids...";
             this.sidsMenuItem.Name = "sidsMenuItem";
-            this.sidsMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.sidsMenuItem.Size = new System.Drawing.Size(272, 42);
             this.sidsMenuItem.Text = "&Sids...";
             // 
             // starsMenuItem
             // 
             this.starsMenuItem.AccessibleName = "Stars...";
             this.starsMenuItem.Name = "starsMenuItem";
-            this.starsMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.starsMenuItem.Size = new System.Drawing.Size(272, 42);
             this.starsMenuItem.Text = "&Stars...";
             // 
             // approachesMenuItem
             // 
             this.approachesMenuItem.AccessibleName = "Approaches...";
             this.approachesMenuItem.Name = "approachesMenuItem";
-            this.approachesMenuItem.Size = new System.Drawing.Size(231, 32);
+            this.approachesMenuItem.Size = new System.Drawing.Size(272, 42);
             this.approachesMenuItem.Text = "&Approaches...";
             // 
             // airacCycleTextBox
@@ -246,7 +248,7 @@
             this.airacCycleTextBox.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.airacCycleTextBox.Name = "airacCycleTextBox";
             this.airacCycleTextBox.ReadOnly = true;
-            this.airacCycleTextBox.Size = new System.Drawing.Size(160, 34);
+            this.airacCycleTextBox.Size = new System.Drawing.Size(160, 39);
             // 
             // waypointsListView
             // 
@@ -261,6 +263,7 @@
             this.altitudeColumnHeader,
             this.courseColumnHeader,
             this.frequencyColumnHeader});
+            this.waypointsListView.ContextMenuStrip = this.cntWaypointList;
             listViewGroup1.Header = "Sid waypoints";
             listViewGroup1.Name = "sidsGroup";
             listViewGroup2.Header = "In route waypoints";
@@ -350,7 +353,7 @@
             this.flyPlanCheckBox.AutoSize = true;
             this.flyPlanCheckBox.Location = new System.Drawing.Point(606, 206);
             this.flyPlanCheckBox.Name = "flyPlanCheckBox";
-            this.flyPlanCheckBox.Size = new System.Drawing.Size(77, 31);
+            this.flyPlanCheckBox.Size = new System.Drawing.Size(91, 37);
             this.flyPlanCheckBox.TabIndex = 5;
             this.flyPlanCheckBox.Text = "Plan";
             this.flyPlanCheckBox.UseVisualStyleBackColor = true;
@@ -361,15 +364,22 @@
             this.flyMissedApproachCheckBox.AutoSize = true;
             this.flyMissedApproachCheckBox.Location = new System.Drawing.Point(713, 206);
             this.flyMissedApproachCheckBox.Name = "flyMissedApproachCheckBox";
-            this.flyMissedApproachCheckBox.Size = new System.Drawing.Size(197, 31);
+            this.flyMissedApproachCheckBox.Size = new System.Drawing.Size(230, 37);
             this.flyMissedApproachCheckBox.TabIndex = 6;
             this.flyMissedApproachCheckBox.Text = "Missed approach";
             this.flyMissedApproachCheckBox.UseVisualStyleBackColor = true;
             // 
+            // cntWaypointList
+            // 
+            this.cntWaypointList.AccessibleName = "Context Menu";
+            this.cntWaypointList.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.cntWaypointList.Name = "cntWaypointList";
+            this.cntWaypointList.Size = new System.Drawing.Size(61, 4);
+            // 
             // FlightPlanForm
             // 
             this.AccessibleName = "Flight planner";
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -434,5 +444,6 @@
         private System.Windows.Forms.TextBox missedApproachTextBox;
         private System.Windows.Forms.CheckBox flyPlanCheckBox;
         private System.Windows.Forms.CheckBox flyMissedApproachCheckBox;
+        private System.Windows.Forms.ContextMenuStrip cntWaypointList;
     }
 }

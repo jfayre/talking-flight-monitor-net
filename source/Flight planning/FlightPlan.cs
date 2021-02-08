@@ -13,6 +13,9 @@ namespace tfm
         private static string _title = string.Empty;
         private static FsAirport _departureAirport = null;
         private static FsAirport _destinationAirport = null;
+        private static FsRunway _departureRunway;
+        private static FsRunway _destinationRunway;
+
         #endregion
         #region Public properties
         static public string Title
@@ -62,6 +65,29 @@ namespace tfm
                 _destinationAirport = value;
             }
         }
+        static public FsRunway DepartureRunway
+        {
+            get
+            {
+                return _departureRunway;
+            }
+            set
+            {
+                _departureRunway = value;
+            }
+        }
+        static public FsRunway DestinationRunway
+        {
+            get
+            {
+                return _destinationRunway;
+            }
+            set
+            {
+                _destinationRunway = value;
+            }
+        }
+
         #endregion
 
     }

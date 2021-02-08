@@ -29,6 +29,7 @@ namespace tfm
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.airportsListView = new System.Windows.Forms.ListView();
             this.nameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.icaoColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -38,6 +39,8 @@ namespace tfm
             this.bearingColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.altitudeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.distanceColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contAirport = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuSetDepartureAirport = new System.Windows.Forms.ToolStripMenuItem();
             this.fieldComboBox = new System.Windows.Forms.ComboBox();
             this.searchTypeComboBox = new System.Windows.Forms.ComboBox();
             this.textFilterTextBox = new System.Windows.Forms.TextBox();
@@ -45,6 +48,9 @@ namespace tfm
             this.upperNumericSpinner = new System.Windows.Forms.NumericUpDown();
             this.findButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
+            this.mnuSetDestination = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuAirportDetails = new System.Windows.Forms.ToolStripMenuItem();
+            this.contAirport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lowerNumericSpinner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.upperNumericSpinner)).BeginInit();
             this.SuspendLayout();
@@ -61,6 +67,7 @@ namespace tfm
             this.bearingColumnHeader,
             this.altitudeColumnHeader,
             this.distanceColumnHeader});
+            this.airportsListView.ContextMenuStrip = this.contAirport;
             this.airportsListView.HideSelection = false;
             this.airportsListView.Location = new System.Drawing.Point(10, 10);
             this.airportsListView.Name = "airportsListView";
@@ -68,6 +75,7 @@ namespace tfm
             this.airportsListView.TabIndex = 1;
             this.airportsListView.UseCompatibleStateImageBehavior = false;
             this.airportsListView.View = System.Windows.Forms.View.Details;
+            this.airportsListView.SelectedIndexChanged += new System.EventHandler(this.airportsListView_SelectedIndexChanged);
             // 
             // nameColumnHeader
             // 
@@ -102,6 +110,30 @@ namespace tfm
             // 
             this.distanceColumnHeader.Text = "Distance";
             // 
+            // contAirport
+            // 
+            this.contAirport.AccessibleName = "context menu";
+            this.contAirport.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.contAirport.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contAirport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSetDepartureAirport,
+            this.mnuSetDestination,
+            this.mnuAirportDetails});
+            this.contAirport.Name = "contAirport";
+            this.contAirport.ShowItemToolTips = false;
+            this.contAirport.Size = new System.Drawing.Size(330, 100);
+            this.contAirport.Opened += new System.EventHandler(this.contAirport_Opened);
+            this.contAirport.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cntAirport_ItemClicked);
+            // 
+            // mnuSetDepartureAirport
+            // 
+            this.mnuSetDepartureAirport.Enabled = false;
+            this.mnuSetDepartureAirport.Name = "mnuSetDepartureAirport";
+            this.mnuSetDepartureAirport.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.mnuSetDepartureAirport.Size = new System.Drawing.Size(329, 32);
+            this.mnuSetDepartureAirport.Text = "Set Departure Airport";
+            this.mnuSetDepartureAirport.Click += new System.EventHandler(this.mnuSetDepartureAirport_Click);
+            // 
             // fieldComboBox
             // 
             this.fieldComboBox.AccessibleName = "Search field";
@@ -118,7 +150,7 @@ namespace tfm
             "Distance"});
             this.fieldComboBox.Location = new System.Drawing.Point(10, 320);
             this.fieldComboBox.Name = "fieldComboBox";
-            this.fieldComboBox.Size = new System.Drawing.Size(121, 34);
+            this.fieldComboBox.Size = new System.Drawing.Size(121, 41);
             this.fieldComboBox.TabIndex = 2;
             this.fieldComboBox.SelectedIndexChanged += new System.EventHandler(this.fieldComboBox_SelectedIndexChanged);
             // 
@@ -137,7 +169,7 @@ namespace tfm
             "Starts with"});
             this.searchTypeComboBox.Location = new System.Drawing.Point(137, 320);
             this.searchTypeComboBox.Name = "searchTypeComboBox";
-            this.searchTypeComboBox.Size = new System.Drawing.Size(121, 34);
+            this.searchTypeComboBox.Size = new System.Drawing.Size(121, 41);
             this.searchTypeComboBox.Sorted = true;
             this.searchTypeComboBox.TabIndex = 3;
             this.searchTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.searchTypeComboBox_SelectedIndexChanged);
@@ -147,7 +179,7 @@ namespace tfm
             this.textFilterTextBox.AccessibleName = "Text filter";
             this.textFilterTextBox.Location = new System.Drawing.Point(264, 320);
             this.textFilterTextBox.Name = "textFilterTextBox";
-            this.textFilterTextBox.Size = new System.Drawing.Size(100, 34);
+            this.textFilterTextBox.Size = new System.Drawing.Size(100, 39);
             this.textFilterTextBox.TabIndex = 4;
             // 
             // lowerNumericSpinner
@@ -160,7 +192,7 @@ namespace tfm
             0,
             0});
             this.lowerNumericSpinner.Name = "lowerNumericSpinner";
-            this.lowerNumericSpinner.Size = new System.Drawing.Size(120, 34);
+            this.lowerNumericSpinner.Size = new System.Drawing.Size(120, 39);
             this.lowerNumericSpinner.TabIndex = 5;
             this.lowerNumericSpinner.Visible = false;
             // 
@@ -174,7 +206,7 @@ namespace tfm
             0,
             0});
             this.upperNumericSpinner.Name = "upperNumericSpinner";
-            this.upperNumericSpinner.Size = new System.Drawing.Size(120, 34);
+            this.upperNumericSpinner.Size = new System.Drawing.Size(120, 39);
             this.upperNumericSpinner.TabIndex = 6;
             this.upperNumericSpinner.Visible = false;
             // 
@@ -201,11 +233,26 @@ namespace tfm
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+            // mnuSetDestination
+            // 
+            this.mnuSetDestination.Enabled = false;
+            this.mnuSetDestination.Name = "mnuSetDestination";
+            this.mnuSetDestination.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.mnuSetDestination.Size = new System.Drawing.Size(329, 32);
+            this.mnuSetDestination.Text = "Set Destination Airport";
+            this.mnuSetDestination.Click += new System.EventHandler(this.mnuSetDestination_Click);
+            // 
+            // mnuAirportDetails
+            // 
+            this.mnuAirportDetails.Name = "mnuAirportDetails";
+            this.mnuAirportDetails.Size = new System.Drawing.Size(265, 32);
+            this.mnuAirportDetails.Text = "Airport Details...";
+            // 
             // AirportsForm
             // 
             this.AccessibleName = "Airports";
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(502, 353);
             this.ControlBox = false;
@@ -226,6 +273,7 @@ namespace tfm
             this.Text = "Airports";
             this.Load += new System.EventHandler(this.AirportsForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AirportsForm_KeyDown);
+            this.contAirport.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lowerNumericSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.upperNumericSpinner)).EndInit();
             this.ResumeLayout(false);
@@ -250,5 +298,9 @@ namespace tfm
         private System.Windows.Forms.NumericUpDown upperNumericSpinner;
         private System.Windows.Forms.Button findButton;
         private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.ContextMenuStrip contAirport;
+        private System.Windows.Forms.ToolStripMenuItem mnuSetDepartureAirport;
+        private System.Windows.Forms.ToolStripMenuItem mnuSetDestination;
+        private System.Windows.Forms.ToolStripMenuItem mnuAirportDetails;
     }
 }

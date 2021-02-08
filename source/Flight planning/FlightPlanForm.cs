@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DavyKager;
-
+using FSUIPC;
 
 namespace tfm
 {
@@ -90,7 +90,34 @@ else
                 }
                 
             }
+                
+        }
+        public void SetDepartureAirport(FsAirport airport)
+        {
+            // FlightPlan.Departure = airport;
+            string[] row =
+            {
+                airport.ICAO,
+                airport.Name,
+                "N/A",
 
+            };
+            waypointsListView.Items.Insert(0, new ListViewItem(row));
+            waypointsListView.Items[0].Tag = "dep";
+        }
+
+        public void SetDestinationAirport(FsAirport airport)
+        {
+             FlightPlan.Destination = airport;
+            string[] row =
+            {
+                airport.ICAO,
+                airport.Name,
+                "N/A",
+
+            };
+            waypointsListView.Items.Insert(waypointsListView.Items.Count, new ListViewItem(row));
+            waypointsListView.Items[waypointsListView.Items.Count - 1].Tag = "dest";
         }
     } // End FlightPlannerForm class.
 } // End TFM namespace.

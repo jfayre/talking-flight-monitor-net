@@ -196,7 +196,7 @@ Action<ComparisonType> doGreaterThan()
                             airports = database.Airports.Where(a => a.Name == filter).ToList();
                             break;
                         case "ICAO":
-                            airports = database.Airports.Where(a => a.ICAO == filter).ToList();
+                            airports = database.Airports.Where(a => a.ICAO == filter.ToUpper()).ToList();
                             break;
                         case "City":
                             airports = database.Airports.Where(a => a.City == filter).ToList();
@@ -569,6 +569,67 @@ switch(this.searchTypeComboBox.SelectedItem)
                 {
                     Tolk.Output("The minimum value field is not available. Select Bearing, Distance, or Altitude from the fields list first.");
                 }
+            }
+        }
+
+        private void cntAirport_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+        }
+
+        private void contAirport_Opened(object sender, EventArgs e)
+        {
+            contAirport.Focus();
+        }
+
+        private void mnuSetDepartureAirport_Click(object sender, EventArgs e)
+        {
+                    
+                    FsAirport SelectedAirport = FSUIPCConnection.AirportsDatabase.Airports[airportsListView.SelectedItems[0].SubItems[1].Text];
+                    foreach (Form f in Application.OpenForms)
+                    {
+                        if (f is FlightPlanForm)
+                        {
+
+                            // f.SetDepartureAirport(SelectedAirport);
+                            FlightPlanForm frm = (FlightPlanForm)Application.OpenForms["FlightPlanForm"];
+                            frm.SetDepartureAirport(SelectedAirport);
+
+                        }
+                    }
+
+
+
+        }
+
+        private void mnuSetDestination_Click(object sender, EventArgs e)
+        {
+
+            FsAirport SelectedAirport = FSUIPCConnection.AirportsDatabase.Airports[airportsListView.SelectedItems[0].SubItems[1].Text];
+            foreach (Form f in Application.OpenForms)
+            {
+                if (f is FlightPlanForm)
+                {
+
+                    FlightPlanForm frm = (FlightPlanForm)Application.OpenForms["FlightPlanForm"];
+                    frm.SetDestinationAirport(SelectedAirport);
+
+                }
+            }
+            if (FlightPlan.Destination != null)
+            {
+                Tolk.Output("Destination airport set.");
+            }
+
+
+
+        }
+
+        private void airportsListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (airportsListView.SelectedItems.Count > 0)
+            {
+                mnuSetDepartureAirport.Enabled = true;
+                mnuSetDestination.Enabled = true;
             }
         }
     }
