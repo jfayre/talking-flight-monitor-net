@@ -371,8 +371,18 @@ namespace tfm
                 ReadToggle(Aircraft.AutoThrottleArm, Aircraft.AutoThrottleArm.Value > 0, "Auto Throttle", "Armed", "off");
                 ReadToggle(Aircraft.ApYawDamper, Aircraft.ApYawDamper.Value > 0, "Yaw Damper", "active", "off");
                 ReadToggle(Aircraft.Toga, Aircraft.Toga.Value > 0, "take off power", "active", "off");
-                ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off");
-                ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off");
+                // if approach mode is on, read altitude and heading lock using SAPI
+                if (Aircraft.ApApproachHold.Value == 1)
+                {
+                        ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off", true);
+                    ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off", true);
+                }
+                else
+                {
+                    ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off");
+                    ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off");
+
+                }
                 ReadToggle(Aircraft.ApNavLock, Aircraft.ApNavLock.Value > 0, "nav lock", "active", "off");
                 ReadToggle(Aircraft.ApFlightDirector, Aircraft.ApFlightDirector.Value > 0, "Flight Director", "Active", "off");
                 ReadToggle(Aircraft.ApNavGPS, Aircraft.ApNavGPS.Value > 0, "Nav gps switch", "set to GPS", "set to nav");
@@ -1291,17 +1301,17 @@ namespace tfm
             }
         }
 
-        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off")
+        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off", bool SAPI = false)
         {
             if (instrument.ValueChanged)
             {
                 if (toggleStateOn)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OnMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI : SAPI, output: $"{name} {OnMsg}");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OffMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI : SAPI, output: $"{name} {OffMsg}");
                 }
             }
         }
