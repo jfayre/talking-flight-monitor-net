@@ -209,3 +209,4 @@ Talking Flight Monitor is and will continue to be free and open source. However,
 
 ## contributors and credits
 * Thanks to Tyler Rodick for his assistance with this project. This is my first major coding project, and it's helpful to have someone fixing my occasional oversight.
+
