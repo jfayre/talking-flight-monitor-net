@@ -5,7 +5,7 @@ using FSUIPC;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NHotkey;
-using NHotkey.WindowsForms;
+using NHotkey.Wpf;
 using NLog;
 using NLog.Config;
 using System;

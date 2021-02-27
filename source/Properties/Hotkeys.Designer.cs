@@ -26,9 +26,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("G")]
-        public global::System.Windows.Forms.Keys AGL_Altitude {
+        public string AGL_Altitude {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["AGL_Altitude"]));
+                return ((string)(this["AGL_Altitude"]));
             }
             set {
                 this["AGL_Altitude"] = value;
@@ -37,10 +37,10 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Oem6")]
-        public global::System.Windows.Forms.Keys Command_Key {
+        [global::System.Configuration.DefaultSettingValueAttribute("OemCloseBrackets")]
+        public string Command_Key {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Command_Key"]));
+                return ((string)(this["Command_Key"]));
             }
             set {
                 this["Command_Key"] = value;
@@ -50,9 +50,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("A")]
-        public global::System.Windows.Forms.Keys ASL_Altitude {
+        public string ASL_Altitude {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ASL_Altitude"]));
+                return ((string)(this["ASL_Altitude"]));
             }
             set {
                 this["ASL_Altitude"] = value;
@@ -62,9 +62,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("H")]
-        public global::System.Windows.Forms.Keys Aircraft_Heading {
+        public string Aircraft_Heading {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Aircraft_Heading"]));
+                return ((string)(this["Aircraft_Heading"]));
             }
             set {
                 this["Aircraft_Heading"] = value;
@@ -74,9 +74,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("S")]
-        public global::System.Windows.Forms.Keys Indicated_Airspeed {
+        public string Indicated_Airspeed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Indicated_Airspeed"]));
+                return ((string)(this["Indicated_Airspeed"]));
             }
             set {
                 this["Indicated_Airspeed"] = value;
@@ -86,9 +86,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("T")]
-        public global::System.Windows.Forms.Keys True_Airspeed {
+        public string True_Airspeed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["True_Airspeed"]));
+                return ((string)(this["True_Airspeed"]));
             }
             set {
                 this["True_Airspeed"] = value;
@@ -98,9 +98,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("M")]
-        public global::System.Windows.Forms.Keys Mach_Speed {
+        public string Mach_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Mach_Speed"]));
+                return ((string)(this["Mach_Speed"]));
             }
             set {
                 this["Mach_Speed"] = value;
@@ -110,9 +110,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("V")]
-        public global::System.Windows.Forms.Keys Vertical_Speed {
+        public string Vertical_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Vertical_Speed"]));
+                return ((string)(this["Vertical_Speed"]));
             }
             set {
                 this["Vertical_Speed"] = value;
@@ -122,9 +122,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("O")]
-        public global::System.Windows.Forms.Keys Outside_Temperature {
+        public string Outside_Temperature {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Outside_Temperature"]));
+                return ((string)(this["Outside_Temperature"]));
             }
             set {
                 this["Outside_Temperature"] = value;
@@ -134,9 +134,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+T")]
-        public global::System.Windows.Forms.Keys Toggle_Trim_Announcement {
+        public string Toggle_Trim_Announcement {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Toggle_Trim_Announcement"]));
+                return ((string)(this["Toggle_Trim_Announcement"]));
             }
             set {
                 this["Toggle_Trim_Announcement"] = value;
@@ -146,9 +146,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+R")]
-        public global::System.Windows.Forms.Keys Mute_Simconnect_Messages {
+        public string Mute_Simconnect_Messages {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Mute_Simconnect_Messages"]));
+                return ((string)(this["Mute_Simconnect_Messages"]));
             }
             set {
                 this["Mute_Simconnect_Messages"] = value;
@@ -158,9 +158,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C")]
-        public global::System.Windows.Forms.Keys Nearest_City {
+        public string Nearest_City {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Nearest_City"]));
+                return ((string)(this["Nearest_City"]));
             }
             set {
                 this["Nearest_City"] = value;
@@ -170,9 +170,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("W")]
-        public global::System.Windows.Forms.Keys Next_Waypoint {
+        public string Next_Waypoint {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Next_Waypoint"]));
+                return ((string)(this["Next_Waypoint"]));
             }
             set {
                 this["Next_Waypoint"] = value;
@@ -182,9 +182,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("D")]
-        public global::System.Windows.Forms.Keys Destination_Info {
+        public string Destination_Info {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Destination_Info"]));
+                return ((string)(this["Destination_Info"]));
             }
             set {
                 this["Destination_Info"] = value;
@@ -194,9 +194,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("OemOpenBrackets")]
-        public global::System.Windows.Forms.Keys Attitude_Mode {
+        public string Attitude_Mode {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Attitude_Mode"]));
+                return ((string)(this["Attitude_Mode"]));
             }
             set {
                 this["Attitude_Mode"] = value;
@@ -206,9 +206,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+M")]
-        public global::System.Windows.Forms.Keys Speak_Attitude {
+        public string Speak_Attitude {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Speak_Attitude"]));
+                return ((string)(this["Speak_Attitude"]));
             }
             set {
                 this["Speak_Attitude"] = value;
@@ -218,9 +218,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+A")]
-        public global::System.Windows.Forms.Keys Toggle_Autopilot_Announcement {
+        public string Toggle_Autopilot_Announcement {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Toggle_Autopilot_Announcement"]));
+                return ((string)(this["Toggle_Autopilot_Announcement"]));
             }
             set {
                 this["Toggle_Autopilot_Announcement"] = value;
@@ -230,9 +230,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+G")]
-        public global::System.Windows.Forms.Keys Toggle_GPWS_Announcement {
+        public string Toggle_GPWS_Announcement {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Toggle_GPWS_Announcement"]));
+                return ((string)(this["Toggle_GPWS_Announcement"]));
             }
             set {
                 this["Toggle_GPWS_Announcement"] = value;
@@ -242,9 +242,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+I")]
-        public global::System.Windows.Forms.Keys Toggle_ILS_Announcement {
+        public string Toggle_ILS_Announcement {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Toggle_ILS_Announcement"]));
+                return ((string)(this["Toggle_ILS_Announcement"]));
             }
             set {
                 this["Toggle_ILS_Announcement"] = value;
@@ -254,9 +254,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+F")]
-        public global::System.Windows.Forms.Keys Toggle_Flaps_Announcement {
+        public string Toggle_Flaps_Announcement {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Toggle_Flaps_Announcement"]));
+                return ((string)(this["Toggle_Flaps_Announcement"]));
             }
             set {
                 this["Toggle_Flaps_Announcement"] = value;
@@ -266,9 +266,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("I")]
-        public global::System.Windows.Forms.Keys Wind_Information {
+        public string Wind_Information {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Wind_Information"]));
+                return ((string)(this["Wind_Information"]));
             }
             set {
                 this["Wind_Information"] = value;
@@ -278,9 +278,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+H")]
-        public global::System.Windows.Forms.Keys Runway_Guidance_Mode {
+        public string Runway_Guidance_Mode {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Runway_Guidance_Mode"]));
+                return ((string)(this["Runway_Guidance_Mode"]));
             }
             set {
                 this["Runway_Guidance_Mode"] = value;
@@ -290,9 +290,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("F")]
-        public global::System.Windows.Forms.Keys Fuel_Report {
+        public string Fuel_Report {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Report"]));
+                return ((string)(this["Fuel_Report"]));
             }
             set {
                 this["Fuel_Report"] = value;
@@ -302,9 +302,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("B")]
-        public global::System.Windows.Forms.Keys Fuel_Flow {
+        public string Fuel_Flow {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Flow"]));
+                return ((string)(this["Fuel_Flow"]));
             }
             set {
                 this["Fuel_Flow"] = value;
@@ -314,9 +314,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_1 {
+        public string Fuel_Tank_1 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_1"]));
+                return ((string)(this["Fuel_Tank_1"]));
             }
             set {
                 this["Fuel_Tank_1"] = value;
@@ -326,9 +326,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_2 {
+        public string Fuel_Tank_2 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_2"]));
+                return ((string)(this["Fuel_Tank_2"]));
             }
             set {
                 this["Fuel_Tank_2"] = value;
@@ -338,9 +338,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_3 {
+        public string Fuel_Tank_3 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_3"]));
+                return ((string)(this["Fuel_Tank_3"]));
             }
             set {
                 this["Fuel_Tank_3"] = value;
@@ -350,9 +350,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("4")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_4 {
+        public string Fuel_Tank_4 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_4"]));
+                return ((string)(this["Fuel_Tank_4"]));
             }
             set {
                 this["Fuel_Tank_4"] = value;
@@ -362,9 +362,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_5 {
+        public string Fuel_Tank_5 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_5"]));
+                return ((string)(this["Fuel_Tank_5"]));
             }
             set {
                 this["Fuel_Tank_5"] = value;
@@ -374,9 +374,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("6")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_6 {
+        public string Fuel_Tank_6 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_6"]));
+                return ((string)(this["Fuel_Tank_6"]));
             }
             set {
                 this["Fuel_Tank_6"] = value;
@@ -386,9 +386,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("7")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_7 {
+        public string Fuel_Tank_7 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_7"]));
+                return ((string)(this["Fuel_Tank_7"]));
             }
             set {
                 this["Fuel_Tank_7"] = value;
@@ -398,9 +398,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_8 {
+        public string Fuel_Tank_8 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_8"]));
+                return ((string)(this["Fuel_Tank_8"]));
             }
             set {
                 this["Fuel_Tank_8"] = value;
@@ -410,9 +410,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_9 {
+        public string Fuel_Tank_9 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_9"]));
+                return ((string)(this["Fuel_Tank_9"]));
             }
             set {
                 this["Fuel_Tank_9"] = value;
@@ -422,9 +422,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public global::System.Windows.Forms.Keys Fuel_Tank_10 {
+        public string Fuel_Tank_10 {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Tank_10"]));
+                return ((string)(this["Fuel_Tank_10"]));
             }
             set {
                 this["Fuel_Tank_10"] = value;
@@ -434,9 +434,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("P")]
-        public global::System.Windows.Forms.Keys Nearby_Airborn_Aircraft {
+        public string Nearby_Airborn_Aircraft {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Nearby_Airborn_Aircraft"]));
+                return ((string)(this["Nearby_Airborn_Aircraft"]));
             }
             set {
                 this["Nearby_Airborn_Aircraft"] = value;
@@ -446,9 +446,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+P")]
-        public global::System.Windows.Forms.Keys Nearby_Ground_Aircraft {
+        public string Nearby_Ground_Aircraft {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Nearby_Ground_Aircraft"]));
+                return ((string)(this["Nearby_Ground_Aircraft"]));
             }
             set {
                 this["Nearby_Ground_Aircraft"] = value;
@@ -458,9 +458,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+1")]
-        public global::System.Windows.Forms.Keys Engine_1_Info {
+        public string Engine_1_Info {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_1_Info"]));
+                return ((string)(this["Engine_1_Info"]));
             }
             set {
                 this["Engine_1_Info"] = value;
@@ -470,9 +470,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+2")]
-        public global::System.Windows.Forms.Keys Engine_2_Info {
+        public string Engine_2_Info {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_2_Info"]));
+                return ((string)(this["Engine_2_Info"]));
             }
             set {
                 this["Engine_2_Info"] = value;
@@ -482,9 +482,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+3")]
-        public global::System.Windows.Forms.Keys Engine_3_Info {
+        public string Engine_3_Info {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_3_Info"]));
+                return ((string)(this["Engine_3_Info"]));
             }
             set {
                 this["Engine_3_Info"] = value;
@@ -494,9 +494,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+4")]
-        public global::System.Windows.Forms.Keys Engine_4_Info {
+        public string Engine_4_Info {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_4_Info"]));
+                return ((string)(this["Engine_4_Info"]));
             }
             set {
                 this["Engine_4_Info"] = value;
@@ -506,9 +506,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+W")]
-        public global::System.Windows.Forms.Keys Weight_Report {
+        public string Weight_Report {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Weight_Report"]));
+                return ((string)(this["Weight_Report"]));
             }
             set {
                 this["Weight_Report"] = value;
@@ -518,9 +518,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("R")]
-        public global::System.Windows.Forms.Keys Repeat_Last_Simconnect_Message {
+        public string Repeat_Last_Simconnect_Message {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Repeat_Last_Simconnect_Message"]));
+                return ((string)(this["Repeat_Last_Simconnect_Message"]));
             }
             set {
                 this["Repeat_Last_Simconnect_Message"] = value;
@@ -530,9 +530,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("E")]
-        public global::System.Windows.Forms.Keys Read_Simulation_Rate {
+        public string Read_Simulation_Rate {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Read_Simulation_Rate"]));
+                return ((string)(this["Read_Simulation_Rate"]));
             }
             set {
                 this["Read_Simulation_Rate"] = value;
@@ -542,9 +542,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("U")]
-        public global::System.Windows.Forms.Keys Ground_Speed {
+        public string Ground_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Ground_Speed"]));
+                return ((string)(this["Ground_Speed"]));
             }
             set {
                 this["Ground_Speed"] = value;
@@ -554,9 +554,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+1")]
-        public global::System.Windows.Forms.Keys Engine_1_Throttle {
+        public string Engine_1_Throttle {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_1_Throttle"]));
+                return ((string)(this["Engine_1_Throttle"]));
             }
             set {
                 this["Engine_1_Throttle"] = value;
@@ -566,9 +566,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+2")]
-        public global::System.Windows.Forms.Keys Engine_2_Throttle {
+        public string Engine_2_Throttle {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_2_Throttle"]));
+                return ((string)(this["Engine_2_Throttle"]));
             }
             set {
                 this["Engine_2_Throttle"] = value;
@@ -578,9 +578,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+3")]
-        public global::System.Windows.Forms.Keys Engine_3_Throttle {
+        public string Engine_3_Throttle {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_3_Throttle"]));
+                return ((string)(this["Engine_3_Throttle"]));
             }
             set {
                 this["Engine_3_Throttle"] = value;
@@ -590,9 +590,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+4")]
-        public global::System.Windows.Forms.Keys Engine_4_Throttle {
+        public string Engine_4_Throttle {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Engine_4_Throttle"]));
+                return ((string)(this["Engine_4_Throttle"]));
             }
             set {
                 this["Engine_4_Throttle"] = value;
@@ -602,9 +602,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+C")]
-        public global::System.Windows.Forms.Keys Current_Location {
+        public string Current_Location {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Current_Location"]));
+                return ((string)(this["Current_Location"]));
             }
             set {
                 this["Current_Location"] = value;
@@ -614,9 +614,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Z")]
-        public global::System.Windows.Forms.Keys Disable_Command_Key {
+        public string Disable_Command_Key {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Disable_Command_Key"]));
+                return ((string)(this["Disable_Command_Key"]));
             }
             set {
                 this["Disable_Command_Key"] = value;
@@ -626,9 +626,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+B")]
-        public global::System.Windows.Forms.Keys Toggle_Braille_output {
+        public string Toggle_Braille_output {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Toggle_Braille_output"]));
+                return ((string)(this["Toggle_Braille_output"]));
             }
             set {
                 this["Toggle_Braille_output"] = value;
@@ -638,9 +638,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("A")]
-        public global::System.Windows.Forms.Keys ap_Get_Altitude {
+        public string ap_Get_Altitude {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Altitude"]));
+                return ((string)(this["ap_Get_Altitude"]));
             }
             set {
                 this["ap_Get_Altitude"] = value;
@@ -650,9 +650,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+A")]
-        public global::System.Windows.Forms.Keys ap_Set_Altitude {
+        public string ap_Set_Altitude {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Altitude"]));
+                return ((string)(this["ap_Set_Altitude"]));
             }
             set {
                 this["ap_Set_Altitude"] = value;
@@ -662,9 +662,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("OemOpenBrackets")]
-        public global::System.Windows.Forms.Keys ap_Command_Key {
+        public string ap_Command_Key {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Command_Key"]));
+                return ((string)(this["ap_Command_Key"]));
             }
             set {
                 this["ap_Command_Key"] = value;
@@ -674,9 +674,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("H")]
-        public global::System.Windows.Forms.Keys ap_Get_Heading {
+        public string ap_Get_Heading {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Heading"]));
+                return ((string)(this["ap_Get_Heading"]));
             }
             set {
                 this["ap_Get_Heading"] = value;
@@ -686,9 +686,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+H")]
-        public global::System.Windows.Forms.Keys ap_Set_Heading {
+        public string ap_Set_Heading {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Heading"]));
+                return ((string)(this["ap_Set_Heading"]));
             }
             set {
                 this["ap_Set_Heading"] = value;
@@ -698,9 +698,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("S")]
-        public global::System.Windows.Forms.Keys ap_Get_Airspeed {
+        public string ap_Get_Airspeed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Airspeed"]));
+                return ((string)(this["ap_Get_Airspeed"]));
             }
             set {
                 this["ap_Get_Airspeed"] = value;
@@ -710,9 +710,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+S")]
-        public global::System.Windows.Forms.Keys ap_Set_Airspeed {
+        public string ap_Set_Airspeed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Airspeed"]));
+                return ((string)(this["ap_Set_Airspeed"]));
             }
             set {
                 this["ap_Set_Airspeed"] = value;
@@ -722,9 +722,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("L")]
-        public global::System.Windows.Forms.Keys Read_Flaps_Angle {
+        public string Read_Flaps_Angle {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Read_Flaps_Angle"]));
+                return ((string)(this["Read_Flaps_Angle"]));
             }
             set {
                 this["Read_Flaps_Angle"] = value;
@@ -734,9 +734,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("M")]
-        public global::System.Windows.Forms.Keys ap_Get_Mach_Speed {
+        public string ap_Get_Mach_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Mach_Speed"]));
+                return ((string)(this["ap_Get_Mach_Speed"]));
             }
             set {
                 this["ap_Get_Mach_Speed"] = value;
@@ -746,9 +746,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+M")]
-        public global::System.Windows.Forms.Keys ap_Set_Mach_Speed {
+        public string ap_Set_Mach_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Mach_Speed"]));
+                return ((string)(this["ap_Set_Mach_Speed"]));
             }
             set {
                 this["ap_Set_Mach_Speed"] = value;
@@ -758,18 +758,18 @@ namespace tfm.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("V")]
-        public global::System.Windows.Forms.Keys ap_Get_Vertical_Speed {
+        public string ap_Get_Vertical_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Vertical_Speed"]));
+                return ((string)(this["ap_Get_Vertical_Speed"]));
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+V")]
-        public global::System.Windows.Forms.Keys ap_Set_Vertical_Speed {
+        public string ap_Set_Vertical_Speed {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Vertical_Speed"]));
+                return ((string)(this["ap_Set_Vertical_Speed"]));
             }
             set {
                 this["ap_Set_Vertical_Speed"] = value;
@@ -779,9 +779,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C")]
-        public global::System.Windows.Forms.Keys ap_Get_Com_Radios {
+        public string ap_Get_Com_Radios {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Com_Radios"]));
+                return ((string)(this["ap_Get_Com_Radios"]));
             }
             set {
                 this["ap_Get_Com_Radios"] = value;
@@ -791,9 +791,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+C")]
-        public global::System.Windows.Forms.Keys ap_Set_Com_Radios {
+        public string ap_Set_Com_Radios {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Com_Radios"]));
+                return ((string)(this["ap_Set_Com_Radios"]));
             }
             set {
                 this["ap_Set_Com_Radios"] = value;
@@ -803,9 +803,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("N")]
-        public global::System.Windows.Forms.Keys ap_Get_Nav_Radios {
+        public string ap_Get_Nav_Radios {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Nav_Radios"]));
+                return ((string)(this["ap_Get_Nav_Radios"]));
             }
             set {
                 this["ap_Get_Nav_Radios"] = value;
@@ -815,9 +815,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+N")]
-        public global::System.Windows.Forms.Keys ap_Set_Nav_Radios {
+        public string ap_Set_Nav_Radios {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Nav_Radios"]));
+                return ((string)(this["ap_Set_Nav_Radios"]));
             }
             set {
                 this["ap_Set_Nav_Radios"] = value;
@@ -827,9 +827,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("T")]
-        public global::System.Windows.Forms.Keys ap_Get_Transponder {
+        public string ap_Get_Transponder {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Transponder"]));
+                return ((string)(this["ap_Get_Transponder"]));
             }
             set {
                 this["ap_Get_Transponder"] = value;
@@ -839,9 +839,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+T")]
-        public global::System.Windows.Forms.Keys ap_Set_Transponder {
+        public string ap_Set_Transponder {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Transponder"]));
+                return ((string)(this["ap_Set_Transponder"]));
             }
             set {
                 this["ap_Set_Transponder"] = value;
@@ -851,9 +851,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+F")]
-        public global::System.Windows.Forms.Keys Fuel_Manager {
+        public string Fuel_Manager {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Fuel_Manager"]));
+                return ((string)(this["Fuel_Manager"]));
             }
             set {
                 this["Fuel_Manager"] = value;
@@ -863,9 +863,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+S")]
-        public global::System.Windows.Forms.Keys Output_History {
+        public string Output_History {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Output_History"]));
+                return ((string)(this["Output_History"]));
             }
             set {
                 this["Output_History"] = value;
@@ -875,9 +875,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+E")]
-        public global::System.Windows.Forms.Keys Read_Landing_Gear {
+        public string Read_Landing_Gear {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Read_Landing_Gear"]));
+                return ((string)(this["Read_Landing_Gear"]));
             }
             set {
                 this["Read_Landing_Gear"] = value;
@@ -887,9 +887,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+R")]
-        public global::System.Windows.Forms.Keys ap_Set_Throttle {
+        public string ap_Set_Throttle {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Throttle"]));
+                return ((string)(this["ap_Set_Throttle"]));
             }
             set {
                 this["ap_Set_Throttle"] = value;
@@ -899,9 +899,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+A")]
-        public global::System.Windows.Forms.Keys takeoff_assist {
+        public string takeoff_assist {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["takeoff_assist"]));
+                return ((string)(this["takeoff_assist"]));
             }
             set {
                 this["takeoff_assist"] = value;
@@ -911,9 +911,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+P")]
-        public global::System.Windows.Forms.Keys flight_planner {
+        public string flight_planner {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["flight_planner"]));
+                return ((string)(this["flight_planner"]));
             }
             set {
                 this["flight_planner"] = value;
@@ -923,9 +923,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+P")]
-        public global::System.Windows.Forms.Keys ap_PMDG_Panels {
+        public string ap_PMDG_Panels {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_PMDG_Panels"]));
+                return ((string)(this["ap_PMDG_Panels"]));
             }
             set {
                 this["ap_PMDG_Panels"] = value;
@@ -935,9 +935,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+C")]
-        public global::System.Windows.Forms.Keys ap_PMDG_CDU {
+        public string ap_PMDG_CDU {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_PMDG_CDU"]));
+                return ((string)(this["ap_PMDG_CDU"]));
             }
             set {
                 this["ap_PMDG_CDU"] = value;
@@ -947,9 +947,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+V")]
-        public global::System.Windows.Forms.Keys Landing_Rate {
+        public string Landing_Rate {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["Landing_Rate"]));
+                return ((string)(this["Landing_Rate"]));
             }
             set {
                 this["Landing_Rate"] = value;
@@ -959,9 +959,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("B")]
-        public global::System.Windows.Forms.Keys ap_Get_Altimeter {
+        public string ap_Get_Altimeter {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Get_Altimeter"]));
+                return ((string)(this["ap_Get_Altimeter"]));
             }
             set {
                 this["ap_Get_Altimeter"] = value;
@@ -971,9 +971,9 @@ namespace tfm.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Shift+B")]
-        public global::System.Windows.Forms.Keys ap_Set_Altimeter {
+        public string ap_Set_Altimeter {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["ap_Set_Altimeter"]));
+                return ((string)(this["ap_Set_Altimeter"]));
             }
             set {
                 this["ap_Set_Altimeter"] = value;
