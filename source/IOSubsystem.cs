@@ -91,18 +91,18 @@ namespace tfm
         private double HdgLeft;
 
         // Audio objects
-        IWavePlayer driverOut;
-        SignalGenerator wg;
-        SignalGenerator BankWG;
-        PanningSampleProvider pan;
-        OffsetSampleProvider pulse;
-        MixingSampleProvider mixer;
+        private static IWavePlayer driverOut;
+        private static SignalGenerator wg;
+        private static SignalGenerator BankWG;
+        private static PanningSampleProvider pan;
+        private static OffsetSampleProvider pulse;
+        private static MixingSampleProvider mixer;
 
         // initialize sound objects
         // readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
-        WaveFileReader cmdSound;
-        WaveFileReader apCmdSound;
+        private static WaveFileReader cmdSound;
+        private static WaveFileReader apCmdSound;
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         List<string> autopilotHotkeys = new List<string>();
@@ -2106,7 +2106,7 @@ namespace tfm
             }
             else
             {
-                driverOut.Stop();
+                mixer.RemoveAllMixerInputs();
                 RunwayGuidanceTimer.Stop();
                 runwayGuidanceEnabled = false;
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Runway Guidance disabled. ");
