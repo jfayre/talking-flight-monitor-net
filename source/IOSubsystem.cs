@@ -20,7 +20,6 @@ using System.Text;
 using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Configuration;
 using NGeoNames;
@@ -30,12 +29,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.ServiceModel.Security;
 using System.Drawing.Text;
-using System.Windows.Forms.VisualStyles;
 using tfm.Properties;
 using System.CodeDom;
 using System.Speech.Synthesis;
 using System.ComponentModel.Design;
-
+using System.Windows.Input;
 namespace tfm
 {
     public class IOSubsystem
@@ -261,14 +259,24 @@ namespace tfm
 
         public IOSubsystem()
         {
-
+            KeyConverter kc = new KeyConverter();
+            ModifierKeysConverter mc = new ModifierKeysConverter();
+            Key k;
+            ModifierKeys m;
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
             // Initialize audio output
             SetupAudio();
             var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
-            HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
+            string[] cmdkey = Properties.Hotkeys.Default.Command_Key.Split('+');
+if (cmdkey.Count() == 1)
+            {
+                k = (Key)kc.ConvertFromString(cmdkey[0]);
+                HotkeyManager.Current.AddOrReplace("Command_Key", k, System.Windows.Input.ModifierKeys.None, commandMode);
+            }
+
+            
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
 

@@ -17,6 +17,7 @@
     <PackageReference Include="NHotkey.Wpf" Version="2.1.0" />
     <PackageReference Include="NLog" Version="4.7.8" />
     <PackageReference Include="System.Speech" Version="5.0.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup>
