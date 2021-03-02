@@ -1,5 +1,4 @@
-﻿using DavyKager;
-using FSUIPC;
+﻿using FSUIPC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,9 +7,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tfm
+namespace SimConnector
 {
-    public static class Aircraft
+    public static class OffsetDeclarations
     {
         // =====================================
         // DECLARE OFFSETS YOU WANT TO USE HERE

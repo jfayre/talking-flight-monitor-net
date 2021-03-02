@@ -99,11 +99,6 @@ namespace tfm
         // initialize sound objects
         // readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
         // readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
-        WaveFileReader cmdSound;
-        WaveFileReader apCmdSound;
-        // list to store registered hotkey identifiers
-        List<string> hotkeys = new List<string>();
-        List<string> autopilotHotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
@@ -259,22 +254,12 @@ namespace tfm
 
         public IOSubsystem()
         {
-            KeyConverter kc = new KeyConverter();
-            ModifierKeysConverter mc = new ModifierKeysConverter();
-            Key k;
-            ModifierKeys m;
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
             // Initialize audio output
             SetupAudio();
             var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
-            string[] cmdkey = Properties.Hotkeys.Default.Command_Key.Split('+');
-if (cmdkey.Count() == 1)
-            {
-                k = (Key)kc.ConvertFromString(cmdkey[0]);
-                HotkeyManager.Current.AddOrReplace("Command_Key", k, System.Windows.Input.ModifierKeys.None, commandMode);
-            }
 
             
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);

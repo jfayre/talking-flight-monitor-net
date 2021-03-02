@@ -56,4 +56,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Autopilot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimConnector\SimConnector\SimConnector.csproj" />
+  </ItemGroup>
+
 </Project>
