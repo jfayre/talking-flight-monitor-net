@@ -58,6 +58,7 @@
 
   <ItemGroup>
     <Folder Include="Autopilot\" />
+    <Folder Include="UI\" />
   </ItemGroup>
 
   <ItemGroup>
