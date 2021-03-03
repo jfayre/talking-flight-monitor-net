@@ -714,34 +714,38 @@ namespace tfm
                     }
                 }
             }
-            try
+            if (Properties.Settings.Default.ReadGPWS == true)
             {
-                if (radioAlt < 10000 && vSpeed < -50)
+                try
                 {
-                    var gpwsKeys = new List<int>(gpwsFlags.Keys);
-                    foreach (int key in gpwsKeys)
+                    if (radioAlt < 10000 && vSpeed < -50)
                     {
-                        if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                        var gpwsKeys = new List<int>(gpwsFlags.Keys);
+                        foreach (int key in gpwsKeys)
                         {
-                            gpwsSound = new WaveFileReader("sounds\\" + key.ToString() + ".wav");
-                            // SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
-                            // snd.Play();
-                            mixer.AddMixerInput(gpwsSound.ToSampleProvider().ToStereo());
-                            gpwsFlags[key] = true;
-                        }
-                        else
-                        {
-                            if (radioAlt > key + 50)
+                            if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
                             {
-                                gpwsFlags[key] = false;
+                                gpwsSound = new WaveFileReader("sounds\\" + key.ToString() + ".wav");
+                                // SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
+                                // snd.Play();
+                                mixer.AddMixerInput(gpwsSound.ToSampleProvider().ToStereo());
+                                gpwsFlags[key] = true;
+                            }
+                            else
+                            {
+                                if (radioAlt > key + 50)
+                                {
+                                    gpwsFlags[key] = false;
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{ex.Message}");
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}");
+                }
+
             }
         }
 
@@ -2175,7 +2179,16 @@ namespace tfm
 
         private void onGPWSKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (Properties.Settings.Default.ReadGPWS == false)
+            {
+                Properties.Settings.Default.ReadGPWS = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "GPWS enabled");
+            }
+            else
+            {
+                Properties.Settings.Default.ReadGPWS = false;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "GPWS disabled");
+            }
         }
 
         private void onDirectorKey()
