@@ -1,4 +1,4 @@
-﻿using DavyKager;
+﻿/*using DavyKager;
     using BingMapsSDSToolkit.GeodataAPI;
 using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
@@ -3039,4 +3039,4 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                             
         } // End PostTakeoffChecklist.
     } // End IoSubSystem class.
-} // End TFM namespace.
+} // End TFM namespace.*/
