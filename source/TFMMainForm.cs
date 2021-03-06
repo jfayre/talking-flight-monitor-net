@@ -42,16 +42,15 @@ namespace tfm
             // upgrade settings
             Properties.Settings.Default.Upgrade();
             synth.Rate = Properties.Settings.Default.SAPISpeechRate;
-            // add debug to the title of the main window if debugging is enabled
+            // speak a debug message via SAPI if debug mode is turned on
             if (utility.DebugEnabled)
             {
                 Tolk.PreferSAPI(true);
                 Tolk.Output("Debug mode");
-                Tolk.PreferSAPI(false); ;
+                Tolk.PreferSAPI(false);
             }
 
             if (Properties.Settings.Default.GeonamesUsername == "")
-                
             {
                 MessageBox.Show("Geonames username has not been configured. Flight following features will not function.\nGo to the General section in settings to add your Geonames user name\n", "error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }

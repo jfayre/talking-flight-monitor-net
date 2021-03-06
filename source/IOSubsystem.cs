@@ -91,16 +91,18 @@ namespace tfm
         private double HdgLeft;
 
         // Audio objects
-        IWavePlayer driverOut;
-        SignalGenerator wg;
-        SignalGenerator BankWG;
-        PanningSampleProvider pan;
-        OffsetSampleProvider pulse;
-        MixingSampleProvider mixer;
+        private static IWavePlayer driverOut;
+        private static SignalGenerator wg;
+        private static SignalGenerator BankWG;
+        private static PanningSampleProvider pan;
+        private static OffsetSampleProvider pulse;
+        private static MixingSampleProvider mixer;
 
         // initialize sound objects
-        readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
-        readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
+        // readonly SoundPlayer cmdSound = new SoundPlayer(@"sounds\command.wav");
+        // readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
+        private static WaveFileReader cmdSound;
+        private static WaveFileReader apCmdSound;
         // list to store registered hotkey identifiers
         List<string> hotkeys = new List<string>();
         List<string> autopilotHotkeys = new List<string>();
@@ -255,6 +257,7 @@ namespace tfm
         private bool apuOff = true;
         private bool fuelManagerActive;
         OutputHistory history = new OutputHistory();
+        WaveFileReader gpwsSound;
 
         public IOSubsystem()
         {
@@ -262,8 +265,9 @@ namespace tfm
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
+            // Initialize audio output
+            SetupAudio();
             var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
-            fireOnScreenReaderOutputEvent(textOutput: false, output: $"Talking Flight Monitor test build {version}");
             HotkeyManager.Current.AddOrReplace("Command_Key", (Keys)Properties.Hotkeys.Default.Command_Key, commandMode);
             HotkeyManager.Current.AddOrReplace("ap_Command_Key", (Keys)Properties.Hotkeys.Default.ap_Command_Key, autopilotCommandMode);
             // HotkeyManager.Current.AddOrReplace("test", Keys.Z, OffsetTest);
@@ -275,6 +279,7 @@ namespace tfm
             GroundSpeedTimer.Elapsed += onGroundSpeedTimerTick;
             ilsTimer.Elapsed += onILSTimerTick;
             waypointTransitionTimer.Elapsed += onWaypointTransitionTimerTick;
+            WarningsTimer.Elapsed += WarningsTimer_Tick;
             // start the flight following timer if it is enabled in settings
             SetupFlightFollowing();
             // populate the dictionary for the altitude callout flags
@@ -283,6 +288,18 @@ namespace tfm
                 altitudeCalloutFlags.Add(i, false);
             }
             pmdg = new PMDGPanelUpdateEvent();
+        }
+
+        private void SetupAudio()
+        {
+            driverOut = new WaveOutEvent() { DesiredLatency = 50 };
+            
+            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            mixer.ReadFully = true;
+            driverOut.Init(mixer);
+            // start the mixer. We can then add audio sources as needed.
+            driverOut.Play();
+
         }
 
         private void onWaypointTransitionTimerTick(object sender, ElapsedEventArgs e)
@@ -354,8 +371,18 @@ namespace tfm
                 ReadToggle(Aircraft.AutoThrottleArm, Aircraft.AutoThrottleArm.Value > 0, "Auto Throttle", "Armed", "off");
                 ReadToggle(Aircraft.ApYawDamper, Aircraft.ApYawDamper.Value > 0, "Yaw Damper", "active", "off");
                 ReadToggle(Aircraft.Toga, Aircraft.Toga.Value > 0, "take off power", "active", "off");
-                ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off");
-                ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off");
+                // if approach mode is on, read altitude and heading lock using SAPI
+                if (Aircraft.ApApproachHold.Value == 1)
+                {
+                        ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off", true);
+                    ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off", true);
+                }
+                else
+                {
+                    ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off");
+                    ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off");
+
+                }
                 ReadToggle(Aircraft.ApNavLock, Aircraft.ApNavLock.Value > 0, "nav lock", "active", "off");
                 ReadToggle(Aircraft.ApFlightDirector, Aircraft.ApFlightDirector.Value > 0, "Flight Director", "Active", "off");
                 ReadToggle(Aircraft.ApNavGPS, Aircraft.ApNavGPS.Value > 0, "Nav gps switch", "set to GPS", "set to nav");
@@ -565,7 +592,7 @@ namespace tfm
                 if (Aircraft.StallWarning.Value == 1 || Aircraft.OverSpeedWarning.Value == 1)
                 {
                     WarningFlag = true;
-                    WarningsTimer.Elapsed += WarningsTimer_Tick;
+                    
                     WarningsTimer.AutoReset = true;
                     WarningsTimer.Enabled = true;
                 }
@@ -687,18 +714,38 @@ namespace tfm
                     }
                 }
             }
-            if (radioAlt < 10000 && vSpeed < -50)
+            if (Properties.Settings.Default.ReadGPWS == true)
             {
-                var gpwsKeys = new List<int>(gpwsFlags.Keys);
-                foreach (int key in gpwsKeys)
+                try
                 {
-                    if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                    if (radioAlt < 10000 && vSpeed < -50)
                     {
-                        SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
-                        snd.Play();
-                        gpwsFlags[key] = true;
+                        var gpwsKeys = new List<int>(gpwsFlags.Keys);
+                        foreach (int key in gpwsKeys)
+                        {
+                            if (radioAlt <= key + 5 && radioAlt >= key - 5 && gpwsFlags[key] == false)
+                            {
+                                gpwsSound = new WaveFileReader("sounds\\" + key.ToString() + ".wav");
+                                // SoundPlayer snd = new SoundPlayer("sounds\\" + key.ToString() + ".wav");
+                                // snd.Play();
+                                mixer.AddMixerInput(gpwsSound.ToSampleProvider().ToStereo());
+                                gpwsFlags[key] = true;
+                            }
+                            else
+                            {
+                                if (radioAlt > key + 50)
+                                {
+                                    gpwsFlags[key] = false;
+                                }
+                            }
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}");
+                }
+
             }
         }
 
@@ -1258,17 +1305,17 @@ namespace tfm
             }
         }
 
-        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off")
+        private void ReadToggle(Offset instrument, bool toggleStateOn, string name, string OnMsg = "on", string OffMsg = "off", bool SAPI = false)
         {
             if (instrument.ValueChanged)
             {
                 if (toggleStateOn)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OnMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI : SAPI, output: $"{name} {OnMsg}");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OffMsg}");
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI : SAPI, output: $"{name} {OffMsg}");
                 }
             }
         }
@@ -1308,8 +1355,8 @@ namespace tfm
                 // remove the left bracket autopilot command
                 HotkeyManager.Current.Remove("ap_Command_Key");
                 // play the command sound
-                // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                cmdSound.Play();
+                cmdSound = new WaveFileReader(@"sounds\command.wav");
+                mixer.AddMixerInput(cmdSound);
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -1349,7 +1396,8 @@ namespace tfm
             {
                 // play the command sound
                 // AudioPlaybackEngine.Instance.PlaySound(cmdSound);
-                apCmdSound.Play();
+                apCmdSound = new WaveFileReader(@"sounds\ap_command.wav");
+                mixer.AddMixerInput(apCmdSound);
                 // populate a list of hotkeys, so we can clear them later.
                 foreach (SettingsProperty s in Properties.Hotkeys.Default.Properties)
                 {
@@ -2058,17 +2106,11 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
                 // we use an OffsetSampleProvider to allow playing beep tones
-                driverOut = new WaveOutEvent();
-                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-                mixer.ReadFully = true;
-                driverOut.Init(mixer);
-                // start the mixer. We can then add audio sources as needed.
-                driverOut.Play();
                 RunwayGuidanceTimer.Enabled = true;
             }
             else
             {
-                driverOut.Stop();
+                mixer.RemoveAllMixerInputs();
                 RunwayGuidanceTimer.Stop();
                 runwayGuidanceEnabled = false;
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Runway Guidance disabled. ");
@@ -2137,7 +2179,16 @@ namespace tfm
 
         private void onGPWSKey()
         {
-            Tolk.Output("not yet implemented.");
+            if (Properties.Settings.Default.ReadGPWS == false)
+            {
+                Properties.Settings.Default.ReadGPWS = true;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "GPWS enabled");
+            }
+            else
+            {
+                Properties.Settings.Default.ReadGPWS = false;
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "GPWS disabled");
+            }
         }
 
         private void onDirectorKey()
@@ -2178,19 +2229,12 @@ namespace tfm
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
 
-                driverOut = new WaveOutEvent();
-                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-                mixer.ReadFully = true;
-                driverOut.Init(mixer);
                 pitchSineProvider = new SineWaveProvider();
                 // bankSineProvider = new SineWaveProvider();
-                // start the mixer. We can then add audio sources as needed.
-                driverOut.Play();
                 AttitudeTimer.Enabled = true;
             }
             else
             {
-                driverOut.Stop();
                 mixer.RemoveAllMixerInputs();
                 AttitudePitchPlaying = false;
                 AttitudeBankLeftPlaying = false;
@@ -2572,11 +2616,6 @@ private void onLandingRateKey()
         private void onHeadingKey()
         {
             double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
-            if (localiserDetected)
-            {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + hdgTrue.ToString("F0") + "true, " + Aircraft.CompassHeading.Value.ToString("F0") + " Magnetic. ");
-
-            }
             fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Autopilot.Heading);
             ResetHotkeys();
         }
