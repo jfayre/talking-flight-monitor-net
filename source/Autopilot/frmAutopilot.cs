@@ -33,6 +33,13 @@ namespace tfm
             {
                 this.Text = "Set Throttle Percent (min 0, max 100)";
             }
+            else if(instrument == "spoilers")
+            {
+                this.Text = "Deploy spoilers";
+                lblSetting.Text = "Enter percent (0 to retract, 1 to arm, or 7 - 100):";
+                chkLock.Visible = false;
+                txtSetting.Text = ap.SpoilerPercent.ToString();
+            }
             else
             {
                 this.Text = $"set autopilot {instrument}";
@@ -199,6 +206,28 @@ namespace tfm
                     {
                         Tolk.Output("Invalid throttle setting.");
                         txtSetting.Text = String.Empty;
+                        txtSetting.Focus();
+                    }
+                    break;
+                case "spoilers":
+                    if(uint.TryParse(txtSetting.Text, out uint spoilerPercent))
+                    {
+                        if((spoilerPercent == 0) || (spoilerPercent == 1) || (spoilerPercent >= 7 && spoilerPercent <= 100))
+                        {
+                            ap.SpoilerPercent = spoilerPercent;
+                            this.DialogResult = DialogResult.OK;
+                        }
+                        else
+                        {
+                            Tolk.Output("Invalid spoiler value.");
+                            txtSetting.Text = string.Empty;
+                            txtSetting.Focus();
+                        }
+                    }
+                    else
+                    {
+                        Tolk.Output("Invalid spoiler value.");
+                        txtSetting.Text = string.Empty;
                         txtSetting.Focus();
                     }
                     break;
