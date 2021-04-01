@@ -242,5 +242,11 @@
     <Setting Name="ap_Set_Altimeter" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+B</Value>
     </Setting>
+    <Setting Name="ap_set_spoilers" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+Y</Value>
+    </Setting>
+    <Setting Name="get_spoilers" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Y</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

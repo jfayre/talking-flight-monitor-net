@@ -605,6 +605,68 @@ namespace tfm
             }
         }
 
+public uint  SpoilerPercent
+        {
+            get
+            {
+
+                uint currentSpoilers = 0;
+                // Spoilers are retracted.
+                if(Aircraft.Spoilers.Value == 0)
+                {
+                    currentSpoilers = 0;
+                }
+
+                // Spoilers are armed.
+        else if(Aircraft.Spoilers.Value == 4800)
+                {
+                    currentSpoilers = 1;
+                }
+
+                // The effective range of spoilers is between 7% and 100%
+                // Which starts at offset value 5620 (7%) and ends at offset value 16383 (100%).
+                else if(Aircraft.Spoilers.Value >= 5620 && Aircraft.Spoilers.Value <= 16383)
+                {
+                    // Convert the current offset value into a percent.
+                    // The formula is precise up to 14 decimal places
+                    // However, the conversion to uint causes automatic rounding, so the results in a simulator
+                    // may be slightly off. Example: 8% might truely be 6% with 10 decimal places added.
+                    currentSpoilers = ((Aircraft.Spoilers.Value - 4800) * 100) / (16383 - 4800);
+                }
+                return currentSpoilers;
+                            }
+            set
+            {
+                
+                // Providing 0% retracts spoilers.
+                if(value == 0)
+                {
+                    Aircraft.Spoilers.Value = 0;
+                }
+
+                // Providing 1% arms spoilers.
+                else if(value == 1)
+                {
+                    Aircraft.Spoilers.Value = 4800;
+                }
+
+                //A conversion in offset values to a percent is accurate up to 14 decimal places.
+// offset value 5620 is equal to 7% with 8 decimal places added.
+// Since we only want the whole portion of the percentage, 7.0...% is 5610
+// in offset value terminology, so, set 7% to 5620 by default.
+else                 if(value == 7)
+                {
+                    Aircraft.Spoilers.Value = 5620;                    
+                }
+                
+                // Handle the effective range for spoilers.
+                else if(value > 7 && value <= 100)
+                {
+                    var newSpoilers = (value * (16383 - 4800) / 100) + 4800;
+                                        Aircraft.Spoilers.Value = (uint)newSpoilers;
+                }
+            }
+        }
 
 
     }

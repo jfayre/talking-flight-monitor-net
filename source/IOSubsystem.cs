@@ -1128,6 +1128,24 @@ namespace tfm
             }
         }
 
+        private void onSpoilersKey()
+        {
+            uint currentSpoilers = Aircraft.Spoilers.Value;
+            if(currentSpoilers == 0)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers retracted.");
+            }
+            else if(currentSpoilers == 4800)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers armed.");
+            }
+            else if(currentSpoilers >= 5620)
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Spoilers: {Autopilot.SpoilerPercent}");
+                            }
+        }
+
+
         private void ReadFlaps()
         {
             if (Aircraft.Flaps.ValueChanged)
@@ -1444,6 +1462,11 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "ap_set_spoilers":
+                    ap = new frmAutopilot("spoilers");
+                    ap.ShowDialog();
+                    break;
+
                 case "ap_Get_Altitude":
                     gaugeName = "AP altitude";
                     gaugeValue = Autopilot.ApAltitude.ToString();
@@ -1565,7 +1588,8 @@ namespace tfm
                     ap = new frmAutopilot("Throttle");
                     ap.ShowDialog();
                     break;
-                case "ap_PMDG_CDU":
+
+                                case "ap_PMDG_CDU":
                     cdu = new frmPMDGCDU();
                     cdu.Show();
                     break;
@@ -1588,6 +1612,10 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "get_spoilers":
+                    onSpoilersKey();
+                    break;
+                
                 case "flight_planner":
                     var isPlannerActive = false;
                     foreach(Form form in Application.OpenForms)

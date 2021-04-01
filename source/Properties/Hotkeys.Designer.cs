@@ -979,5 +979,29 @@ namespace tfm.Properties {
                 this["ap_Set_Altimeter"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+Y")]
+        public global::System.Windows.Forms.Keys ap_set_spoilers {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_set_spoilers"]));
+            }
+            set {
+                this["ap_set_spoilers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Y")]
+        public global::System.Windows.Forms.Keys get_spoilers {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["get_spoilers"]));
+            }
+            set {
+                this["get_spoilers"] = value;
+            }
+        }
     }
 }
