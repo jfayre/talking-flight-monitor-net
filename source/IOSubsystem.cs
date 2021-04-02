@@ -1612,7 +1612,12 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
-                case "get_spoilers":
+                case "application_quit":
+                    Tolk.Output("TFM is shutting down...");
+                    Application.Exit();
+                    break;
+                
+               case "get_spoilers":
                     onSpoilersKey();
                     break;
                 
