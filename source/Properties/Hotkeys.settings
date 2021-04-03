@@ -248,5 +248,8 @@
     <Setting Name="get_spoilers" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Y</Value>
     </Setting>
+    <Setting Name="application_quit" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Ctrl+X</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1003,5 +1003,17 @@ namespace tfm.Properties {
                 this["get_spoilers"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ctrl+X")]
+        public global::System.Windows.Forms.Keys application_quit {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["application_quit"]));
+            }
+            set {
+                this["application_quit"] = value;
+            }
+        }
     }
 }
