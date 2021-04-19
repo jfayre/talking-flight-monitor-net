@@ -1,6 +1,6 @@
 ﻿namespace tfm
 {
-    partial class frmPMDGCDU
+    partial class frmPMDGCDUCopy
     {
         /// <summary>
         /// Required designer variable.
@@ -63,7 +63,7 @@
             this.flowLayoutPanel1.Controls.Add(this.txtCDU);
             this.flowLayoutPanel1.Controls.Add(this.btnRefresh);
             this.flowLayoutPanel1.Controls.Add(this.btnClear);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(723, 172);
@@ -78,8 +78,6 @@
             this.txtCDU.ReadOnly = true;
             this.txtCDU.Size = new System.Drawing.Size(497, 162);
             this.txtCDU.TabIndex = 0;
-            this.txtCDU.Enter += new System.EventHandler(this.txtCDU_Enter);
-            this.txtCDU.Leave += new System.EventHandler(this.txtCDU_Leave);
             // 
             // btnRefresh
             // 
@@ -108,7 +106,6 @@
             this.txtEntry.Name = "txtEntry";
             this.txtEntry.Size = new System.Drawing.Size(100, 40);
             this.txtEntry.TabIndex = 1;
-            this.txtEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtEntry_KeyDown);
             // 
             // btnSend
             // 

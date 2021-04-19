@@ -13,16 +13,15 @@ using System.Windows.Forms;
 
 namespace tfm
 {
-    public partial class frmPMDGCDU : Form
+    public partial class frmPMDGCDUCopy : Form
     {
-
-        int cduCursorPosition = 0;
+        
         uint ClkL = 0x20000000;
         uint ClkR = 0x80000000;
 
         PMDG_NGX_CDU_Screen cdu;
 
-        public frmPMDGCDU()
+        public frmPMDGCDUCopy()
         {
             InitializeComponent();
             cdu = new PMDG_NGX_CDU_Screen(0x5400);
@@ -66,17 +65,8 @@ namespace tfm
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            if(txtCDU.Focused)
-            {
-                cduCursorPosition = txtCDU.SelectionStart;
-                RefreshCDU();
-                txtCDU.SelectionStart = cduCursorPosition;
-            }
-            else
-            {
-                RefreshCDU();
-            }
-                    }
+            RefreshCDU();
+        }
 
         
 
@@ -87,149 +77,137 @@ namespace tfm
             if ((e.Alt && e.KeyCode == Keys.M))
             {
                 btnMenu.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // Execute
             if ((e.Alt && e.KeyCode == Keys.E))
             {
                 btnExec.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // dep arr
-            if ((e.Alt && e.KeyCode == Keys.A))
+            if ((e.Alt && e.KeyCode == Keys.D))
             {
                 btnDepArr.PerformClick();
                 RefreshCDU();
-                e.SuppressKeyPress = true;
             }
             // init ref
             if ((e.Alt && e.KeyCode == Keys.I))
             {
                 btnInitRef.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // prog
             if ((e.Alt && e.KeyCode == Keys.P))
             {
                 btnProg.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // RTE
-            if ((e.Alt && e.KeyCode == Keys.T))
+            if ((e.Alt && e.KeyCode == Keys.R))
             {
                 btnRte.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // CLB
-            if ((e.Alt && e.KeyCode == Keys.B))
+            if ((e.Alt && e.KeyCode == Keys.C))
             {
                 btnClb.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // CRZ
             if ((e.Alt && e.KeyCode == Keys.Z))
             {
                 btnCrz.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // DES
-            if ((e.Alt && e.KeyCode == Keys.D))
+            if ((e.Alt && e.KeyCode == Keys.L))
             {
                 btnDes.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // legs
             if ((e.Alt && e.KeyCode == Keys.G))
             {
                 btnLegs.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // hold
             if ((e.Alt && e.KeyCode == Keys.H))
             {
                 btnHold.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // N1 Limit
             if ((e.Alt && e.KeyCode == Keys.N))
             {
                 btnN1Limit.PerformClick();
-                e.SuppressKeyPress = true;
             }
             // fix
             if ((e.Alt && e.KeyCode == Keys.F))
             {
                 btnFix.PerformClick();
                 RefreshCDU();
-                e.SuppressKeyPress = true;
             }
 
-            if (e.KeyCode == Keys.F7)
+            if ((e.Alt && e.KeyCode == Keys.D1))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R1, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F8)
+            if ((e.Alt && e.KeyCode == Keys.D2))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R2, Aircraft.ClkL);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F9)
+            if ((e.Alt && e.KeyCode == Keys.D3))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R3, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F10)
+            if ((e.Alt && e.KeyCode == Keys.D4))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R4, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F11)
+            if ((e.Alt && e.KeyCode == Keys.D5))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R5, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F12)
+            if ((e.Alt && e.KeyCode == Keys.D6))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R6, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F1)
+            if ((e.Control && e.KeyCode == Keys.D1))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L1, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F2)
+            if ((e.Control && e.KeyCode == Keys.D2))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L2, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F3)
+            if ((e.Control && e.KeyCode == Keys.D3))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L3, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F4)
+            if ((e.Control && e.KeyCode == Keys.D4))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L4, 0x20000000);
                 RefreshCDU();
-                            }
-            if (e.KeyCode == Keys.F5)
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D5))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L5, 0x20000000);
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.F6)
+            if ((e.Control && e.KeyCode == Keys.D6))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L6, 0x20000000);
                 RefreshCDU();
@@ -252,27 +230,6 @@ namespace tfm
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PREV_PAGE, 0x20000000);
                 RefreshCDU();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.C))
-            {
-                btnClear.PerformClick();
-                RefreshCDU();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.R))
-            {
-                btnRefresh.PerformClick();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.S))
-            {
-                txtEntry.Focus();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.Home))
-            {
-                txtCDU.Focus();
                 e.SuppressKeyPress = true;
             }
 
@@ -518,137 +475,6 @@ namespace tfm
             FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PREV_PAGE, 0x20000000);
             RefreshCDU();
 
-        }
-
-        private void txtEntry_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.Control && e.KeyCode == Keys.A)) return;
-            switch (e.KeyCode)
-            {
-                case Keys.A:
-                    
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_A, Aircraft.ClkL);
-                    break;
-                case Keys.B:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_B, Aircraft.ClkL);
-                    break;
-                case Keys.C:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_C, Aircraft.ClkL);
-                    break;
-                case Keys.D:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_D, Aircraft.ClkL);
-                    break;
-                case Keys.E:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_E, Aircraft.ClkL);
-                    break;
-                case Keys.F:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_F, Aircraft.ClkL);
-                    break;
-                case Keys.G:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_G, Aircraft.ClkL);
-                    break;
-                case Keys.H:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_H, Aircraft.ClkL);
-                    break;
-                case Keys.I:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_I, Aircraft.ClkL);
-                    break;
-                case Keys.J:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_J, Aircraft.ClkL);
-                    break;
-                case Keys.K:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_K, Aircraft.ClkL);
-                    break;
-                case Keys.L:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L, Aircraft.ClkL);
-                    break;
-                case Keys.M:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_M, Aircraft.ClkL);
-                    break;
-                case Keys.N:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_N, Aircraft.ClkL);
-                    break;
-                case Keys.O:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_O, Aircraft.ClkL);
-                    break;
-                case Keys.P:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_P, Aircraft.ClkL);
-                    break;
-                case Keys.Q:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_Q, Aircraft.ClkL);
-                    break;
-                case Keys.R:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R, Aircraft.ClkL);
-                    break;
-                case Keys.S:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_S, Aircraft.ClkL);
-                    break;
-                case Keys.T:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_T, Aircraft.ClkL);
-                    break;
-                case Keys.U:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_U, Aircraft.ClkL);
-                    break;
-                case Keys.V:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_V, Aircraft.ClkL);
-                    break;
-                case Keys.W:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_W, Aircraft.ClkL);
-                    break;
-                case Keys.X:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_X, Aircraft.ClkL);
-                    break;
-                case Keys.Y:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_Y, Aircraft.ClkL);
-                    break;
-                case Keys.Z:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_Z, Aircraft.ClkL);
-                    break;
-                case Keys.D1:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_1, Aircraft.ClkL);
-                    break;
-                case Keys.D2:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_2, Aircraft.ClkL);
-                    break;
-                case Keys.D3:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_3, Aircraft.ClkL);
-                    break;
-                case Keys.D4:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_4, Aircraft.ClkL);
-                    break;
-                case Keys.D5:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_5, Aircraft.ClkL);
-                    break;
-                case Keys.D6:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_6, Aircraft.ClkL);
-                    break;
-                case Keys.D7:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_7, Aircraft.ClkL);
-                    break;
-                case Keys.D8:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_8, Aircraft.ClkL);
-                    break;
-                case Keys.D9:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_9, Aircraft.ClkL);
-                    break;
-                case Keys.D0:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_0, Aircraft.ClkL);
-                    break;
-                case Keys.OemPeriod:
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DOT, Aircraft.ClkL);
-                    break;
-                            }
-
-        }
-
-        private void txtCDU_Leave(object sender, EventArgs e)
-        {
-            cduCursorPosition = txtCDU.SelectionStart;
-        }
-
-        private void txtCDU_Enter(object sender, EventArgs e)
-        {
-            txtCDU.SelectionStart = cduCursorPosition;
         }
     }
 }
