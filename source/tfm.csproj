@@ -339,6 +339,12 @@
       <DependentUpon>frmCockpitPanels.cs</DependentUpon>
     </Compile>
     <Compile Include="PMDG\PMDG 737\CockpitPanels\iPanelsPage.cs" />
+    <Compile Include="PMDG\PMDG 737\frmPMDGCDU - Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 737\frmPMDGCDU - Copy.Designer.cs">
+      <DependentUpon>frmPMDGCDU - Copy.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDG 737\frmPMDGCDU.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -550,6 +556,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\CockpitPanels\frmCockpitPanels.resx">
       <DependentUpon>frmCockpitPanels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 737\frmPMDGCDU - Copy.resx">
+      <DependentUpon>frmPMDGCDU - Copy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 737\frmPMDGCDU.resx">
       <DependentUpon>frmPMDGCDU.cs</DependentUpon>
