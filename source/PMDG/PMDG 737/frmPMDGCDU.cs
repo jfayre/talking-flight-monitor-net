@@ -15,8 +15,8 @@ namespace tfm
 {
     public partial class frmPMDGCDU : Form
     {
-
-        int cduCursorPosition = 0;
+        private System.Windows.Forms.Timer cduTimer = new System.Windows.Forms.Timer();
+                int cduCursorPosition = 0;
         uint ClkL = 0x20000000;
         uint ClkR = 0x80000000;
 
@@ -27,12 +27,36 @@ namespace tfm
             InitializeComponent();
             cdu = new PMDG_NGX_CDU_Screen(0x5400);
             RefreshCDU();
+            cduTimer.Interval = 60000;
+            cduTimer.Tick += new EventHandler(cduTimerTick);
+            cduTimer.Start();
+            txtEntry.Focus();
+        }
+
+        private void cduTimerTick(object Sender, EventArgs e)
+        {
+
+            try
+            {
+                RefreshCDU();
+            }
+            catch(FSUIPCException)
+            {
+                cduTimer.Enabled = false;
+                cduTimer.Stop();
+            }
             
         }
 
-        private void RefreshCDU()
+        public void RefreshCDU()
         {
-            txtCDU.Clear();
+            // Check for keyboard focus before refreshing.
+            if(txtCDU.Focused)
+              {
+                  cduCursorPosition = txtCDU.SelectionStart;
+              }
+
+                        txtCDU.Clear();
             Thread.Sleep(500);
             cdu.RefreshData();
             int rowCounter = 1;
@@ -62,26 +86,28 @@ namespace tfm
                 }
                 rowCounter++;
             }
-        }
+
+            // Check for keyboard focus before restoring cursor state...
+            if(txtCDU.Focused)
+                {
+                    txtCDU.SelectionStart = cduCursorPosition;
+                }
+                    }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            if(txtCDU.Focused)
-            {
-                cduCursorPosition = txtCDU.SelectionStart;
-                RefreshCDU();
-                txtCDU.SelectionStart = cduCursorPosition;
-            }
-            else
-            {
-                RefreshCDU();
-            }
-                    }
+                                        RefreshCDU();
+                                }
 
         
 
         private void CDUForm_KeyDown(object sender, KeyEventArgs e)
         {
+
+            // Special case where we need to look for ALT+F4.
+            if((e.Alt) && (e.KeyCode == Keys.F4)) {
+                return;
+            }
             // keys for CDU buttons
             // menu key
             if ((e.Alt && e.KeyCode == Keys.M))

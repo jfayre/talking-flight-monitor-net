@@ -1015,5 +1015,17 @@ namespace tfm.Properties {
                 this["application_quit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+N")]
+        public global::System.Windows.Forms.Keys n1monitor {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["n1monitor"]));
+            }
+            set {
+                this["n1monitor"] = value;
+            }
+        }
     }
 }

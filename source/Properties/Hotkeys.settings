@@ -251,5 +251,8 @@
     <Setting Name="application_quit" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+X</Value>
     </Setting>
+    <Setting Name="n1monitor" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+N</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
