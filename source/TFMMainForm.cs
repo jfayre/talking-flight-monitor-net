@@ -110,16 +110,19 @@ namespace tfm
             try
             {
                 FSUIPCConnection.Process();
+                inst.MonitorN1Limit();
                 if (Aircraft.AircraftName.Value.Contains("PMDG"))
                 {
                     Aircraft.pmdg737.RefreshData();
-                }
+                    Aircraft.pmdg747.RefreshData();
+                                                       }
                 inst.ReadAircraftState();
                 if(!inst.PostTakeOffChecklist())
                 {
                     inst.PostTakeOffChecklist();
                 }
-                // Keeps track of the autopilot master switch in the simplified avionics tab.
+
+                                // Keeps track of the autopilot master switch in the simplified avionics tab.
                 if (Properties.Settings.Default.avionics_tab == "simplified") { 
                 AutopilotCheckBox.Checked = Autopilot.ApMaster;
 
@@ -169,7 +172,7 @@ namespace tfm
             {
                 FSUIPCConnection.Process("LowPriority");
                 inst.ReadLowPriorityInstruments();
-            }
+                            }
             catch (Exception ex)
             {
                 // Stop the timer.

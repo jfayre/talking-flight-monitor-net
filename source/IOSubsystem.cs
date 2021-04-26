@@ -1612,7 +1612,11 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
-                case "application_quit":
+                case "n1monitor":
+                    frmAutopilot frmAutopilot = new frmAutopilot("n1Monitor");
+                    frmAutopilot.ShowDialog();
+                    break;
+                                case "application_quit":
                     Tolk.Output("TFM is shutting down...");
                     Application.Exit();
                     break;
@@ -3091,5 +3095,72 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
             }
                             
         } // End PostTakeoffChecklist.
+
+        public void MonitorN1Limit()
+        {
+                        double n1Monitor = Math.Round(Aircraft.n1MonitorValue); // The value to watch,.
+                        bool isAnnounced = false;
+            
+            double en1n1 = (double)Math.Round(Aircraft.Eng1N1.Value);
+            double en2n1 = (double)Math.Round(Aircraft.Eng2N1.Value);
+            double en3n1 = (double)Math.Round(Aircraft.Eng3N1.Value);
+            double en4n1 = (double)Math.Round(Aircraft.Eng4N1.Value);
+            if (n1Monitor == 0 || isAnnounced) return;
+                                                        switch(Aircraft.num_engines.Value)
+                {
+                    case 1:
+                                                if(en1n1 == n1Monitor)
+                            {
+                        if (isAnnounced) return;
+                        fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        isAnnounced = true;
+                    }
+                                                else
+                    {
+                        isAnnounced = false;
+                    }
+                                               break;
+
+                    case 2:
+                        if((en1n1 == n1Monitor) && (en2n1 == n1Monitor))
+                        {
+                        if (isAnnounced) break;
+                        isAnnounced = true;
+                        fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        
+                    }
+                        else
+                    {
+                        isAnnounced = false;
+                    }
+                                                break;
+
+                    case 3:
+                                                if(en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor)
+                        {
+                        if (isAnnounced) return;
+                                                    fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        isAnnounced = true;
+                    }
+                    else
+                    {
+                        isAnnounced = false;
+                    }
+                                               break;
+
+                    case 4:
+                        if(en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor && en4n1 == n1Monitor)
+                        {
+                        if (isAnnounced)
+                        fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        isAnnounced = true;
+                    }
+                    else
+                    {
+                        isAnnounced = false;
+                    }       
+                                               break;
+                } // End switch
+                                            } // End MonitorN1Limit.
     } // End IoSubSystem class.
 } // End TFM namespace.

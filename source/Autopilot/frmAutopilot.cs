@@ -40,6 +40,13 @@ namespace tfm
                 chkLock.Visible = false;
                 txtSetting.Text = ap.SpoilerPercent.ToString();
             }
+            else if(this.instrument == "n1Monitor")
+            {
+                this.Text = "Set N1 monitor value";
+                txtSetting.Text = Aircraft.n1MonitorValue.ToString();
+                txtSetting.SelectAll();
+                chkLock.Visible = false;
+            }
             else
             {
                 this.Text = $"set autopilot {instrument}";
@@ -120,10 +127,7 @@ namespace tfm
                         txtSetting.Text = string.Empty;
                         txtSetting.Focus();
                     }
-
-
-                    
-                    break;
+                                        break;
 
                 case "Airspeed":
                     if (double.TryParse(txtSetting.Text, out double airspeed))
@@ -227,6 +231,20 @@ namespace tfm
                     else
                     {
                         Tolk.Output("Invalid spoiler value.");
+                        txtSetting.Text = string.Empty;
+                        txtSetting.Focus();
+                    }
+                    break;
+
+                case "n1Monitor":
+                    if(double.TryParse(txtSetting.Text, out double n1MonitorValue) && (n1MonitorValue >= 0) && (n1MonitorValue <= 100))
+                    {
+                        Aircraft.n1MonitorValue = n1MonitorValue;
+                        this.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        Tolk.Output("Invalid n1 limit. Value is 0 - 100");
                         txtSetting.Text = string.Empty;
                         txtSetting.Focus();
                     }
