@@ -256,6 +256,7 @@ namespace tfm
         // PMDG offsets. These are all read-only. Writing is done via the PMDG control codes.
         public static PMDG_737_NGX_Offsets pmdg737 = new PMDG_737_NGX_Offsets();
         public static PMDG_747QOTSII_Offsets pmdg747 = new PMDG_747QOTSII_Offsets();
+        public static PMDG_777X_Offsets pmdg777 = new PMDG_777X_Offsets();
         // define a few PMDG offsets that aren't included in the .net library.
         public static Offset<string> AIR_DisplayFltAlt = new Offset<string>(0x6C82, 6);
         public static Offset<string> AIR_DisplayLandAlt = new Offset<string>(0x6C88, 6);
