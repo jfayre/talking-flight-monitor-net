@@ -1590,9 +1590,18 @@ namespace tfm
                     break;
 
                                 case "ap_PMDG_CDU":
-                    cdu = new frmPMDGCDU();
-                    cdu.Show();
-                    break;
+                    if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
+                    {
+                        cdu = new frmPMDGCDU();
+                        cdu.Show();
+                    }
+                    else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+                    {
+                        _747CDU CDU = new _747CDU();
+                        CDU.Show();
+                        CDU.BringToFront();
+                    }
+                                        break;
                 case "ap_PMDG_Panels":
                     frmCockpitPanels pnl = new frmCockpitPanels();
                     pnl.Show();
@@ -3162,5 +3171,9 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                                                break;
                 } // End switch
                                             } // End MonitorN1Limit.
+
+        public void ReadPmdgFMCMessage()
+        {
+                    } // End ReadPmdgFmcMessage.
     } // End IoSubSystem class.
 } // End TFM namespace.
