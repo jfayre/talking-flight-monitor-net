@@ -392,6 +392,12 @@
     <Compile Include="Settings panels\ctlAircraft.Designer.cs">
       <DependentUpon>ctlAircraft.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings panels\ctlPMDG.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings panels\ctlPMDG.Designer.cs">
+      <DependentUpon>ctlPMDG.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings panels\ctlUserInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -604,6 +610,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlGeneral.resx">
       <DependentUpon>ctlGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings panels\ctlPMDG.resx">
+      <DependentUpon>ctlPMDG.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlSpeechOutput.resx">
       <DependentUpon>ctlSpeechOutput.cs</DependentUpon>

@@ -334,5 +334,17 @@ namespace tfm.Properties {
                 this["bingMapsAPIKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string PMDGCDUKeyLayout {
+            get {
+                return ((string)(this["PMDGCDUKeyLayout"]));
+            }
+            set {
+                this["PMDGCDUKeyLayout"] = value;
+            }
+        }
     }
 }
