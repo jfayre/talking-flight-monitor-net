@@ -331,6 +331,12 @@ namespace tfm
                 case Keys.OemQuestion:
                     FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_SLASH, Aircraft.ClkL);
                     break;
+                case Keys.Oemplus:
+                    // send key twice to get plus symbol
+                    FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_PLUS_MINUS, Aircraft.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_PLUS_MINUS, Aircraft.ClkL);
+                    break;
+                
                 case Keys.OemMinus:
                     txtEntry.Text = txtEntry.Text.Remove(txtEntry.Text.Length - 1, 1);
                         FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_PLUS_MINUS, Aircraft.ClkL);
@@ -347,80 +353,15 @@ namespace tfm
             if ((e.Alt) && (e.KeyCode == Keys.F4)) return;
 
             // Line select keys.
-            if(e.KeyCode == Keys.F1)
+            if (Properties.Settings.Default.PMDGCDUKeyLayout == "1")
             {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L1, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F2)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L2, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F3)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L3, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F4)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L4, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F5)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L5, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F6)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L6, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F7)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R1, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F8)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R2, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F9)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R3, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F10)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R4, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F11)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R5, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-            }
-            if(e.KeyCode == Keys.F12)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R6, Aircraft.ClkL);
-                RefreshCDU();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                ProcessDefaultSoftKeys(e);
             }
 
+            if (Properties.Settings.Default.PMDGCDUKeyLayout == "2")
+            {
+                ProcessAlternateSoftKeys(e);
+            }
             // Activate the buttons.
             if((e.Alt) && (e.KeyCode == Keys.R))
             {
@@ -556,5 +497,158 @@ namespace tfm
                 e.SuppressKeyPress = true;
             }
         } // End 747CDUKeyDown.
+        private void ProcessDefaultSoftKeys(KeyEventArgs e)
+        {
+            if ((e.Alt && e.KeyCode == Keys.D1))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R1, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D2))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R2, Aircraft.ClkL);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D3))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R3, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D4))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R4, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D5))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R5, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D6))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R6, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D1))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L1, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D2))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L2, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D3))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L3, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D4))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L4, 0x20000000);
+                RefreshCDU();
+            }
+            if ((e.Control && e.KeyCode == Keys.D5))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L5, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D6))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L6, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+
+        }
+        private void ProcessAlternateSoftKeys(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L1, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F2)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L2, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F3)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L3, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F4)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L4, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F5)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L5, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F6)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L6, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F7)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R1, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F8)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R2, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F9)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R3, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F10)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R4, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F11)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R5, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.F12)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R6, Aircraft.ClkL);
+                RefreshCDU();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
+
+        }
     } // End form.
 } // End namespace.

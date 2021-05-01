@@ -189,7 +189,138 @@ namespace tfm
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
+            // process soft keys based on key setting
+            if (Properties.Settings.Default.PMDGCDUKeyLayout == "1")
+            {
+                ProcessDefaultSoftKeys(e);
+            }
 
+            if (Properties.Settings.Default.PMDGCDUKeyLayout == "2")
+            {
+                ProcessAlternateSoftKeys(e);
+            }
+
+            if ((e.Alt && e.KeyCode == Keys.X))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DEL, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.KeyCode == Keys.PageDown)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_NEXT_PAGE, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if (e.KeyCode == Keys.PageUp)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PREV_PAGE, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if((e.Alt && e.KeyCode == Keys.C))
+            {
+                btnClear.PerformClick();
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if((e.Alt && e.KeyCode == Keys.R))
+            {
+                btnRefresh.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+            if((e.Alt && e.KeyCode == Keys.S))
+            {
+                txtEntry.Focus();
+                e.SuppressKeyPress = true;
+            }
+            if((e.Alt && e.KeyCode == Keys.Home))
+            {
+                txtCDU.Focus();
+                e.SuppressKeyPress = true;
+            }
+
+        }
+
+        private void ProcessDefaultSoftKeys(KeyEventArgs e)
+        {
+            if ((e.Alt && e.KeyCode == Keys.D1))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R1, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D2))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R2, Aircraft.ClkL);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D3))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R3, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D4))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R4, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D5))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R5, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Alt && e.KeyCode == Keys.D6))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R6, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D1))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L1, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D2))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L2, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D3))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L3, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D4))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L4, 0x20000000);
+                RefreshCDU();
+            }
+            if ((e.Control && e.KeyCode == Keys.D5))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L5, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+            if ((e.Control && e.KeyCode == Keys.D6))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L6, 0x20000000);
+                RefreshCDU();
+                e.SuppressKeyPress = true;
+            }
+
+        }
+
+        private void ProcessAlternateSoftKeys(KeyEventArgs e)
+        {
             if (e.KeyCode == Keys.F7)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_R1, 0x20000000);
@@ -248,7 +379,7 @@ namespace tfm
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L4, 0x20000000);
                 RefreshCDU();
-                            }
+            }
             if (e.KeyCode == Keys.F5)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L5, 0x20000000);
@@ -259,46 +390,6 @@ namespace tfm
             {
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_L6, 0x20000000);
                 RefreshCDU();
-                e.SuppressKeyPress = true;
-            }   
-            if ((e.Alt && e.KeyCode == Keys.X))
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DEL, 0x20000000);
-                RefreshCDU();
-                e.SuppressKeyPress = true;
-            }
-
-            if (e.KeyCode == Keys.PageDown)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_NEXT_PAGE, 0x20000000);
-                RefreshCDU();
-                e.SuppressKeyPress = true;
-            }
-            if (e.KeyCode == Keys.PageUp)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PREV_PAGE, 0x20000000);
-                RefreshCDU();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.C))
-            {
-                btnClear.PerformClick();
-                RefreshCDU();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.R))
-            {
-                btnRefresh.PerformClick();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.S))
-            {
-                txtEntry.Focus();
-                e.SuppressKeyPress = true;
-            }
-            if((e.Alt && e.KeyCode == Keys.Home))
-            {
-                txtCDU.Focus();
                 e.SuppressKeyPress = true;
             }
 
@@ -549,6 +640,7 @@ namespace tfm
         private void txtEntry_KeyDown(object sender, KeyEventArgs e)
         {
             if ((e.Control && e.KeyCode == Keys.A)) return;
+
             switch (e.KeyCode)
             {
                 case Keys.A:
@@ -663,7 +755,25 @@ namespace tfm
                 case Keys.OemPeriod:
                     FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_DOT, Aircraft.ClkL);
                     break;
-                            }
+                case Keys.Space:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_SPACE, Aircraft.ClkL);
+                    break;
+                case Keys.OemQuestion:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_SLASH, Aircraft.ClkL);
+                    break;
+                case Keys.Oemplus:
+                    // send key twice to get plus symbol
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PLUS_MINUS, Aircraft.ClkL);
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PLUS_MINUS, Aircraft.ClkL);
+                    break;
+                case Keys.OemMinus:
+                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_CDU_L_PLUS_MINUS, Aircraft.ClkL);
+                    break;
+                case Keys.Back:
+                    FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_DEL, Aircraft.ClkL);
+                    break;
+
+            }
 
         }
 
@@ -677,4 +787,6 @@ namespace tfm
             txtCDU.SelectionStart = cduCursorPosition;
         }
     }
-}
+
+        
+    }

@@ -419,162 +419,16 @@ namespace tfm
                 readWarnings();
 
                 // TODO: engine select
-                if (Aircraft.AircraftName.Value.Contains("PMDG"))
-                {   
-                    // electrical panel
-                    ReadPMDGToggle(Aircraft.pmdg737.ELEC_BatSelector, Aircraft.pmdg737.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
-                    ReadToggle(Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE, Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
-                    ReadToggle(Aircraft.pmdg737.ELEC_CabUtilSw, Aircraft.pmdg737.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.ELEC_IFEPassSeatSw, Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value > 0, "passenger seat power", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "engine generator off bus light", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE, Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.ELEC_BusTransSw_AUTO, Aircraft.pmdg737.ELEC_BusTransSw_AUTO.Value > 0, "auto bus transfer", "on", "off");
-                    // standby power switch
-                    if (Aircraft.pmdg737.ELEC_StandbyPowerSelector.ValueChanged)
-                    {
-                        switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
-                        {
-                            case 0:
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Battery");
-                                break;
-                            case 1:
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Off");
-                                break;
-                            case 2:
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Auto");
-                                break;
-                        }
-
-                    }
-                    // ADIRU
-                    ReadToggle(Aircraft.pmdg737.IRS_aligned, Aircraft.pmdg737.IRS_aligned.Value > 0, "IRS", "aligned", "");
-
-                    // MCP
-
-                    // flight director
-                    ReadToggle(Aircraft.pmdg737.MCP_FDSw[0], Aircraft.pmdg737.MCP_FDSw[0].Value > 0, "left flight director", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_FDSw[1], Aircraft.pmdg737.MCP_FDSw[1].Value > 0, "right flight director", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_annunFD[0], Aircraft.pmdg737.MCP_annunFD[0].Value > 0, "left fd master", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_annunFD[1], Aircraft.pmdg737.MCP_annunFD[1].Value > 0, "right   fd master", "on", "off");
-                    // auto throttle arm
-                    ReadToggle(Aircraft.pmdg737.MCP_ATArmSw, Aircraft.pmdg737.MCP_ATArmSw.Value > 0, "autothrottle arm switch", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_annunATArm, Aircraft.pmdg737.MCP_annunATArm.Value > 0, "Auto throttle light", "on", "off");
-                    // N1 button
-                    ReadToggle(Aircraft.pmdg737.MCP_annunN1, Aircraft.pmdg737.MCP_annunN1.Value > 0, "N1 light", "on", "off");
-                    // speed
-                    ReadToggle(Aircraft.pmdg737.MCP_annunSPEED, Aircraft.pmdg737.MCP_annunSPEED.Value > 0, "speed light", "on", "off");
-                    // LNAV
-                    ReadToggle(Aircraft.pmdg737.MCP_annunLNAV, Aircraft.pmdg737.MCP_annunLNAV.Value > 0, "L Nav light", "on", "off");
-                    // VNAV
-                    ReadToggle(Aircraft.pmdg737.MCP_annunVNAV, Aircraft.pmdg737.MCP_annunVNAV.Value > 0, "V Nav light", "on", "off");
-                    // Autopilot CMD buttons
-                    ReadToggle(Aircraft.pmdg737.MCP_annunCMD_A, Aircraft.pmdg737.MCP_annunCMD_A.Value > 0, "CMD A", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_annunCMD_B, Aircraft.pmdg737.MCP_annunCMD_B.Value > 0, "CMD B", "on", "off");
-                    // autopilot heading select
-                    ReadToggle(Aircraft.pmdg737.MCP_annunHDG_SEL, Aircraft.pmdg737.MCP_annunHDG_SEL.Value > 0, "heading select", "on", "off");
-                    // level change
-                    ReadToggle(Aircraft.pmdg737.MCP_annunLVL_CHG, Aircraft.pmdg737.MCP_annunLVL_CHG.Value > 0, "level change", "on", "off");
-                    // altitude hold
-                    ReadToggle(Aircraft.pmdg737.MCP_annunALT_HOLD, Aircraft.pmdg737.MCP_annunALT_HOLD.Value > 0, "Altitude hold", "on", "off");
-                    // approach mode
-                    ReadToggle(Aircraft.pmdg737.MCP_annunAPP, Aircraft.pmdg737.MCP_annunAPP.Value > 0, "approach", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_annunVOR_LOC, Aircraft.pmdg737.MCP_annunVOR_LOC.Value > 0, "vor loc", "on", "off");
-                    // CWS mode
-                    ReadToggle(Aircraft.pmdg737.MCP_annunCWS_A, Aircraft.pmdg737.MCP_annunCWS_A.Value > 0, "CWS A", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.MCP_annunCWS_B, Aircraft.pmdg737.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
-                    // CDU exec button light
-                    ReadToggle(Aircraft.pmdg737.CDU_annunEXEC[0], Aircraft.pmdg737.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
-                    // CDU message light
-                    ReadToggle(Aircraft.pmdg737.CDU_annunMSG[0], Aircraft.pmdg737.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared");
-                    // fuel panel
-                    ReadToggle(Aircraft.pmdg737.FUEL_CrossFeedSw, Aircraft.pmdg737.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[0], Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, "left forward fuel pump", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[1], Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value > 0, "right forward fuel pump", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[1], Aircraft.pmdg737.FUEL_PumpAftSw[1].Value > 0, "right aft fuel pump", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[0], Aircraft.pmdg737.FUEL_PumpAftSw[0].Value > 0, "left aft fuel pump", "on", "off");
-                    ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[0], Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value > 0, "center left fuel pump");
-                    ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[1], Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value > 0, "center right fuel pump");
-
-                    // fuel crossfeed valve
-                    if (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
-                        
-                    {
-                        switch (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.Value)
-                        {
-                            case 0:
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve closed");
-                                break;
-                            case 1:
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve open");
-                                break;
-                            case 2:
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve in transit");
-                                break;
-                        }
-                    }
-                }
-                // hydraulics
-                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[1], Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, "electrical hydraulic pump 1", "on", "off");
-                ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[0], Aircraft.pmdg737.HYD_PumpSw_elec[0].Value > 0, "electrical hydraulic pump 2", "on", "off");
-                if (Aircraft.pmdg737.AIR_PackSwitch[0].ValueChanged)
+                if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                 {
-                    string pck = null;
-                    switch (Aircraft.pmdg737.AIR_PackSwitch[0].Value)
-                    {
-                        case 0:
-                            pck = "off";
-                            break;
-                        case 1:
-                            pck = "auto";
-                            break;
-                        case 2:
-                            pck = "high";
-                            break;
-
-                    }
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"left pack {pck}");
+                    ReadPMDG737Toggles();
                 }
-                if (Aircraft.pmdg737.AIR_IsolationValveSwitch.ValueChanged)
+
+                if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
                 {
-                    string isol = null;
-                    switch (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value)
-                    {
-                        case 0:
-                            isol = "off";
-                            break;
-                        case 1:
-                            isol = "auto";
-                            break;
-                        case 2:
-                            isol = "on";
-                            break;
-
-                    }
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"isolation valve {isol}");
+                    ReadPMDG747Toggles();
                 }
-                if (Aircraft.pmdg737.AIR_PackSwitch[1].ValueChanged)
-                {
-                    string pck = null;
-                    switch (Aircraft.pmdg737.AIR_PackSwitch[1].Value)
-                    {
-                        case 0:
-                            pck = "off";
-                            break;
-                        case 1:
-                            pck = "auto";
-                            break;
-                        case 2:
-                            pck = "high";
-                            break;
-
-                    }
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"right pack {pck}");
-                }
-                ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[1], Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value > 0, "engine 2 bleed", "on", "off");
-                ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[0], Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value > 0, "engine 1 bleed", "on", "off");
-                ReadToggle(Aircraft.pmdg737.AIR_APUBleedAirSwitch, Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value > 0, "APU bleed", "on", "off");
+                
             }
             else
             {
@@ -3175,5 +3029,170 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         public void ReadPmdgFMCMessage()
         {
                     } // End ReadPmdgFmcMessage.
+
+        private void ReadPMDG737Toggles()
+        {
+                                        // electrical panel
+                ReadPMDGToggle(Aircraft.pmdg737.ELEC_BatSelector, Aircraft.pmdg737.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
+                ReadToggle(Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE, Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
+                ReadToggle(Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
+                ReadToggle(Aircraft.pmdg737.ELEC_CabUtilSw, Aircraft.pmdg737.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
+                ReadToggle(Aircraft.pmdg737.ELEC_IFEPassSeatSw, Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value > 0, "passenger seat power", "on", "off");
+                ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
+                ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "engine generator off bus light", "on", "off");
+                ReadToggle(Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE, Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
+                ReadToggle(Aircraft.pmdg737.ELEC_BusTransSw_AUTO, Aircraft.pmdg737.ELEC_BusTransSw_AUTO.Value > 0, "auto bus transfer", "on", "off");
+                // standby power switch
+                if (Aircraft.pmdg737.ELEC_StandbyPowerSelector.ValueChanged)
+                {
+                    switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
+                    {
+                        case 0:
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Battery");
+                            break;
+                        case 1:
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Off");
+                            break;
+                        case 2:
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Auto");
+                            break;
+                    }
+
+                }
+                // ADIRU
+                ReadToggle(Aircraft.pmdg737.IRS_aligned, Aircraft.pmdg737.IRS_aligned.Value > 0, "IRS", "aligned", "");
+
+                // MCP
+
+                // flight director
+                ReadToggle(Aircraft.pmdg737.MCP_FDSw[0], Aircraft.pmdg737.MCP_FDSw[0].Value > 0, "left flight director", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_FDSw[1], Aircraft.pmdg737.MCP_FDSw[1].Value > 0, "right flight director", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_annunFD[0], Aircraft.pmdg737.MCP_annunFD[0].Value > 0, "left fd master", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_annunFD[1], Aircraft.pmdg737.MCP_annunFD[1].Value > 0, "right   fd master", "on", "off");
+                // auto throttle arm
+                ReadToggle(Aircraft.pmdg737.MCP_ATArmSw, Aircraft.pmdg737.MCP_ATArmSw.Value > 0, "autothrottle arm switch", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_annunATArm, Aircraft.pmdg737.MCP_annunATArm.Value > 0, "Auto throttle light", "on", "off");
+                // N1 button
+                ReadToggle(Aircraft.pmdg737.MCP_annunN1, Aircraft.pmdg737.MCP_annunN1.Value > 0, "N1 light", "on", "off");
+                // speed
+                ReadToggle(Aircraft.pmdg737.MCP_annunSPEED, Aircraft.pmdg737.MCP_annunSPEED.Value > 0, "speed light", "on", "off");
+                // LNAV
+                ReadToggle(Aircraft.pmdg737.MCP_annunLNAV, Aircraft.pmdg737.MCP_annunLNAV.Value > 0, "L Nav light", "on", "off");
+                // VNAV
+                ReadToggle(Aircraft.pmdg737.MCP_annunVNAV, Aircraft.pmdg737.MCP_annunVNAV.Value > 0, "V Nav light", "on", "off");
+                // Autopilot CMD buttons
+                ReadToggle(Aircraft.pmdg737.MCP_annunCMD_A, Aircraft.pmdg737.MCP_annunCMD_A.Value > 0, "CMD A", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_annunCMD_B, Aircraft.pmdg737.MCP_annunCMD_B.Value > 0, "CMD B", "on", "off");
+                // autopilot heading select
+                ReadToggle(Aircraft.pmdg737.MCP_annunHDG_SEL, Aircraft.pmdg737.MCP_annunHDG_SEL.Value > 0, "heading select", "on", "off");
+                // level change
+                ReadToggle(Aircraft.pmdg737.MCP_annunLVL_CHG, Aircraft.pmdg737.MCP_annunLVL_CHG.Value > 0, "level change", "on", "off");
+                // altitude hold
+                ReadToggle(Aircraft.pmdg737.MCP_annunALT_HOLD, Aircraft.pmdg737.MCP_annunALT_HOLD.Value > 0, "Altitude hold", "on", "off");
+                // approach mode
+                ReadToggle(Aircraft.pmdg737.MCP_annunAPP, Aircraft.pmdg737.MCP_annunAPP.Value > 0, "approach", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_annunVOR_LOC, Aircraft.pmdg737.MCP_annunVOR_LOC.Value > 0, "vor loc", "on", "off");
+                // CWS mode
+                ReadToggle(Aircraft.pmdg737.MCP_annunCWS_A, Aircraft.pmdg737.MCP_annunCWS_A.Value > 0, "CWS A", "on", "off");
+                ReadToggle(Aircraft.pmdg737.MCP_annunCWS_B, Aircraft.pmdg737.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
+                // CDU exec button light
+                ReadToggle(Aircraft.pmdg737.CDU_annunEXEC[0], Aircraft.pmdg737.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
+                // CDU message light
+                ReadToggle(Aircraft.pmdg737.CDU_annunMSG[0], Aircraft.pmdg737.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared");
+                            // fuel panel
+                ReadToggle(Aircraft.pmdg737.FUEL_CrossFeedSw, Aircraft.pmdg737.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
+                ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[0], Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, "left forward fuel pump", "on", "off");
+                ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[1], Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value > 0, "right forward fuel pump", "on", "off");
+                ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[1], Aircraft.pmdg737.FUEL_PumpAftSw[1].Value > 0, "right aft fuel pump", "on", "off");
+                ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[0], Aircraft.pmdg737.FUEL_PumpAftSw[0].Value > 0, "left aft fuel pump", "on", "off");
+                ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[0], Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value > 0, "center left fuel pump");
+                ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[1], Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value > 0, "center right fuel pump");
+
+                // fuel crossfeed valve
+                if (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
+
+                {
+                    switch (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.Value)
+                    {
+                        case 0:
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve closed");
+                            break;
+                        case 1:
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve open");
+                            break;
+                        case 2:
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve in transit");
+                            break;
+                    }
+                
+            }
+            // hydraulics
+            ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[1], Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, "electrical hydraulic pump 1", "on", "off");
+            ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[0], Aircraft.pmdg737.HYD_PumpSw_elec[0].Value > 0, "electrical hydraulic pump 2", "on", "off");
+            if (Aircraft.pmdg737.AIR_PackSwitch[0].ValueChanged)
+            {
+                string pck = null;
+                switch (Aircraft.pmdg737.AIR_PackSwitch[0].Value)
+                {
+                    case 0:
+                        pck = "off";
+                        break;
+                    case 1:
+                        pck = "auto";
+                        break;
+                    case 2:
+                        pck = "high";
+                        break;
+
+                }
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"left pack {pck}");
+            }
+            if (Aircraft.pmdg737.AIR_IsolationValveSwitch.ValueChanged)
+            {
+                string isol = null;
+                switch (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value)
+                {
+                    case 0:
+                        isol = "off";
+                        break;
+                    case 1:
+                        isol = "auto";
+                        break;
+                    case 2:
+                        isol = "on";
+                        break;
+
+                }
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"isolation valve {isol}");
+            }
+            if (Aircraft.pmdg737.AIR_PackSwitch[1].ValueChanged)
+            {
+                string pck = null;
+                switch (Aircraft.pmdg737.AIR_PackSwitch[1].Value)
+                {
+                    case 0:
+                        pck = "off";
+                        break;
+                    case 1:
+                        pck = "auto";
+                        break;
+                    case 2:
+                        pck = "high";
+                        break;
+
+                }
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"right pack {pck}");
+            }
+            ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[1], Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value > 0, "engine 2 bleed", "on", "off");
+            ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[0], Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value > 0, "engine 1 bleed", "on", "off");
+            ReadToggle(Aircraft.pmdg737.AIR_APUBleedAirSwitch, Aircraft.pmdg737.AIR_APUBleedAirSwitch.Value > 0, "APU bleed", "on", "off");
+        } // End ReadPMDG737Toggles.
+        private void ReadPMDG747Toggles()
+        {
+            // CDU exec button light
+            ReadToggle(Aircraft.pmdg747.CDU_annunEXEC[0], Aircraft.pmdg747.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
+            // CDU message light
+            ReadToggle(Aircraft.pmdg747.CDU_annunMSG[0], Aircraft.pmdg747.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared");
+        } // End ReadPMDG747Toggles
     } // End IoSubSystem class.
 } // End TFM namespace.

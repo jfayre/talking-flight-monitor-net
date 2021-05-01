@@ -29,6 +29,7 @@ namespace tfm
             pages.Add("nodTiming", new ctlTiming());
             pages.Add("nodAircraft", new ctlAircraft());
             pages.Add("nodeUserInterface", new ctlUserInterface());
+            pages.Add("nodPMDG", new ctlPMDG());
             // set the parent and hide them all
             foreach (iSettingsPage page in this.pages.Values)
             {
