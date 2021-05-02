@@ -163,12 +163,14 @@ namespace tfm
         {
             FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_PREV_PAGE, Aircraft.ClkL);
             RefreshCDU();
+            Tolk.Output($"{cdu.Rows[0]}");
         } // End btnPREV_Click.
 
         private void btnNext_Click(object sender, EventArgs e)
         {
             FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_NEXT_PAGE, Aircraft.ClkL);
             RefreshCDU();
+            Tolk.Output($"{cdu.Rows[0]}");
         } // End btnNEXT_Click.
 
         private void btnATC_Click(object sender, EventArgs e)
@@ -366,134 +368,112 @@ namespace tfm
             if((e.Alt) && (e.KeyCode == Keys.R))
             {
                 btnRefresh.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
-            if((e.Control) && (e.KeyCode == Keys.S))
+            if((e.Alt) && (e.KeyCode == Keys.S))
             {
                 txtEntry.Focus();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.C))
             {
                 btnClear.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.I))
             {
                 btnInitRef.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.T))
             {
                 btnRte.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.A))
             {
                 btnATC.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.V))
             {
                 btnVNAV.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
-            if((e.Control) && (e.KeyCode == Keys.F))
+            if((e.Alt) && (e.Shift) && (e.KeyCode == Keys.F))
             {
                 btnFMCCOMM.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.M))
             {
                 btnMenu.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.G))
             {
                 btnLegs.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.D))
             {
                 btnDepArr.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.H))
             {
                 btnHold.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.P))
             {
                 btnProg.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
-            if((e.Control) && (e.KeyCode == Keys.E))
+            if((e.Alt) && (e.KeyCode == Keys.E))
             {
                 btnExec.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.X))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_DEL, Aircraft.ClkL);
                 RefreshCDU();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
-            if((e.Alt) && (e.KeyCode == Keys.S))
+            if((e.Alt) &&(e.Shift) && (e.KeyCode == Keys.S))
             {
                 btnSTART.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.F))
             {
                 btnFix.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
             if(e.KeyCode == Keys.PageUp)
             {
                 btnPrev.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             if(e.KeyCode == Keys.PageDown)
             {
                 btnNext.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
             if((e.Alt) && (e.KeyCode == Keys.O))
             {
                 btnRADIOS.PerformClick();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
-            if((e.Alt) && (e.KeyCode == Keys.E))
+            if((e.Alt) && (e.Shift) && (e.KeyCode == Keys.E))
             {
                 btnEnd.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                                e.SuppressKeyPress = true;
             }
-            if((e.Control) && (e.KeyCode == Keys.D))
+            if((e.Alt) && (e.KeyCode == Keys.Home))
             {
                 txtCDU.Focus();
-                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
         } // End 747CDUKeyDown.
