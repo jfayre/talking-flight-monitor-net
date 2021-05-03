@@ -3189,10 +3189,67 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         } // End ReadPMDG737Toggles.
         private void ReadPMDG747Toggles()
         {
+
+            // Air systems.
+            ReadToggle(Aircraft.pmdg747.AIR_annunAftCragoHeat_TEMP, Aircraft.pmdg747.AIR_annunAftCragoHeat_TEMP.Value > 0, "Aft Cargo overheat protection", "On", "off");
+            ReadToggle(Aircraft.pmdg747.AIR_LdgAlt_PushOn_Sw, Aircraft.pmdg747.AIR_LdgAlt_PushOn_Sw.Value > 0, "Landing altitude air pressure", "On", "off");
+            if(Aircraft.pmdg747.AIR_LdgAlt_Selector.ValueChanged)
+            {
+                switch(Aircraft.pmdg747.AIR_LdgAlt_Selector.Value)
+                {
+                    case 0:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Landing altitude selector decrease pressure.");
+                        break;
+                    case 1:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Landing altitude selector neutral pressure.");
+                        break;
+                    case 2:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Landing altitude selector increase pressure.");
+                        break;
+                }
+            } // End landing altitude selector
+            
+                        ReadToggle(Aircraft.pmdg747.AIR_OutflowValveMan_Sw[0], Aircraft.pmdg747.AIR_OutflowValveMan_Sw[0].Value > 0, "Left manual outflow valve", "On", "off");
+            ReadToggle(Aircraft.pmdg747.AIR_OutflowValveMan_Sw[1], Aircraft.pmdg747.AIR_OutflowValveMan_Sw[1].Value > 0, "Right manual outflow valve", "On", "off");
+            if(Aircraft.pmdg747.AIR_OutflowValveNeedle[0].ValueChanged)
+            {
+                switch(Aircraft.pmdg747.AIR_OutflowValveNeedle[0].Value)
+                {
+                    case 0:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Left outflow valve closed.");
+                        break;
+                    case 100:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Left outflow valve open.");
+                        break;
+                    default:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"Left outflow valve {Aircraft.pmdg747.AIR_OutflowValveNeedle[0].Value}%");
+                        break;
+                }
+            } // End left outflow valve needle.
+
+            if(Aircraft.pmdg747.AIR_OutflowValveNeedle[1].ValueChanged)
+            {
+                switch(Aircraft.pmdg747.AIR_OutflowValveNeedle[1].Value)
+                {
+                    case 0:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Right outflow valve closed.");
+                        break;
+                    case 100:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Right outflow valve open.");
+                        break;
+                    default:
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"Right outflow valve {Aircraft.pmdg747.AIR_OutflowValveNeedle[1].Value}%");
+                        break;
+                }
+            } // End right outflow valve needle.
+
+
             // CDU exec button light
             ReadToggle(Aircraft.pmdg747.CDU_annunEXEC[0], Aircraft.pmdg747.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
             // CDU message light
             ReadToggle(Aircraft.pmdg747.CDU_annunMSG[0], Aircraft.pmdg747.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared");
+
+
         } // End ReadPMDG747Toggles
     } // End IoSubSystem class.
 } // End TFM namespace.
