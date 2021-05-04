@@ -12,7 +12,7 @@ An accessibility layer for Microsoft FSX and Lockhede Martin Prepar3d.
 * reads Radar Contact ATC menus
 * allows control of the aircraft autopilot through a simple interface
 * provides many hotkeys for querying aircraft instruments on demand
-* * Initial support for the PMDG 737 and 747, providing the first fully accessible FMC.
+* Initial support for the PMDG 737 and 747, providing the first fully accessible FMC.
 
 
 ## Requirements
