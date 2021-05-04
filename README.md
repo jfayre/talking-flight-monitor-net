@@ -12,7 +12,8 @@ An accessibility layer for Microsoft FSX and Lockhede Martin Prepar3d.
 * reads Radar Contact ATC menus
 * allows control of the aircraft autopilot through a simple interface
 * provides many hotkeys for querying aircraft instruments on demand
-* experimental support for aircraft from A2A Simulations
+* * Initial support for the PMDG 737 and 747, providing the first fully accessible FMC.
+
 
 ## Requirements
 In order to use this software, you will need either [Microsoft Flight Simulator X](https://store.steampowered.com/app/314160/Microsoft_Flight_Simulator_X_Steam_Edition/), or [Lockheed Martin Prepar3d](https://www.prepar3d.com/).
