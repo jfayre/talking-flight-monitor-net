@@ -482,71 +482,83 @@ namespace tfm
             if ((e.Alt && e.KeyCode == Keys.D1))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R1, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Alt && e.KeyCode == Keys.D2))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R2, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Alt && e.KeyCode == Keys.D3))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R3, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Alt && e.KeyCode == Keys.D4))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R4, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Alt && e.KeyCode == Keys.D5))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R5, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Alt && e.KeyCode == Keys.D6))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R6, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Control && e.KeyCode == Keys.D1))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L1, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Control && e.KeyCode == Keys.D2))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L2, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Control && e.KeyCode == Keys.D3))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L3, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Control && e.KeyCode == Keys.D4))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L4, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
             }
             if ((e.Control && e.KeyCode == Keys.D5))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L5, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
             if ((e.Control && e.KeyCode == Keys.D6))
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L6, 0x20000000);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.SuppressKeyPress = true;
             }
@@ -557,72 +569,84 @@ namespace tfm
             if (e.KeyCode == Keys.F1)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L1, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F2)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L2, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F3)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L3, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F4)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L4, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F5)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L5, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F6)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_L6, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F7)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R1, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F8)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R2, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F9)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R3, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F10)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R4, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F11)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R5, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
             }
             if (e.KeyCode == Keys.F12)
             {
                 FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_R6, Aircraft.ClkL);
+                txtEntry.Clear();
                 RefreshCDU();
                 e.Handled = true;
                 e.SuppressKeyPress = true;
