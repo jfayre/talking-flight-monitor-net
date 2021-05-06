@@ -419,8 +419,16 @@ namespace tfm
                 readWarnings();
 
                 // TODO: engine select
-                                    ReadPMDG737Toggles();
-                                   ReadPMDG747Toggles();
+                if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
+                {
+                    ReadPMDG737Toggles();
+                }
+                    
+                if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+                {
+                    ReadPMDG747Toggles();
+                }
+                
                                 
             }
             else
