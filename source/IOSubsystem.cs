@@ -1306,7 +1306,7 @@ namespace tfm
             frmAutopilot ap;
             frmComRadios com;
             frmNavRadios nav;
-            frmPMDGCDU cdu;
+            _737CDU cdu;
             frmAltimeter alt;
             string gaugeName;
             string gaugeValue;
@@ -1446,7 +1446,7 @@ namespace tfm
                                 case "ap_PMDG_CDU":
                     if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                     {
-                        cdu = new frmPMDGCDU();
+                        cdu = new _737CDU();
                         cdu.Show();
                     }
                     else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))

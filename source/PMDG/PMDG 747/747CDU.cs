@@ -20,13 +20,11 @@ namespace tfm
         int cduCursorPosition = 0;
         uint ClkL = 0x20000000;
         uint ClkR = 0x80000000;
-        PMDG_NGX_CDU_Screen cdu;
-
+        pmdg pmdg = new pmdg();
         public _747CDU()
         {
             InitializeComponent();
 
-            cdu = new PMDG_NGX_CDU_Screen(0x5400);
             RefreshCDU();
             cduTimer.Interval = 60000;
 
@@ -47,9 +45,9 @@ namespace tfm
                 cduTimer.Stop();
             } // End catche.
         } // End cduTimerTick.
-
         public void RefreshCDU()
         {
+
             // Check for keyboard focus before refreshing.
             if (txtCDU.Focused)
             {
@@ -58,98 +56,21 @@ namespace tfm
 
             txtCDU.Clear();
             Thread.Sleep(500);
-            cdu.RefreshData();
-            int rowCounter = 1;
-            int lskCounter = 1;
-            if (cdu.Powered)
+            string CDUScreen = pmdg.RefreshCDU(0);
+            if (pmdg.cdu0.Powered)
             {
-                this.Text = cdu.Rows[0].ToString().Trim() + "- PMDG 747 CDU";
+                this.Text = pmdg.cdu0.Rows[0].ToString().Trim() + "- PMDG 747 CDU";
 
             }
+            txtCDU.Text = CDUScreen;
 
-            foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
-            {
-                string RowOutput = null;
-                if (new int[] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
-                {
-                    bool RowModified = false;
-                    // CDU row clean up
-                    for (int i = 0; i <= 23; i++)
-                    {
-                        // replace entry field character with underscores
-                        if (Convert.ToInt32(row.Cells[i].Symbol) == 234)
-                        {
-                            row.Cells[i].Symbol = '_';
-                        }
-                        // replace left arrow with less than sign
-                        if (Convert.ToInt32(row.Cells[i].Symbol) == 161)
-                        {
-                            row.Cells[i].Symbol = '<';
-                        }
-                        // replace right arrow with greater sign
-                        if (Convert.ToInt32(row.Cells[i].Symbol) == 162)
-                        {
-                            row.Cells[i].Symbol = '>';
-                        }
-
-                    }
-                    // if row contains <> then this is an option selection
-                    if (row.ToString().Contains("<>"))
-                    {
-                        bool SelectedChoice = false;
-                        RowModified = true;
-                        for (int i = 0; i <= 23; i++)
-                        {
-                            // if we find a cell in red, green, or Amber, this is the start of a selected choice, put an X before the character and jump to the next character in the row
-                            if ((row.Cells[i].Color == PMDG_NGX_CDU_COLOR.GREEN || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.RED || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.AMBER) && SelectedChoice == false)
-                            {
-                                RowOutput += $"x {row.Cells[i]}";
-                                SelectedChoice = true;
-                                continue;
-
-                            }
-
-                            // if the current character is red, green, or Amber, and the selected choice flag is true, just print the character and continue.
-                            if ((row.Cells[i].Color == PMDG_NGX_CDU_COLOR.GREEN || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.RED || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.AMBER) && SelectedChoice)
-                            {
-                                RowOutput += row.Cells[i].Symbol;
-                            }
-                            // if the color is white, change the selected choice flag to false, print the character and continue
-                            if (row.Cells[i].Color == PMDG_NGX_CDU_COLOR.WHITE)
-                            {
-                                RowOutput += row.Cells[i].Symbol;
-                                SelectedChoice = false;
-                            }
-                        }
-
-                    }
-
-                    if (RowModified)
-                    {
-                        string RowOutputFinal = RowOutput.Replace("<>", " / ");
-                        txtCDU.Text += $"{lskCounter}: {RowOutputFinal}\r\n";
-
-                    }
-                    else
-                    {
-                        // write the raw row to the output window, no modifications
-                        txtCDU.Text += $"{lskCounter}: {row.ToString()}\r\n";
-
-                    }
-                    lskCounter++;
-                }
-                else
-                {
-                    txtCDU.Text += $"{row.ToString()}\r\n";
-                }
-                rowCounter++;
-            }
             // Check for keyboard focus before restoring cursor state...
             if (txtCDU.Focused)
             {
                 txtCDU.SelectionStart = cduCursorPosition;
             }
-        } // End RefreshCDU.
+        }
+        // End RefreshCDU.
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
@@ -220,14 +141,14 @@ namespace tfm
         {
             FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_PREV_PAGE, Aircraft.ClkL);
             RefreshCDU();
-            Tolk.Output($"{cdu.Rows[0]}");
+            Tolk.Output($"{pmdg.cdu0.Rows[0]}");
         } // End btnPREV_Click.
 
         private void btnNext_Click(object sender, EventArgs e)
         {
             FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_CDU_L_NEXT_PAGE, Aircraft.ClkL);
             RefreshCDU();
-            Tolk.Output($"{cdu.Rows[0]}");
+            Tolk.Output($"{pmdg.cdu0.Rows[0]}");
         } // End btnNEXT_Click.
 
         private void btnATC_Click(object sender, EventArgs e)
