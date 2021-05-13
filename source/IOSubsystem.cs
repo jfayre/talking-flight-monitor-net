@@ -1400,7 +1400,7 @@ namespace tfm
                 case "ap_Get_Nav_Radios":
                     string navInfo = null;
                     fireOnScreenReaderOutputEvent(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. Course: {Autopilot.Nav1Course.ToString()}. ");
-                    
+
                     if (Aircraft.AutopilotRadioStatus.Value[6])
                     {
                         // nav 1 has ILS
@@ -1443,19 +1443,90 @@ namespace tfm
                     ap.ShowDialog();
                     break;
 
-                                case "ap_PMDG_CDU":
+                case "ap_PMDG_CDU":
                     if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                     {
-                        cdu = new _737CDU();
-                        cdu.Show();
-                    }
-                    else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+                                            var is737CDUOpen = false;
+                    foreach (Form form in Application.OpenForms)
                     {
-                        _747CDU CDU = new _747CDU();
-                        CDU.Show();
-                        CDU.BringToFront();
-                    }
-                                        break;
+                        if (form is _737CDU)
+                        {
+                            is737CDUOpen = true;
+                            break;
+                        } // End the form is valid.
+                    } // End foreach
+
+                    if (is737CDUOpen)
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                        break;
+                    } // End what to do when CDU is already open.
+                    else
+                    {
+                            _737CDU _737 = new _737CDU();
+                            _737.Show();
+                        is737CDUOpen = true;
+                        break;
+                    } // End what to do if FMC isn't open.
+                    is737CDUOpen = false;
+                    break;
+            } // End checking for PMDG 737
+else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+            {
+                var is747CDUOpen = false;
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form is _747CDU)
+                    {
+                        is747CDUOpen = true;
+                        break;
+                    } // End the form is valid.
+                } // End foreach
+
+                if (is747CDUOpen)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                    break;
+                } // End what to do when CDU is already open.
+                else
+                {
+                    _747CDU _747CDU = new _747CDU();
+                    _747CDU.Show();
+                    is747CDUOpen = true;
+                    break;
+                } // End what to do if FMC isn't open.
+                is747CDUOpen = false;
+                break;
+            } // End PMDG 747.
+            else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
+            {
+                var is777CDUOpen = false;
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form is _777CDU)
+                    {
+                        is777CDUOpen = true;
+                        break;
+                    } // End the form is valid.
+                } // End foreach
+
+                if (is777CDUOpen)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                    break;
+                } // End what to do when CDU is already open.
+                else
+                {
+                    _777CDU _777CDU = new _777CDU();
+                    _777CDU.Show();
+                    is777CDUOpen = true;
+                    break;
+                } // End what to do if FMC isn't open.
+                is777CDUOpen = false;
+                break;
+            } // End PMDG 777.
+            break;
+        
                 case "ap_PMDG_Panels":
                     
                     if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
