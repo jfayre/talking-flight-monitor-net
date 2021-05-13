@@ -1,6 +1,6 @@
 ﻿namespace tfm
 {
-    partial class frmPMDGCDU
+    partial class _737CDU
     {
         /// <summary>
         /// Required designer variable.

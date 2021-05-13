@@ -378,13 +378,31 @@
     <Compile Include="PMDG\PMDG 737\frmPMDGCDU - Copy.Designer.cs">
       <DependentUpon>frmPMDGCDU - Copy.cs</DependentUpon>
     </Compile>
-    <Compile Include="PMDG\PMDG 737\frmPMDGCDU.cs">
+    <Compile Include="PMDG\PMDG 737\737CDU.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PMDG\PMDG 737\frmPMDGCDU.Designer.cs">
-      <DependentUpon>frmPMDGCDU.cs</DependentUpon>
+    <Compile Include="PMDG\PMDG 737\737CDU.Designer.cs">
+      <DependentUpon>737CDU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG 747\CockpitPanels\CockPitPanels_747.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 747\CockpitPanels\CockPitPanels_747.Designer.cs">
+      <DependentUpon>CockPitPanels_747.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG 747\CockpitPanels\ctlElectrical_747.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 747\CockpitPanels\ctlElectrical_747.Designer.cs">
+      <DependentUpon>ctlElectrical_747.cs</DependentUpon>
     </Compile>
     <Compile Include="PMDG\pmdg.cs" />
+    <Compile Include="PMDG\PMDG777\777CDU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\777CDU.Designer.cs">
+      <DependentUpon>777CDU.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDGLight.cs" />
     <Compile Include="Settings panels\ctlAircraft.cs">
       <SubType>UserControl</SubType>
@@ -602,8 +620,17 @@
     <EmbeddedResource Include="PMDG\PMDG 737\frmPMDGCDU - Copy.resx">
       <DependentUpon>frmPMDGCDU - Copy.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PMDG\PMDG 737\frmPMDGCDU.resx">
-      <DependentUpon>frmPMDGCDU.cs</DependentUpon>
+    <EmbeddedResource Include="PMDG\PMDG 737\737CDU.resx">
+      <DependentUpon>737CDU.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 747\CockpitPanels\CockPitPanels_747.resx">
+      <DependentUpon>CockPitPanels_747.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 747\CockpitPanels\ctlElectrical_747.resx">
+      <DependentUpon>ctlElectrical_747.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG777\777CDU.resx">
+      <DependentUpon>777CDU.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlAircraft.resx">
       <DependentUpon>ctlAircraft.cs</DependentUpon>

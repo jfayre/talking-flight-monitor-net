@@ -13,21 +13,20 @@ using System.Windows.Forms;
 
 namespace tfm
 {
-    public partial class frmPMDGCDU : Form
+    public partial class _737CDU : Form
     {
         private System.Windows.Forms.Timer cduTimer = new System.Windows.Forms.Timer();
                 int cduCursorPosition = 0;
         uint ClkL = 0x20000000;
         uint ClkR = 0x80000000;
 
-        PMDG_NGX_CDU_Screen cdu;
+        pmdg pmdg = new pmdg();
         
         
 
-        public frmPMDGCDU()
+        public _737CDU()
         {
             InitializeComponent();
-            cdu = new PMDG_NGX_CDU_Screen(0x5400);
             RefreshCDU();
             cduTimer.Interval = 60000;
             cduTimer.Tick += new EventHandler(cduTimerTick);
@@ -61,91 +60,13 @@ namespace tfm
 
                         txtCDU.Clear();
             Thread.Sleep(500);
-            cdu.RefreshData();
-            int rowCounter = 1;
-            int lskCounter = 1;
-            if (cdu.Powered)
+            string CDUScreen = pmdg.RefreshCDU(0);
+            if (pmdg.cdu0.Powered)
             {
-                this.Text = cdu.Rows[0].ToString().Trim() + "- PMDG 737 CDU";
+                this.Text = pmdg.cdu0.Rows[0].ToString().Trim() + "- PMDG 737 CDU";
 
             }
-            foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
-            {
-                string RowOutput = null;
-                if (new int [] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
-                {
-                    bool RowModified = false;
-                    // CDU row clean up
-                    for (int i = 0; i <= 23; i++)
-                    {
-                        // replace entry field character with underscores
-                        if (Convert.ToInt32(row.Cells[i].Symbol) == 234)
-                        {
-                            row.Cells[i].Symbol = '_';
-                        }
-                        // replace left arrow with less than sign
-                        if (Convert.ToInt32(row.Cells[i].Symbol) == 161)
-                        {
-                            row.Cells[i].Symbol = '<';
-                        }
-                        // replace right arrow with greater sign
-                        if (Convert.ToInt32(row.Cells[i].Symbol) == 162)
-                        {
-                            row.Cells[i].Symbol = '>';
-                        }
-
-                    }
-                    // if row contains <> then this is an option selection
-                    if (row.ToString().Contains("<>"))
-                    {
-                        bool SelectedChoice = false;
-                        RowModified = true;
-                        for (int i = 0; i <= 23; i++)
-                        {
-                            // if we find a cell in red, green, or Amber, this is the start of a selected choice, put an X before the character and jump to the next character in the row
-                            if ((row.Cells[i].Color == PMDG_NGX_CDU_COLOR.GREEN || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.RED || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.AMBER) && SelectedChoice == false)
-                            {
-                                RowOutput += $"x {row.Cells[i]}";
-                                SelectedChoice = true;
-                                continue;
-
-                            }
-                            
-                            // if the current character is red, green, or Amber, and the selected choice flag is true, just print the character and continue.
-                            if ((row.Cells[i].Color == PMDG_NGX_CDU_COLOR.GREEN || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.RED || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.AMBER) && SelectedChoice)
-                            {
-                                RowOutput += row.Cells[i].Symbol;
-                            }
-                            // if the color is white, change the selected choice flag to false, print the character and continue
-                            if (row.Cells[i].Color == PMDG_NGX_CDU_COLOR.WHITE)
-                            {
-                                RowOutput += row.Cells[i].Symbol;
-                                SelectedChoice = false;
-                            }
-                        }
-
-                    }
-
-                    if (RowModified)
-                    {
-                        string RowOutputFinal = RowOutput.Replace("<>", " / ");
-                        txtCDU.Text += $"{lskCounter}: {RowOutputFinal}\r\n";
-
-                    }
-                    else
-                    {
-                        // write the raw row to the output window, no modifications
-                        txtCDU.Text += $"{lskCounter}: {row.ToString()}\r\n";
-
-                    }
-                    lskCounter++;
-                }
-                else
-                {
-                    txtCDU.Text += $"{row.ToString()}\r\n";
-                }
-                rowCounter++;
-            }
+            txtCDU.Text = CDUScreen;
 
             // Check for keyboard focus before restoring cursor state...
             if(txtCDU.Focused)

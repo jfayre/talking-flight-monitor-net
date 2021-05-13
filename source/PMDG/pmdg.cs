@@ -13,6 +13,11 @@ namespace tfm
     {
         /* This class contains functions for manipulating controls in the PMDG 737. 
          * Functions were ported from the PMDG 737 Linda module. */
+        // CDU data
+        public PMDG_NGX_CDU_Screen cdu0 = new PMDG_NGX_CDU_Screen(0x5400);
+        public PMDG_NGX_CDU_Screen cdu1 = new PMDG_NGX_CDU_Screen(0x5800);
+        public PMDG_NGX_CDU_Screen cdu2 = new PMDG_NGX_CDU_Screen(0x5C00);
+
         // constants for PMDG mouse click parameters
         public const int ClkL = 536870912;
         public const int ClkR = -2147483648;
@@ -997,6 +1002,114 @@ if (Aircraft.pmdg737.AIR_IsolationValveSwitch.Value != 2)
                 FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_OH_BLEED_ENG_2_SWITCH, ClkR);
             }
 
+        }
+        // CDU screen refresh method
+        /// <summary>
+        ///  Populate data from PMDG CDU.
+        /// </summary>
+        /// <param name="CDUNumber">Number of the CDU to refresh. </param>
+        /// <returns>String containing the CDU screen data</returns>
+        public string RefreshCDU(int CDUNumber)
+        {
+            PMDG_NGX_CDU_Screen cdu = null;
+            switch (CDUNumber)
+            {
+                case 0:
+                cdu = cdu0;
+                    break;
+                case 1:
+                    cdu = cdu1;
+                    break;
+                case 2:
+                    cdu = cdu2;
+                    break;
+
+            }
+
+            string CDUScreen = null;
+            
+            cdu.RefreshData();
+            int rowCounter = 1;
+            int lskCounter = 1;
+            foreach (PMDG_NGX_CDU_Row row in cdu.Rows)
+            {
+                string RowOutput = null;
+                if (new int[] { 3, 5, 7, 9, 11, 13 }.Contains(rowCounter))
+                {
+                    bool RowModified = false;
+                    // CDU row clean up
+                    for (int i = 0; i <= 23; i++)
+                    {
+                        // replace entry field character with underscores
+                        if (Convert.ToInt32(row.Cells[i].Symbol) == 234)
+                        {
+                            row.Cells[i].Symbol = '_';
+                        }
+                        // replace left arrow with less than sign
+                        if (Convert.ToInt32(row.Cells[i].Symbol) == 161)
+                        {
+                            row.Cells[i].Symbol = '<';
+                        }
+                        // replace right arrow with greater sign
+                        if (Convert.ToInt32(row.Cells[i].Symbol) == 162)
+                        {
+                            row.Cells[i].Symbol = '>';
+                        }
+
+                    }
+                    // if row contains <> then this is an option selection
+                    if (row.ToString().Contains("<>"))
+                    {
+                        bool SelectedChoice = false;
+                        RowModified = true;
+                        for (int i = 0; i <= 23; i++)
+                        {
+                            // if we find a cell in red, green, or Amber, this is the start of a selected choice, put an X before the character and jump to the next character in the row
+                            if ((row.Cells[i].Color == PMDG_NGX_CDU_COLOR.GREEN || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.RED || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.AMBER) && SelectedChoice == false)
+                            {
+                                RowOutput += $"x {row.Cells[i]}";
+                                SelectedChoice = true;
+                                continue;
+
+                            }
+
+                            // if the current character is red, green, or Amber, and the selected choice flag is true, just print the character and continue.
+                            if ((row.Cells[i].Color == PMDG_NGX_CDU_COLOR.GREEN || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.RED || row.Cells[i].Color == PMDG_NGX_CDU_COLOR.AMBER) && SelectedChoice)
+                            {
+                                RowOutput += row.Cells[i].Symbol;
+                            }
+                            // if the color is white, change the selected choice flag to false, print the character and continue
+                            if (row.Cells[i].Color == PMDG_NGX_CDU_COLOR.WHITE)
+                            {
+                                RowOutput += row.Cells[i].Symbol;
+                                SelectedChoice = false;
+                            }
+                        }
+
+                    }
+
+                    if (RowModified)
+                    {
+                        string RowOutputFinal = RowOutput.Replace("<>", " / ");
+                        CDUScreen += $"{lskCounter}: {RowOutputFinal}\r\n";
+
+                    }
+                    else
+                    {
+                        // write the raw row to the output window, no modifications
+                        CDUScreen += $"{lskCounter}: {row.ToString()}\r\n";
+
+                    }
+                    lskCounter++;
+                }
+                else
+                {
+                    CDUScreen += $"{row.ToString()}\r\n";
+                }
+                rowCounter++;
+            }
+            return CDUScreen;
+            
         }
 
     }

@@ -428,8 +428,7 @@ namespace tfm
                 {
                     ReadPMDG747Toggles();
                 }
-                
-                                
+                               
             }
             else
             {
@@ -1307,7 +1306,7 @@ namespace tfm
             frmAutopilot ap;
             frmComRadios com;
             frmNavRadios nav;
-            frmPMDGCDU cdu;
+            _737CDU cdu;
             frmAltimeter alt;
             string gaugeName;
             string gaugeValue;
@@ -1401,7 +1400,7 @@ namespace tfm
                 case "ap_Get_Nav_Radios":
                     string navInfo = null;
                     fireOnScreenReaderOutputEvent(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. Course: {Autopilot.Nav1Course.ToString()}. ");
-                    
+
                     if (Aircraft.AutopilotRadioStatus.Value[6])
                     {
                         // nav 1 has ILS
@@ -1444,23 +1443,103 @@ namespace tfm
                     ap.ShowDialog();
                     break;
 
-                                case "ap_PMDG_CDU":
+                case "ap_PMDG_CDU":
                     if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                     {
-                        cdu = new frmPMDGCDU();
-                        cdu.Show();
+                                            var is737CDUOpen = false;
+                    foreach (Form form in Application.OpenForms)
+                    {
+                        if (form is _737CDU)
+                        {
+                            is737CDUOpen = true;
+                            break;
+                        } // End the form is valid.
+                    } // End foreach
+
+                    if (is737CDUOpen)
+                    {
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                        break;
+                    } // End what to do when CDU is already open.
+                    else
+                    {
+                            _737CDU _737 = new _737CDU();
+                            _737.Show();
+                        is737CDUOpen = true;
+                        break;
+                    } // End what to do if FMC isn't open.
+                    is737CDUOpen = false;
+                    break;
+            } // End checking for PMDG 737
+else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+            {
+                var is747CDUOpen = false;
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form is _747CDU)
+                    {
+                        is747CDUOpen = true;
+                        break;
+                    } // End the form is valid.
+                } // End foreach
+
+                if (is747CDUOpen)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                    break;
+                } // End what to do when CDU is already open.
+                else
+                {
+                    _747CDU _747CDU = new _747CDU();
+                    _747CDU.Show();
+                    is747CDUOpen = true;
+                    break;
+                } // End what to do if FMC isn't open.
+                is747CDUOpen = false;
+                break;
+            } // End PMDG 747.
+            else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
+            {
+                var is777CDUOpen = false;
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form is _777CDU)
+                    {
+                        is777CDUOpen = true;
+                        break;
+                    } // End the form is valid.
+                } // End foreach
+
+                if (is777CDUOpen)
+                {
+                    fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                    break;
+                } // End what to do when CDU is already open.
+                else
+                {
+                    _777CDU _777CDU = new _777CDU();
+                    _777CDU.Show();
+                    is777CDUOpen = true;
+                    break;
+                } // End what to do if FMC isn't open.
+                is777CDUOpen = false;
+                break;
+            } // End PMDG 777.
+            break;
+        
+                case "ap_PMDG_Panels":
+                    
+                    if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
+                    {
+                        frmCockpitPanels pnl = new frmCockpitPanels();
+                        pnl.Show();
                     }
                     else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
                     {
-                        _747CDU CDU = new _747CDU();
-                        CDU.Show();
-                        CDU.BringToFront();
+                        CockPitPanels_747 cp = new CockPitPanels_747();
+                        cp.Show();
                     }
                                         break;
-                case "ap_PMDG_Panels":
-                    frmCockpitPanels pnl = new frmCockpitPanels();
-                    pnl.Show();
-                    break;
 
                 default:
                     Tolk.Output("key not defined");
@@ -2286,75 +2365,15 @@ namespace tfm
         {
             if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
             {
-
-                try
-                {
-
-                    var fractionalHours = Aircraft.pmdg737.FMC_DistanceToDest.Value / Aircraft.AirspeedIndicated.Value;
-                    var time = TimeSpan.FromHours(fractionalHours);
-                    StringBuilder remainingTime = new StringBuilder();
-
-                    if (time.Days > 0)
-                    {
-                        remainingTime.Append($"{time.Days} day(s)");
-                    }
-                    if (time.Hours > 0)
-                    {
-                        remainingTime.Append($"{time.Hours} hour(s)");
-                    }
-                    if (time.Minutes > 0)
-                    {
-                        remainingTime.Append($"{time.Minutes} minute(s)");
-                    }
-                    if (time.Seconds > 0)
-                    {
-                        remainingTime.Append($"{time.Seconds} second(s)");
-                    }
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.pmdg737.FMC_DistanceToDest.Value} {remainingTime}/TOD: {Aircraft.pmdg737.FMC_DistanceToTOD.Value}");
-                } // End try
-                catch(DivideByZeroException)
-                {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{Aircraft.pmdg737.FMC_DistanceToDest.Value} Remaining time unknown/TOD: {Aircraft.pmdg737.FMC_DistanceToTOD.Value}");
-                } // End catch
+                var distance = Math.Round(Aircraft.pmdg737.FMC_DistanceToDest.Value, 0);
+                var TOD = Math.Round(Aircraft.pmdg737.FMC_DistanceToTOD.Value, 0);
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"E D A: {distance}/T O D: {TOD}");
             }
             else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
             {
-                try
-                {
-                    if (Aircraft.AirspeedIndicated.Value == 0)
-                    {
-                        var time = TimeSpan.FromHours(0);
-                    }
-                    else
-                    {
-                        var fractionalHours = Aircraft.pmdg747.FMC_DistanceToDest.Value / Aircraft.AirspeedIndicated.Value;
-                        var time = TimeSpan.FromHours(fractionalHours);
-                        StringBuilder remainingTime = new StringBuilder();
-
-                        if (time.Days > 0)
-                        {
-                            remainingTime.Append($"{time.Days} day(s)");
-                        }
-                        if (time.Hours > 0)
-                        {
-                            remainingTime.Append($"{time.Hours} hour(s)");
-                        }
-                        if (time.Minutes > 0)
-                        {
-                            remainingTime.Append($"{time.Minutes} minute(s)");
-                        }
-                        if (time.Seconds > 0)
-                        {
-                            remainingTime.Append($"{time.Seconds} second(s)");
-                        }
-
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"Distance {Aircraft.pmdg747.FMC_DistanceToDest.Value} {remainingTime}/TOD: {Aircraft.pmdg747.FMC_DistanceToTOD.Value}");
-                    } // End else   
-                } // End try
-                catch(DivideByZeroException)
-                {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Distance {Aircraft.pmdg747.FMC_DistanceToDest.Value} Remaining time unknown/TOD: {Aircraft.pmdg747.FMC_DistanceToTOD.Value}");
-                } // End catch
+                var distance = Math.Round(Aircraft.pmdg747.FMC_DistanceToDest.Value, 0);
+                var TOD = Math.Round(Aircraft.pmdg747.FMC_DistanceToTOD.Value, 0);
+                fireOnScreenReaderOutputEvent(isGauge: false, output: $"E D A: {distance}/T O D: {TOD}");
             }
             else
             {
@@ -3272,13 +3291,13 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         {
 
             // Overhead maint -- Electrical panel.
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[0], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[0].Value > 0, "Generator 1 field", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[1], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[1].Value > 0, "Generator 2 field", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[2], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[2].Value > 0, "Generator 3 field", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[3], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[3].Value > 0, "Generator 4 field", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[0], Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[0].Value > 0, "APU 1 field", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[1], Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[1].Value > 0, "APU 2 field", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunSplitSystemBreaker_OPEN, Aircraft.pmdg747.ELEC_annunSplitSystemBreaker_OPEN.Value > 0, "split system breaker", "open", "closed");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[0], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[0].Value > 0, "Generator #1 field light", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[1], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[1].Value > 0, "Generator #2 field light", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[2], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[2].Value > 0, "Generator #3 field light", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[3], Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[3].Value > 0, "Generator #4 field light", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[0], Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[0].Value > 0, "A P U #1 field light", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[1], Aircraft.pmdg747.ELEC_annunAPU_FIELD_OFF[1].Value > 0, "A P U #2 field light", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunSplitSystemBreaker_OPEN, Aircraft.pmdg747.ELEC_annunSplitSystemBreaker_OPEN.Value > 0, "split system breaker light", "on", "off");
 
             // Overhead maint. -- Fuel
             ReadToggle(Aircraft.pmdg747.FUEL_Reserve23Xfer_Sw_OPEN, Aircraft.pmdg747.FUEL_Reserve23Xfer_Sw_OPEN.Value > 0, "Fuel reserve transfer [T2-T3]", "open", "closed");
@@ -3365,8 +3384,8 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
             ReadToggle(Aircraft.pmdg747.IRS_annunON_BAT, Aircraft.pmdg747.IRS_annunON_BAT.Value > 0, "IRS battery", "On", "off");
 
             // Electrical
-            ReadToggle(Aircraft.pmdg747.ELEC_annunUtilOFF[0], Aircraft.pmdg747.ELEC_annunUtilOFF[0].Value > 0, "utility 1", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunUtilOFF[1], Aircraft.pmdg747.ELEC_annunUtilOFF[1].Value > 0, "utility 2", "off", "on");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunUtilOFF[0], Aircraft.pmdg747.ELEC_annunUtilOFF[0].Value > 0, "utility light #1", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunUtilOFF[1], Aircraft.pmdg747.ELEC_annunUtilOFF[1].Value > 0, "utility light #2", "on", "off");
             ReadToggle(Aircraft.pmdg747.ELEC_Battery_Sw_ON, Aircraft.pmdg747.ELEC_Battery_Sw_ON.Value > 0, "battery", "on", "off");
 
             if(Aircraft.pmdg747.ELEC_APU_Selector.ValueChanged)
@@ -3401,48 +3420,44 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 }
             } // End standby power.
 
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[0], Aircraft.pmdg747.ELEC_annunAPUGen_ON[0].Value > 0, "APU generator 1", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[1], Aircraft.pmdg747.ELEC_annunAPUGen_ON[1].Value > 0, "APU generator 2", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[0], Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[0].Value > 0, "bus tie 1", "Auto", "Manual");
-            ReadToggle(Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[1], Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[1].Value > 0, "bus tie 2", "Auto", "Manual");
-            ReadToggle(Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[2], Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[2].Value > 0, "bus tie 3", "Auto", "Manual");
-            ReadToggle(Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[3], Aircraft.pmdg747.ELEC_BusTie_Sw_AUTO[3].Value > 0, "bus tie 4", "Auto", "Manual");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[0], Aircraft.pmdg747.ELEC_annunBusTieISLN[0].Value > 0, "Isolation bus tie 1", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[1], Aircraft.pmdg747.ELEC_annunBusTieISLN[1].Value > 0, "Isolation bus tie 2", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[2], Aircraft.pmdg747.ELEC_annunBusTieISLN[2].Value > 0, "Isolation bus tie 3", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[3], Aircraft.pmdg747.ELEC_annunBusTieISLN[3].Value > 0, "Isolation bus tie 4", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[0], Aircraft.pmdg747.ELEC_annunGenOFF[0].Value > 0, "Generator 1", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[1], Aircraft.pmdg747.ELEC_annunGenOFF[1].Value > 0, "Generator 2", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[2], Aircraft.pmdg747.ELEC_annunGenOFF[2].Value > 0, "Generator 3", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[3], Aircraft.pmdg747.ELEC_annunGenOFF[3].Value > 0, "Generator 4", "off", "on");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunExtPowr_ON[0], Aircraft.pmdg747.ELEC_annunExtPowr_ON[0].Value > 0, "External power supply 1", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunExtPowr_ON[1], Aircraft.pmdg747.ELEC_annunExtPowr_ON[1].Value > 0, "External power supply 2", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[0], Aircraft.pmdg747.ELEC_annunAPUGen_ON[0].Value > 0, "APU generator 1", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[1], Aircraft.pmdg747.ELEC_annunAPUGen_ON[1].Value > 0, "APU generator 2", "On", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[0], Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[0].Value > 0, "APU generator 1", "available", "unavailable");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[1], Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[1].Value > 0, "APU generator 2", "available", "unavailable");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[0], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[0].Value > 0, "IDG disconnect drive 1", "on", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[1], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[1].Value > 0, "IDG disconnect drive 2", "on", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2].Value > 0, "IDG disconnect drive 3", "on", "off");
-            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2].Value > 0, "IDG disconnect drive 4", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[0], Aircraft.pmdg747.ELEC_annunAPUGen_ON[0].Value > 0, "A P U generator light #1", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[1], Aircraft.pmdg747.ELEC_annunAPUGen_ON[1].Value > 0, "A P U  generator light #2", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[0], Aircraft.pmdg747.ELEC_annunBusTieISLN[0].Value > 0, "Bus tie light #1", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[1], Aircraft.pmdg747.ELEC_annunBusTieISLN[1].Value > 0, "Bus tie light #2", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[2], Aircraft.pmdg747.ELEC_annunBusTieISLN[2].Value > 0, "Bus tie light #3", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunBusTieISLN[3], Aircraft.pmdg747.ELEC_annunBusTieISLN[3].Value > 0, "Bus tie light #4", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[0], Aircraft.pmdg747.ELEC_annunGenOFF[0].Value > 0, "Generator light #1", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[1], Aircraft.pmdg747.ELEC_annunGenOFF[1].Value > 0, "Generator light #2", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[2], Aircraft.pmdg747.ELEC_annunGenOFF[2].Value > 0, "Generator light #3", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunGenOFF[3], Aircraft.pmdg747.ELEC_annunGenOFF[3].Value > 0, "Generator light #4", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunExtPowr_ON[0], Aircraft.pmdg747.ELEC_annunExtPowr_ON[0].Value > 0, "External power light #1", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunExtPowr_ON[1], Aircraft.pmdg747.ELEC_annunExtPowr_ON[1].Value > 0, "External power light #2", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[0], Aircraft.pmdg747.ELEC_annunAPUGen_ON[0].Value > 0, "A P U generator light #1", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_ON[1], Aircraft.pmdg747.ELEC_annunAPUGen_ON[1].Value > 0, "A P U generator light #2", "On", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[0], Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[0].Value > 0, "A P U generator avail. light #1", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[1], Aircraft.pmdg747.ELEC_annunAPUGen_AVAIL[1].Value > 0, "A P U generator avail. light #2", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[0], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[0].Value > 0, "IDG disconnect light #1", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[1], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[1].Value > 0, "IDG disconnect light #2", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2].Value > 0, "IDG disconnect light #3", "on", "off");
+            ReadToggle(Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2], Aircraft.pmdg747.ELEC_annunIDGDiscDRIVE[2].Value > 0, "IDG disconnect light #4", "on", "off");
 
-            ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[0], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[0].Value > 0, "hydraulic pump 1", "on", "off");
-            ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[1], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[1].Value > 0, "hydraulic pump 2", "on", "off");
-                        ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[2], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[3].Value > 0, "hydraulic pump 3", "on", "off");
-            ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[3], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[3].Value > 0, "hydraulic pump 4", "on", "off");
+            ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[0], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[0].Value > 0, "hydraulic pump #1", "on", "off");
+            ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[1], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[1].Value > 0, "hydraulic pump #2", "on", "off");
+                        ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[2], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[3].Value > 0, "hydraulic pump #3", "on", "off");
+            ReadToggle(Aircraft.pmdg747.HYD_EnginePump_Sw_ON[3], Aircraft.pmdg747.HYD_EnginePump_Sw_ON[3].Value > 0, "hydraulic pump #4", "on", "off");
 
             if(Aircraft.pmdg747.HYD_DemandPump_Selector[0].ValueChanged)
             {
                 switch(Aircraft.pmdg747.HYD_DemandPump_Selector[0].Value)
                 {
                     case 0:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 1 off");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #1 off");
                         break;
                     case 1:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 1 auto");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #1 auto");
                         break;
                     case 2:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 1 on");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #1 on");
                         break;
                                    }
             } //End demand pump 1
@@ -3452,13 +3467,13 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 switch (Aircraft.pmdg747.HYD_DemandPump_Selector[1].Value)
                 {
                     case 0:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 2 off");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #2 off");
                         break;
                     case 1:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 2 auto");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #2 auto");
                         break;
                     case 2:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 2 on");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #2 on");
                         break;
                 }
             } //End demand pump 2
@@ -3468,13 +3483,13 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 switch (Aircraft.pmdg747.HYD_DemandPump_Selector[0].Value)
                 {
                     case 0:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 3 off");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #3 off");
                         break;
                     case 1:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 3 auto");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #3 auto");
                         break;
                     case 2:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 3 on");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #3 on");
                         break;
                 }
             } //End demand pump 3
@@ -3484,24 +3499,24 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 switch (Aircraft.pmdg747.HYD_DemandPump_Selector[3].Value)
                 {
                     case 0:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 4 off");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #4 off");
                         break;
                     case 1:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 4 auto");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #4 auto");
                         break;
                     case 2:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 4 on");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #4 on");
                         break;
                     case 3:
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump 4 Aux");
+                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Demand pump #4 Aux");
                         break;
                 }
             } //End demand pump 4
 
-            ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[0], Aircraft.pmdg747.HYD_annunSYS_FAULT[0].Value > 0, "hydraulic failure light #1", "On", "off");
-            ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[1], Aircraft.pmdg747.HYD_annunSYS_FAULT[1].Value > 0, "hydraulic failure light #2", "On", "off");
-            ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[2], Aircraft.pmdg747.HYD_annunSYS_FAULT[2].Value > 0, "hydraulic failure light #3", "On", "off");
-                        ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[3], Aircraft.pmdg747.HYD_annunSYS_FAULT[3].Value > 0, "hydraulic failure light #4", "On", "off");
+            ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[0], Aircraft.pmdg747.HYD_annunSYS_FAULT[0].Value > 0, "hydraulic fault light #1", "On", "off");
+            ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[1], Aircraft.pmdg747.HYD_annunSYS_FAULT[1].Value > 0, "hydraulic fault light #2", "On", "off");
+            ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[2], Aircraft.pmdg747.HYD_annunSYS_FAULT[2].Value > 0, "hydraulic fault light #3", "On", "off");
+                        ReadToggle(Aircraft.pmdg747.HYD_annunSYS_FAULT[3], Aircraft.pmdg747.HYD_annunSYS_FAULT[3].Value > 0, "hydraulic fault light #4", "On", "off");
             ReadToggle(Aircraft.pmdg747.HYD_annunEnginePumpPRESS[0], Aircraft.pmdg747.HYD_annunEnginePumpPRESS[0].Value > 0, "Engine #1 hydraulic pressure light", "On", "off");
             ReadToggle(Aircraft.pmdg747.HYD_annunEnginePumpPRESS[1], Aircraft.pmdg747.HYD_annunEnginePumpPRESS[1].Value > 0, "Engine #2 hydraulic pressure light", "On", "off");
             ReadToggle(Aircraft.pmdg747.HYD_annunEnginePumpPRESS[2], Aircraft.pmdg747.HYD_annunEnginePumpPRESS[2].Value > 0, "Engine #3 hydraulic pressure light", "On", "off");
