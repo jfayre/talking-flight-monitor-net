@@ -23,12 +23,12 @@ deploy:
 - provider: FTP
   on:
     APPVEYOR_REPO_TAG: true
-  host: vps.fayre.me
+  host: voyager.fayretech.com
   protocol: sftp
   username: talkingflightmonitor
   password:
     secure: gsDOGtodux/gAPPDTybI5w==
-  folder: /public_html/snapshots
+  folder: /var/www/html/talkingflightmonitor.com/public_html/snapshots
 notifications:
 - provider: Email
   to:
