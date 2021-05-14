@@ -154,7 +154,7 @@ namespace tfm
             }
         }
 
-        public void ElecStandbyAuto()
+        public void         ElecStandbyAuto()
         {
             if (FSUIPCConnection.ReadLVar("switch_10_73X") != 100)
             {
