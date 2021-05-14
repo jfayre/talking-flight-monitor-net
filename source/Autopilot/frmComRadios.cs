@@ -48,7 +48,7 @@ namespace tfm
             
             if (txtCom2.Text != ap.Com2Freq.ToString())
             {
-                ap.Com1Freq = decimal.Parse(txtCom2.Text);
+                ap.Com2Freq = decimal.Parse(txtCom2.Text);
             }
 
         }
