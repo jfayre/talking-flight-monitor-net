@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -265,6 +266,7 @@ if(Aircraft.pmdg747.ELEC_UtilSw[1].Value == 0 && utility2CheckBox.Checked == tru
         private void startApuButton_Click(object sender, EventArgs e)
         {
             FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_OH_ELEC_APU_SEL_SWITCH, Aircraft.ClkR);
+            Thread.Sleep(250);
             FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_OH_ELEC_APU_SEL_SWITCH, Aircraft.ClkR);
         }
 

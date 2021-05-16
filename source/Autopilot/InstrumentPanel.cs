@@ -180,7 +180,27 @@ namespace tfm
         {
             get
             {
-                apHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
+                string Name = Aircraft.AircraftName.Value;
+                if (Name.Contains("PMDG"))
+                {
+if (Name.Contains("737"))
+                    {
+                        apHeading = Aircraft.pmdg737.MCP_Heading.Value;
+                    }
+if (Name.Contains("747"))
+                    {
+                        apHeading = Aircraft.pmdg747.MCP_Heading.Value;
+                    }
+if (Name.Contains("777"))
+                    {
+                        apHeading = Aircraft.pmdg777.MCP_Heading.Value;
+                    }
+                }
+                else
+                {
+                    apHeading = (double)Math.Round(Aircraft.ApHeading.Value / 65536d * 360d);
+                }
+                
                 return apHeading;
             }
             set
@@ -211,7 +231,27 @@ namespace tfm
         {
             get
             {
-                apAltitude = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
+                string Name = Aircraft.AircraftName.Value;
+                if (Name.Contains("PMDG"))
+                {
+                    if (Name.Contains("737"))
+                    {
+                        apAltitude = Aircraft.pmdg737.MCP_Altitude.Value;
+                    }
+                    if (Name.Contains("747"))
+                    {
+                        apAltitude = Aircraft.pmdg747.MCP_Altitude.Value;
+                    }
+                    if (Name.Contains("777"))
+                    {
+                        apAltitude = Aircraft.pmdg777.MCP_Altitude.Value;
+                    }
+                }
+                else
+                {
+                    apAltitude = Math.Round((double)Aircraft.ApAltitude.Value / 65536d * 3.28084d);
+                }
+                
                 return apAltitude;
             }
             set
@@ -242,7 +282,27 @@ namespace tfm
         {
             get
             {
-                apAirspeed = Aircraft.ApAirspeed.Value;
+                string Name = Aircraft.AircraftName.Value;
+                if (Name.Contains("PMDG"))
+                {
+                    if (Name.Contains("737"))
+                    {
+                        apAirspeed = Aircraft.pmdg737.MCP_IASMach.Value;
+                    }
+                    if (Name.Contains("747"))
+                    {
+                        apAirspeed = Aircraft.pmdg747.MCP_IASMach.Value;
+                    }
+                    if (Name.Contains("777"))
+                    {
+                        apAirspeed = Aircraft.pmdg777.MCP_IASMach.Value;
+                    }
+                }
+else
+                {
+                    apAirspeed = Aircraft.ApAirspeed.Value;
+                }
+                
                 return apAirspeed;
             }
             set
