@@ -32,33 +32,11 @@ namespace tfm
 
         private void txtAltitude_KeyDown(object sender, KeyEventArgs e)
         {
-            // increment altitude by 100 feet
-            if (e.KeyCode == Keys.Oemplus)
+            if (e.KeyCode == Keys.Enter)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Inc);
+                int alt = int.Parse(txtAltitude.Text);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALT_SET, alt);
             }
-            // increment altitude by 500 feet
-            if ((e.Shift && e.KeyCode == Keys.Oemplus))
-            {
-                for (int i = 0; i <5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Inc);
-                }
-            }
-            // decrement altitude by 100 feet
-            if (e.KeyCode == Keys.OemMinus)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Dec);
-            }
-            // decrement altitude by 500 feet
-            if ((e.Shift && e.KeyCode == Keys.OemMinus))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_ALTITUDE_SELECTOR, Aircraft.Dec);
-                }
-            }
-
         }
 
         private void btnN1_Click(object sender, EventArgs e)
@@ -69,33 +47,12 @@ namespace tfm
         
         private void txtSpeed_KeyDown(object sender, KeyEventArgs e)
         {
-            // increment speed
-            if (e.KeyCode == Keys.Oemplus)
+            // When Enter is pressed, update the MCP
+if (e.KeyCode == Keys.Enter)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Inc);
+                ushort speed = ushort.Parse(txtSpeed.Text);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_IAS_SET, speed);
             }
-            // increment altitude fast
-            if ((e.Shift && e.KeyCode == Keys.Oemplus))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Inc);
-                }
-            }
-            // decrement altitude slowly
-            if (e.KeyCode == Keys.OemMinus)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Dec);
-            }
-            // decrement altitude fast
-            if ((e.Shift && e.KeyCode == Keys.OemMinus))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_SPEED_SELECTOR, Aircraft.Dec);
-                }
-            }
-
         }
 
         private void btnSpeed_Click(object sender, EventArgs e)
@@ -125,33 +82,14 @@ namespace tfm
 
         private void txtVSpd_KeyDown(object sender, KeyEventArgs e)
         {
-            // increment v-speed
-            if (e.KeyCode == Keys.Oemplus)
+            if (e.KeyCode == Keys.Enter)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Inc);
+                short vs = short.Parse(txtVSpd.Text);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SET, vs + 10000);
             }
-            // increment altitude fast
-            if ((e.Shift && e.KeyCode == Keys.Oemplus))
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Inc);
-                }
-            }
-            // decrement altitude slowly
-            if (e.KeyCode == Keys.OemMinus)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Dec);
-            }
-            // decrement altitude fast
-            if ((e.Shift && e.KeyCode == Keys.OemMinus))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_VS_SELECTOR, Aircraft.Dec);
-                }
-            }
 
+            }
         }
 
         private void btnVNav_Click(object sender, EventArgs e)
@@ -161,34 +99,12 @@ namespace tfm
 
         private void txtHeading_KeyDown(object sender, KeyEventArgs e)
         {
-            // increment heading
-            if (e.KeyCode == Keys.Oemplus)
+            // When Enter is pressed, update MCP heading
+            if(e.KeyCode == Keys.Enter)
             {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Inc);
+                ushort hdg = ushort.Parse(txtHeading.Text);
+                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HDG_SET, hdg);
             }
-            // increment heading fast
-            if ((e.Shift && e.KeyCode == Keys.Oemplus))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Inc);
-                }
-            }
-            // decrement heading slowly
-            if (e.KeyCode == Keys.OemMinus)
-            {
-                FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Dec);
-            }
-            // decrement heading fast
-            if ((e.Shift && e.KeyCode == Keys.OemMinus))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    FSUIPCConnection.SendControlToFS(PMDG_737_NGX_Control.EVT_MCP_HEADING_SELECTOR, Aircraft.Dec);
-                }
-            }
-
-
         }
 
         private void btnHdgSel_Click(object sender, EventArgs e)
@@ -241,20 +157,34 @@ namespace tfm
             // update the form when instruments change
             if (Aircraft.pmdg737.MCP_Altitude.Value.ToString() != txtAltitude.Text.ToString())
             {
-                txtAltitude.Text = Aircraft.pmdg737.MCP_Altitude.Value.ToString();
+                if (!txtAltitude.Focused)
+                {
+                    txtAltitude.Text = Aircraft.pmdg737.MCP_Altitude.Value.ToString();
+                }
+
             }
-            if (Aircraft.pmdg737.MCP_VertSpeed.Value.ToString() != txtHeading.Text.ToString())
+            if (Aircraft.pmdg737.MCP_VertSpeed.Value.ToString() != txtVSpd.Text.ToString())
             {
-                txtVSpd.Text = Aircraft.pmdg737.MCP_VertSpeed.Value.ToString();
+                if (!txtVSpd.Focused)
+                {
+                    txtVSpd.Text = Aircraft.pmdg737.MCP_VertSpeed.Value.ToString();
+                }
+
             }
 
             if (Aircraft.pmdg737.MCP_Heading.Value.ToString() != txtHeading.Text.ToString())
             {
-                txtHeading.Text = Aircraft.pmdg737.MCP_Heading.Value.ToString();
+                if (! txtHeading.Focused)
+                {
+                    txtHeading.Text = Aircraft.pmdg737.MCP_Heading.Value.ToString(); 
+                }
             }
             if (Aircraft.pmdg737.MCP_IASMach.Value.ToString() != txtSpeed.Text.ToString())
             {
-                txtSpeed.Text = Aircraft.pmdg737.MCP_IASMach.Value.ToString();
+                if (!txtSpeed.Focused)
+                {
+                    txtSpeed.Text = Aircraft.pmdg737.MCP_IASMach.Value.ToString(); 
+                }
             }
             if (Aircraft.pmdg737.MCP_annunLNAV.Value == 1)
             {
@@ -432,6 +362,16 @@ namespace tfm
                 pmdg.mcpAutoThrottleArmOff();
             }
 
+        }
+
+        private void txtSpeed_Enter(object sender, EventArgs e)
+        {
+            tmrMCP.Enabled = false;
+        }
+
+        private void txtSpeed_Leave(object sender, EventArgs e)
+        {
+            tmrMCP.Enabled = true;
         }
     }
 }

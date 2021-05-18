@@ -258,6 +258,9 @@ namespace tfm
         private bool fuelManagerActive;
         OutputHistory history = new OutputHistory();
         WaveFileReader gpwsSound;
+        private bool PMDG737Detected;
+        private bool PMDG747Detected;
+        private bool PMDG777Detected;
 
         public IOSubsystem()
         {
@@ -354,7 +357,24 @@ namespace tfm
                 // Read when aircraft changes
                 if (Aircraft.AircraftName.ValueChanged)
                 {
+                    string name = Aircraft.AircraftName.Value;
                     fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
+if (name.Contains("PMDG"))
+                    {
+                        if (name.Contains("737"))
+                        {
+                            PMDG737Detected = true;
+                        }
+                        if (name.Contains("747"))
+                        {
+                            PMDG747Detected = true;
+                        }
+                        if (name.Contains("777"))
+                        {
+                            PMDG777Detected = true;
+                        }
+
+                    }
                     DetectFuelTanks();
                 }
 
@@ -433,8 +453,26 @@ namespace tfm
             }
             else
             {
+                string name = Aircraft.AircraftName.Value;
                 fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
-                DetectFuelTanks();
+                if (name.Contains("PMDG"))
+                {
+                    if (name.Contains("737"))
+                    {
+                        PMDG737Detected = true;
+                        Tolk.Output("737 detected");
+                    }
+                    if (name.Contains("747"))
+                    {
+                        PMDG747Detected = true;
+                    }
+                    if (name.Contains("777"))
+                    {
+                        PMDG777Detected = true;
+                    }
+                }
+
+                    DetectFuelTanks();
                 FirstRun = false;
             }
         }
@@ -1049,7 +1087,7 @@ namespace tfm
             string gaugeValue;
             bool isGauge = true;
             // heading
-            if (Aircraft.AircraftName.Value.Contains("PMDG"))
+            if (PMDG737Detected)
             {
                 if (Aircraft.pmdg737.MCP_Heading.ValueChanged)
                 {
@@ -1059,17 +1097,66 @@ namespace tfm
 
                 }
             }
-            else
+            if (PMDG747Detected)
             {
-                if (Aircraft.ApHeading.ValueChanged)
+                if (Aircraft.pmdg747.MCP_Heading.ValueChanged)
+                {
+                    gaugeName = "AP heading";
+                    gaugeValue = Aircraft.pmdg747.MCP_Heading.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
+            }
+            if (PMDG777Detected)
+            {
+            if (Aircraft.pmdg777.MCP_Heading.ValueChanged)
+            {
+                gaugeName = "AP heading";
+                gaugeValue = Aircraft.pmdg777.MCP_Heading.Value.ToString();
+                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+            }
+        }
+            // read non-pmdg heading    
+            if (Aircraft.ApHeading.ValueChanged)
                 {
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
                     fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
                 }
-            }
 
             // airspeed
+            if (PMDG737Detected)
+            {
+                            if (Aircraft.pmdg737.MCP_IASMach.ValueChanged)
+                {
+                    gaugeName = "AP airspeed";
+                    gaugeValue = Aircraft.pmdg737.MCP_IASMach.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
+            }
+            if (PMDG747Detected)
+            {
+                if (Aircraft.pmdg747.MCP_IASMach.ValueChanged)
+                {
+                    gaugeName = "AP airspeed";
+                    gaugeValue = Aircraft.pmdg747.MCP_IASMach.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
+            }
+            if (PMDG777Detected)
+            {
+                if (Aircraft.pmdg777.MCP_IASMach.ValueChanged)
+                {
+                    gaugeName = "AP airspeed";
+                    gaugeValue = Aircraft.pmdg777.MCP_IASMach.Value.ToString();
+                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                }
+            }
+            // handle speed for standard aircraft
             if (Aircraft.ApAirspeed.ValueChanged)
             {
                 gaugeName = "AP airspeed";
@@ -1091,13 +1178,26 @@ namespace tfm
             var isGauge = true;
             if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                if (Aircraft.pmdg737.MCP_Altitude.ValueChanged)
+                if (PMDG737Detected)
                 {
-                    var gaugeValue = Aircraft.pmdg737.MCP_Altitude.Value.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    if (Aircraft.pmdg737.MCP_Altitude.ValueChanged)
+                    {
+                        var gaugeValue = Aircraft.pmdg737.MCP_Altitude.Value.ToString();
+                        fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
 
+                    }
+                }
+                if (PMDG747Detected)
+                {
+                    if (Aircraft.pmdg747.MCP_Altitude.ValueChanged)
+                    {
+                        var gaugeValue = Aircraft.pmdg747.MCP_Altitude.Value.ToString();
+                        fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+
+                    }
                 }
             }
+
             else
             {
                 if (Aircraft.ApAltitude.ValueChanged)

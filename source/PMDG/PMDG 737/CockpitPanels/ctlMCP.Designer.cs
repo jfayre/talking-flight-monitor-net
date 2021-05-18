@@ -187,7 +187,6 @@
             this.txtSpeed.Location = new System.Drawing.Point(297, 8);
             this.txtSpeed.Margin = new System.Windows.Forms.Padding(5);
             this.txtSpeed.Name = "txtSpeed";
-            this.txtSpeed.ReadOnly = true;
             this.txtSpeed.Size = new System.Drawing.Size(164, 40);
             this.txtSpeed.TabIndex = 31;
             this.txtSpeed.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSpeed_KeyDown);
@@ -299,7 +298,6 @@
             this.txtVSpd.Location = new System.Drawing.Point(702, 8);
             this.txtVSpd.Margin = new System.Windows.Forms.Padding(5);
             this.txtVSpd.Name = "txtVSpd";
-            this.txtVSpd.ReadOnly = true;
             this.txtVSpd.Size = new System.Drawing.Size(164, 40);
             this.txtVSpd.TabIndex = 6;
             this.txtVSpd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtVSpd_KeyDown);
@@ -391,7 +389,6 @@
             this.txtHeading.Location = new System.Drawing.Point(8, 8);
             this.txtHeading.Margin = new System.Windows.Forms.Padding(5);
             this.txtHeading.Name = "txtHeading";
-            this.txtHeading.ReadOnly = true;
             this.txtHeading.Size = new System.Drawing.Size(164, 40);
             this.txtHeading.TabIndex = 40;
             this.txtHeading.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtHeading_KeyDown);
