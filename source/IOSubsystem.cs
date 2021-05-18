@@ -422,6 +422,7 @@ namespace tfm
                 if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                 {
                     ReadPMDG737Toggles();
+                    ReadPmdgFMCMessage();
                 }
                     
                 if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
@@ -1316,6 +1317,9 @@ namespace tfm
             ResetHotkeys();
             switch (e.Name)
             {
+                case "ap_FMCMessage":
+                    ReadPmdgFMCMessage("requested");
+                    break;
                 case "ap_set_spoilers":
                     ap = new frmAutopilot("spoilers");
                     ap.ShowDialog();
@@ -3126,8 +3130,31 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 } // End switch
                                             } // End MonitorN1Limit.
 
-        public void ReadPmdgFMCMessage()
+        public void ReadPmdgFMCMessage(string type = null)
         {
+            PMDG_NGX_CDU_Screen cDU_Screen = new PMDG_NGX_CDU_Screen(0x5400);
+            if (type == "requested")
+            {
+                if (Aircraft.pmdg737.CDU_annunMSG[0].Value == 1)
+                {
+                    cDU_Screen.RefreshData();
+                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{ cDU_Screen.Rows[13].ToString()}");
+                }
+            } // End requested.
+            else
+            {
+
+                if (Aircraft.pmdg737.CDU_annunMSG[0].ValueChanged)
+                {
+                    switch (Aircraft.pmdg737.CDU_annunMSG[0].Value)
+                    {
+                        case 1:
+                            cDU_Screen.RefreshData();
+                            fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                            break;
+                    }
+                }
+            }
                     } // End ReadPmdgFmcMessage.
 
         private void ReadPMDG737Toggles()

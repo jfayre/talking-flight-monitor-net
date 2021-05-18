@@ -24,7 +24,7 @@ namespace tfm
         private void LoadPages()
         {
             pages.Add("electricalNode", new ctlElectrical_747());
-
+            pages.Add("MCPNode", new ctlMCP_747());
             foreach(iPanelsPage page in this.pages.Values)
             {
                 page.Parent = this.contentPanel;

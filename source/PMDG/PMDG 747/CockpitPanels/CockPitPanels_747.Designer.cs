@@ -30,8 +30,10 @@ namespace tfm
         private void InitializeComponent()
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Electrical");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Overhead", new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("MCP");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Overhead", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
             this.cockpitPanelsTree = new System.Windows.Forms.TreeView();
             this.contentPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
@@ -41,14 +43,16 @@ namespace tfm
             this.cockpitPanelsTree.AccessibleName = "Cockpit panels";
             this.cockpitPanelsTree.Dock = System.Windows.Forms.DockStyle.Left;
             this.cockpitPanelsTree.Location = new System.Drawing.Point(0, 0);
-            this.cockpitPanelsTree.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.cockpitPanelsTree.Margin = new System.Windows.Forms.Padding(5);
             this.cockpitPanelsTree.Name = "cockpitPanelsTree";
             treeNode1.Name = "electricalNode";
             treeNode1.Text = "Electrical";
-            treeNode2.Name = "overheadNode";
-            treeNode2.Text = "Overhead";
+            treeNode2.Name = "MCPNode";
+            treeNode2.Text = "MCP";
+            treeNode3.Name = "overheadNode";
+            treeNode3.Text = "Overhead";
             this.cockpitPanelsTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode3});
             this.cockpitPanelsTree.Size = new System.Drawing.Size(199, 742);
             this.cockpitPanelsTree.TabIndex = 0;
             this.cockpitPanelsTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.cockpitPanelsTree_AfterSelect);
@@ -57,7 +61,7 @@ namespace tfm
             // 
             this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.contentPanel.Location = new System.Drawing.Point(199, 0);
-            this.contentPanel.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.contentPanel.Margin = new System.Windows.Forms.Padding(5);
             this.contentPanel.Name = "contentPanel";
             this.contentPanel.Size = new System.Drawing.Size(1134, 742);
             this.contentPanel.TabIndex = 1;
@@ -72,7 +76,8 @@ namespace tfm
             this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.cockpitPanelsTree);
             this.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "CockPitPanels_747";
             this.Text = "747 cockpit panels";
             this.ResumeLayout(false);

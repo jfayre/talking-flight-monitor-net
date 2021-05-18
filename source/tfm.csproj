@@ -396,7 +396,14 @@
     <Compile Include="PMDG\PMDG 747\CockpitPanels\ctlElectrical_747.Designer.cs">
       <DependentUpon>ctlElectrical_747.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PMDG 747\CockpitPanels\ctlMCP_747.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG 747\CockpitPanels\ctlMCP_747.Designer.cs">
+      <DependentUpon>ctlMCP_747.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\pmdg.cs" />
+    <Compile Include="PMDG\PMDG747.cs" />
     <Compile Include="PMDG\PMDG777\777CDU.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -628,6 +635,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG 747\CockpitPanels\ctlElectrical_747.resx">
       <DependentUpon>ctlElectrical_747.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG 747\CockpitPanels\ctlMCP_747.resx">
+      <DependentUpon>ctlMCP_747.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG777\777CDU.resx">
       <DependentUpon>777CDU.cs</DependentUpon>

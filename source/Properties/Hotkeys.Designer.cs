@@ -1027,5 +1027,17 @@ namespace tfm.Properties {
                 this["n1monitor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Shift+1")]
+        public global::System.Windows.Forms.Keys ap_FMCMessage {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["ap_FMCMessage"]));
+            }
+            set {
+                this["ap_FMCMessage"] = value;
+            }
+        }
     }
 }

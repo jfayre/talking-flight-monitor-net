@@ -254,5 +254,8 @@
     <Setting Name="n1monitor" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Shift+N</Value>
     </Setting>
+    <Setting Name="ap_FMCMessage" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Shift+1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

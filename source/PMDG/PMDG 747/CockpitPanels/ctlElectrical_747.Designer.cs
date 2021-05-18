@@ -74,6 +74,7 @@ namespace tfm
             this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
             this.extPwr1Button = new System.Windows.Forms.Button();
             this.extPwr2Button = new System.Windows.Forms.Button();
+            this.panelLightsListBox = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.cabinUtilityGroup.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -109,6 +110,7 @@ namespace tfm
             this.flowLayoutPanel1.Controls.Add(this.generatorsGroupBox);
             this.flowLayoutPanel1.Controls.Add(this.idgDisconnectGroup);
             this.flowLayoutPanel1.Controls.Add(this.extPowrGroup);
+            this.flowLayoutPanel1.Controls.Add(this.panelLightsListBox);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -675,6 +677,15 @@ namespace tfm
             this.extPwr2Button.UseVisualStyleBackColor = true;
             this.extPwr2Button.Click += new System.EventHandler(this.extPwr2Button_Click);
             // 
+            // panelLightsListBox
+            // 
+            this.panelLightsListBox.FormattingEnabled = true;
+            this.panelLightsListBox.ItemHeight = 32;
+            this.panelLightsListBox.Location = new System.Drawing.Point(950, 135);
+            this.panelLightsListBox.Name = "panelLightsListBox";
+            this.panelLightsListBox.Size = new System.Drawing.Size(120, 68);
+            this.panelLightsListBox.TabIndex = 10;
+            // 
             // ctlElectrical_747
             // 
             this.AccessibleName = "Overhead - electrical";
@@ -779,5 +790,6 @@ namespace tfm
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
         private System.Windows.Forms.Button extPwr1Button;
         private System.Windows.Forms.Button extPwr2Button;
+        private System.Windows.Forms.ListBox panelLightsListBox;
     }
 }

@@ -204,6 +204,19 @@ if(Aircraft.pmdg747.ELEC_UtilSw[1].Value == 0 && utility2CheckBox.Checked == tru
                 extPwr2Button.Text = "#2 [On]";
                 extPwr2Button.AccessibleName = "#2 [On]";
             }
+
+            if(Aircraft.pmdg747.ELEC_annunUtilOFF[0].ValueChanged)
+            {
+                switch(Aircraft.pmdg747.ELEC_annunUtilOFF[0].Value)
+                {
+                    case 0:
+                        panelLightsListBox.Items[0] = "Util. off #1: Off";
+                        break;
+                    case 1:
+                        panelLightsListBox.Items[0] = "Util. Off #1: On";
+                        break;
+                }
+            }
                                                                                             } // End TimerTick.
 
                                                                         public void SetDocking()
@@ -215,6 +228,15 @@ if(Aircraft.pmdg747.ELEC_UtilSw[1].Value == 0 && utility2CheckBox.Checked == tru
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
                                      timer.Tick += new EventHandler(TimerTick);
              timer.Start();
+
+            if(Aircraft.pmdg747.ELEC_annunUtilOFF[0].Value == 0)
+            {
+                panelLightsListBox.Items.Add("Util. off #1: Off");
+            }
+            else
+            {
+                panelLightsListBox.Items.Add("Util. off #1: On");
+            }
                     } // End FormLoad.
 
         private void batteryCheckBox_CheckedChanged(object sender, EventArgs e)
