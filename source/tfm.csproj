@@ -410,6 +410,7 @@
     <Compile Include="PMDG\PMDG777\777CDU.Designer.cs">
       <DependentUpon>777CDU.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PmDGIndicator.cs" />
     <Compile Include="PMDG\PMDGLight.cs" />
     <Compile Include="Settings panels\ctlAircraft.cs">
       <SubType>UserControl</SubType>

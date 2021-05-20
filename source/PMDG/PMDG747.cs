@@ -20,15 +20,16 @@ namespace tfm
 
 
         // Collections for the panel lights.
-        private static Dictionary<string, Dictionary<string, Dictionary<Offset, string>>> panelLights = new Dictionary<string, Dictionary<string, Dictionary<Offset, string>>>()
+        
+                private static Dictionary<string, Dictionary<string, Dictionary<Offset<Byte>, string>>> panelLights = new Dictionary<string, Dictionary<string, Dictionary<Offset<Byte>, string>>>()
             {
             //Overhead Maintenance
             {"Overhead Maintenance",
-            new Dictionary<string, Dictionary<Offset, string>>
+            new Dictionary<string, Dictionary<Offset<Byte>, string>>
             {
                 // Electrical
                 {"Electrical",
-                    new Dictionary<Offset, string>
+                    new Dictionary<Offset<Byte>, string>
                     {
                         // List of offsets.
                         {Aircraft.pmdg747.ELEC_annunGen_FIELD_OFF[0], "Gen. #1 field off"},
@@ -41,7 +42,7 @@ namespace tfm
                     } // End offsets.
                 }, // End Electrical.
                 {"Flight controls",
-                new Dictionary<Offset, string>
+                new Dictionary<Offset<Byte>, string>
                 {
                     // Offsets.
 
@@ -59,13 +60,13 @@ namespace tfm
                                                 }, // End Overhead Maintenance
 
             // Overhead panels.
-            {"Overhead", 
-                new Dictionary<string, Dictionary<Offset, string>>
+            {"Overhead",
+                new Dictionary<string, Dictionary<Offset<Byte>, string>>
                 {
 
                     // IRS panel.
                     {"IRS",
-new Dictionary<Offset, string>
+new Dictionary<Offset<Byte>, string>
 {
 
     // Offsets.
@@ -73,7 +74,7 @@ new Dictionary<Offset, string>
     } // End offsets.
                     }, // End IRS panel.
                     {"Electrical",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
                             // offsets.
                             {Aircraft.pmdg747.ELEC_annunUtilOFF[0], "Util. #1 off" },
@@ -103,7 +104,7 @@ new Dictionary<Offset, string>
 
                     // Hydraulics
                     {"Hydraulics",
-new Dictionary<Offset, string>
+new Dictionary<Offset<Byte>, string>
 {
     // offsets.
     {Aircraft.pmdg747.HYD_annunSYS_FAULT[0], "System fault #1" },
@@ -124,7 +125,7 @@ new Dictionary<Offset, string>
                     }, // End Hydraulics.
 
                     {"Fire protection",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
 
                             // Offsets.
@@ -141,7 +142,7 @@ new Dictionary<Offset, string>
                                         }, // End Fire protection.
 
                     {"Engine control",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
                             {Aircraft.pmdg747.ENG_Start_Light[00], "Engine #1 start" },
                             {Aircraft.pmdg747.ENG_Start_Light[1], "Engine #2 start" },
@@ -155,7 +156,7 @@ new Dictionary<Offset, string>
                     }, // End engine control.
 
                     {"Fuel",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
                             {Aircraft.pmdg747.FUEL_annunXFEED_VALVE[0], "Cross feed valve #1" },
                             {Aircraft.pmdg747.FUEL_annunXFEED_VALVE[1], "Cross feed valve #2" },
@@ -181,7 +182,7 @@ new Dictionary<Offset, string>
                         } // End offsets.
                                         }, // End Fuel.
                     {"Anti ice",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
                             {Aircraft.pmdg747.ICE_annunEngAntiIceVALVE[0], "Eng. #1 Anti ice valve" },
                             {Aircraft.pmdg747.ICE_annunEngAntiIceVALVE[1], "Eng. #2 anti ice valve" },
@@ -193,7 +194,7 @@ new Dictionary<Offset, string>
                         } // End offsets.
                                         }, //End Anti ice.
                     {"Air conditioning",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
                             {Aircraft.pmdg747.AIR_annunPackOFF[0], "Left pack off" },
                             {Aircraft.pmdg747.AIR_annunPackOFF[1], "Center pack off" },
@@ -204,11 +205,11 @@ new Dictionary<Offset, string>
                                                     } // End offsets.
                     }, // End air conditioning.
                     {"Bleed air",
-                    new Dictionary<Offset, string>
+                    new Dictionary<Offset<Byte>, string>
                     {
                         {Aircraft.pmdg747.AIR_annunEngBleedAirOFF[0], "Eng. #1 bleed air off" },
                         {Aircraft.pmdg747.AIR_annunEngBleedAirOFF[1], "Eng. #2 bleed air off" },
-                        {Aircraft.pmdg747.AIR_annunEngBleedAirOFF[3], "Eng. #3 bleed air off" },
+                        {Aircraft.pmdg747.AIR_annunEngBleedAirOFF[2], "Eng. #3 bleed air off" },
                         {Aircraft.pmdg747.AIR_annunEngBleedAirOFF[3], "Eng. #4 bleed air off" },
                         {Aircraft.pmdg747.AIR_annunAPUBleedAirVALVE, "APU bleed air valve" },
                         {Aircraft.pmdg747.AIR_annunIsolationVALVE[0], "Left isolation valve" },
@@ -220,15 +221,117 @@ new Dictionary<Offset, string>
                                             } // End offsets.
                     }, // End air bleed.
                     {"Miscellaneous",
-                        new Dictionary<Offset, string>
+                        new Dictionary<Offset<Byte>, string>
                         {
                             {Aircraft.pmdg747.FCTL_annunYawDamperINOP[0], "Upper yaw damper inop" },
                             {Aircraft.pmdg747.FCTL_annunYawDamperINOP[1], "Lower yaw damper inop" },
                         } // End offsets.
                                         }, // End Miscellaneous
                 } // End Overhead subpanels.
-            } // End Overhead panels.
+            }, // End Overhead panels.
+            {"Glare shield",
+                new Dictionary<string, Dictionary<Offset<Byte>, string>>
+                {
+                    {"Warnings",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.WARN_annunMASTER_CAUTION[0], "Left master caution" },
+                            {Aircraft.pmdg747.WARN_annunMASTER_CAUTION[1], "Right master caution" },
+                            {Aircraft.pmdg747.WARN_annunMASTER_WARNING[0], "Right master warning" },
+                            {Aircraft.pmdg747.WARN_annunMASTER_WARNING[1], "Right master warning" },
+                        } // End offsets.
+                }, // End warnings.
+                    {"Display select",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.DSP_annunLWR_CTR, "WR Ctr" },
+                            {Aircraft.pmdg747.DSP_annunL_INBD, "LNIBD" },
+                            {Aircraft.pmdg747.DSP_annunR_INBD, "RNIBD" },
+                        } // End offsets.
+                    }, // End display select.
+                    {"MCP",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.MCP_annunAP[0], "Left Autopilot" },
+                            {Aircraft.pmdg747.MCP_annunAP[1], "Center Autopilot" },
+                            {Aircraft.pmdg747.MCP_annunAP[2], "Right Autopilot" },
+                            {Aircraft.pmdg747.MCP_annunTHR, "Thrust" },
+                            {Aircraft.pmdg747.MCP_annunSPD, "Speed" },
+                            {Aircraft.pmdg747.MCP_annunLNAV, "L NAV" },
+                            {Aircraft.pmdg747.MCP_annunVNAV, "V NAV" },
+                            {Aircraft.pmdg747.MCP_annunFLCH, "Flight level change" },
+                            {Aircraft.pmdg747.MCP_annunHDG_HOLD, "Heading hold" },
+                            {Aircraft.pmdg747.MCP_annunVS, "Vertical speed" },
+                            {Aircraft.pmdg747.MCP_annunALT_HOLD, "Altitude hold" },
+                            {Aircraft.pmdg747.MCP_annunLOC, "Localizer" },
+                            {Aircraft.pmdg747.MCP_annunAPP, "Approach" },
+                        } // End offsets.
+                    }, // End MCP
+                               } // End glare shield panels.
+                }, // End Glareshield.
+            {"Forward",
+                new Dictionary<string, Dictionary<Offset<Byte>, string>>
+                {
+                    {"Center",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.GPWS_annunGND_PROX_top, "Ground prox. top" },
+                            {Aircraft.pmdg747.GPWS_annunGND_PROX_bottom, "Ground prox. bottom" },
+                        } // End offsets.
+                    }, // End Center panel.
+                    {"Left",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.BRAKES_annunBRAKE_SOURCE, "Break source" },
+                        } // End offsets.
+                    }, // End Left.
+                                    } // End forward sub panels.
+            }, // End Forward panel.
+            {"Forward Aisle Stand",
+                new Dictionary<string, Dictionary<Offset<Byte>, string>>
+                {
+                    {"CDU",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.CDU_annunEXEC[0], "Left CDU execute" },
+                            {Aircraft.pmdg747.CDU_annunEXEC[1], "Center CDU execute" },
+                            {Aircraft.pmdg747.CDU_annunEXEC[2], "Right CDU execute" },
+                            {Aircraft.pmdg747.CDU_annunDSPY[0], "Left CDU display" },
+                            {Aircraft.pmdg747.CDU_annunDSPY[1], "Center CDU display" },
+                            {Aircraft.pmdg747.CDU_annunDSPY[2], "Right CDU display" },
+                            {Aircraft.pmdg747.CDU_annunFAIL[0], "Left CDU fail" },
+                            {Aircraft.pmdg747.CDU_annunFAIL[1], "Center CDU fail" },
+                            {Aircraft.pmdg747.CDU_annunFAIL[2], "Right CDU fail" },
+                            {Aircraft.pmdg747.CDU_annunMSG[0], "Left CDU message" },
+                            {Aircraft.pmdg747.CDU_annunMSG[1], "Center CDU message" },
+                            {Aircraft.pmdg747.CDU_annunMSG[2], "Right CDU message" },
+                            {Aircraft.pmdg747.CDU_annunOFST[0], "Left CDU offset" },
+                            {Aircraft.pmdg747.CDU_annunOFST[1], "Center CDU offset" },
+                            {Aircraft.pmdg747.CDU_annunOFST[2], "Right CDU offset" },
+                                                    } // End offsets.
+                    }, // End CDU
+                } // End Forward Aisle Stand sub panels.
+                            }, // End Forward Aisle Stand
+            {"Aft Aisle Stand",
+                new Dictionary<string, Dictionary<Offset<Byte>, string>>
+                {
+                    {"radio",
+                        new Dictionary<Offset<Byte>, string>
+                        {
+                            {Aircraft.pmdg747.COMM_annunAM[0], "Left AM" },
+                            {Aircraft.pmdg747.COMM_annunAM[1], "Center AM" },
+                            {Aircraft.pmdg747.COMM_annunAM[2], "Right AM" },
+                        } // End offsets.
+                    }, // End audio comms
+                } // End Aft Aisle Stand sub panels.
+            }, // End Aft Aisle Stand
         };
+        public static Dictionary<string, Dictionary<string, Dictionary<Offset<byte>, string>>> Lights
+        {
+            get => panelLights;
+                                
+                        } // End Lights.
+        
               
         } // End PMDG747
 } // End Namespace

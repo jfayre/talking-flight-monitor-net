@@ -92,6 +92,7 @@ namespace tfm
             {
                 if (connectionCounter <= 5) { 
                 logger.Debug($"Connection failed [attempt #{connectionCounter}]: {ex.Message}");
+                    //logger.Debug($"Inner exception {ex.InnerException.Message}");
             }
             else if(connectionCounter == 35) 
             {
@@ -159,8 +160,8 @@ namespace tfm
             {
                 // An error occured. Tell the user and stop this timer.
                 this.timerMain.Stop();
-                logger.Debug("High priority instruments failed to read. Probable causes include a lost simulator connection, lost network access, or an fsuipc problem.");
-                                // Update the connection status
+                logger.Debug($"High priority instruments failed to read: {ex.Message}");
+                                                // Update the connection status
                 // start the connection timer
                 this.timerConnection.Start();
             }
