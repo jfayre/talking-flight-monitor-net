@@ -25,13 +25,162 @@ namespace tfm
 
         private void TimerTick(object Sender, EventArgs eventArgs)
         {
-            
-            // Speed.
+                        // Speed.
             if(Aircraft.pmdg747.MCP_IASMach.ValueChanged)
             {
                 speedTextBox.Text = Aircraft.pmdg747.MCP_IASMach.Value.ToString();
             } // End speed box.
 
+            // Altitude box.
+            if(Aircraft.pmdg747.MCP_Altitude.ValueChanged)
+            {
+                altitudeTextBox.Text = Aircraft.pmdg747.MCP_Altitude.Value.ToString();
+            } // End altitude box
+            
+            // Heading.
+            if(Aircraft.pmdg747.MCP_Heading.ValueChanged)
+            {
+                headingTextBox.Text = Aircraft.pmdg747.MCP_Heading.Value.ToString();
+            } // End heading.
+
+            // Vertical speed.
+            if(Aircraft.pmdg747.MCP_VertSpeed.ValueChanged)
+            {
+                verticalSpeedTextBox.Text = Aircraft.pmdg747.MCP_VertSpeed.Value.ToString();
+            } // End vertical speed.
+
+                        if(Aircraft.pmdg747.MCP_ATArm_Sw_On.Value == 0)
+            {
+                autoThrottleButton.Text = "Autothrottle [Off]";
+                autoThrottleButton.AccessibleName = "Autothrottle [Off]";
+                            }
+            else
+            {
+                autoThrottleButton.Text = "Autothrottle [Armed]";
+                autoThrottleButton.AccessibleName = "Autothrottle [Armed]";
+            } // End Autothrottle.
+
+                        if(Aircraft.pmdg747.MCP_FD_Sw_On[0].Value == 0)
+            {
+                fdlButton.Text = "FD/L [Off]";
+                fdlButton.AccessibleName = "FD/L [Off]";
+            }
+                        else
+            {
+                fdlButton.Text = "FD/L [On]";
+                fdlButton.AccessibleName = "FD/L [On]";
+            } // End FD/L.
+
+                        if(Aircraft.pmdg747.MCP_FD_Sw_On[1].Value == 0)
+            {
+                fdrButton.Text = "FD/R [Off]";
+                fdrButton.AccessibleName = "FD/R [Off]";
+            }
+                        else
+            {
+                fdrButton.Text = "FD/R [On]";
+                fdrButton.AccessibleName = "FD/R [On]";
+            } // End FD/R.
+
+                        if(Aircraft.pmdg747.MCP_BankLimitSel.Value == 0)
+            {
+                bankLimitButton.Text = "Bank limiter [Off]";
+                bankLimitButton.AccessibleName = "Bank limiter [Off]";
+            }
+                        else
+            {
+                bankLimitButton.Text = "Bank limiter [On]";
+                bankLimitButton.AccessibleName = "Bank limiter [On]";
+            } // End Bank limiter.
+
+                        if(Aircraft.pmdg747.MCP_DisengageBar.Value == 0)
+            {
+                disBarButton.Text = "Disengage baro [Off]";
+                disBarButton.AccessibleName = "Disengage baro [Off]";
+            }
+                        else
+            {
+                disBarButton.Text = "Disengage baro [On]";
+                disBarButton.AccessibleName = "Disengage baro [On]";
+            } // End disengage baro.
+
+                        if(Aircraft.pmdg747.MCP_AP_Sw_Pushed[0].Value == 0)
+            {
+                apLButton.Text = "AP/L [Off]";
+                apLButton.AccessibleName = "AP/L [Off]";
+                            }
+                        else
+            {
+                apLButton.Text = "AP/L [On]";
+                apLButton.AccessibleName = "AP/L [On]";
+            } // End AP/L.
+
+                        if(Aircraft.pmdg747.MCP_AP_Sw_Pushed[1].Value == 0)
+            {
+                apCButton.Text = "AP/C [Off]";
+                apCButton.AccessibleName = "AP/C [Off]";
+            }
+                        else
+            {
+                apCButton.Text = "AP/C [On]";
+                apCButton.AccessibleName = "AP/C [On]";
+            } // End AP/C.
+
+                        if(Aircraft.pmdg747.MCP_AP_Sw_Pushed[2].Value == 0)
+            {
+                apRButton.Text = "AP/R [Off]";
+                apRButton.AccessibleName = "AP/R [Off]";
+            }
+            else
+            {
+                apRButton.Text = "AP/R [On]";
+                apRButton.AccessibleName = "AP/R [On]";
+            } // End AP/R
+
+            if(Aircraft.pmdg747.MCP_annunLNAV.Value == 0)
+            {
+                lNavButton.Text = "L NAV [Off]";
+                lNavButton.AccessibleName = "L NAV [Off]";
+            }
+            else
+            {
+                lNavButton.Text = "L NAV [On]";
+                lNavButton.AccessibleName = "L NAV [On]";
+            } // End L NAV.
+
+            if(Aircraft.pmdg747.MCP_annunVNAV.Value == 0)
+            {
+                vNavButton.Text = "V NAV [Off]";
+                vNavButton.AccessibleName = "V NAV [Off]";
+            }
+            else
+            {
+                vNavButton.Text = "V NAV [On]";
+                vNavButton.AccessibleName = "V NAV [On]";
+            } // End V NAV.
+
+            if(Aircraft.pmdg747.MCP_LOC_Sw_Pushed.Value == 0)
+            {
+                locHoldButton.Text = "LOcalizer hold [Off]";
+                locHoldButton.AccessibleName = "Localizer hold [Off]";
+            }
+            else
+            {
+                locHoldButton.Text = "Localizer hold [On]";
+                locHoldButton.AccessibleName = "Localizer hold [On]";
+            } // End Loc hold.
+
+            if(Aircraft.pmdg747.MCP_APP_Sw_Pushed.Value == 0)
+            {
+                apprButton.Text = "Approach [Off]";
+                apprButton.AccessibleName = "Approach [Off]";
+            }
+            else
+            {
+                apprButton.Text = "Approach [On]";
+                apprButton.AccessibleName = "Approach [On]";
+            }
+                        
             MonitorLights();
         } // End timerTick.
 
@@ -46,6 +195,9 @@ namespace tfm
 
             // Set initial values when the form loads. The timer tick event handles refreshes.
             speedTextBox.Text = Aircraft.pmdg747.MCP_IASMach.Value.ToString();
+            altitudeTextBox.Text = Aircraft.pmdg747.MCP_Altitude.Value.ToString();
+            headingTextBox.Text = Aircraft.pmdg747.MCP_Heading.Value.ToString();
+            verticalSpeedTextBox.Text = Aircraft.pmdg747.MCP_VertSpeed.Value.ToString();        
         } // End form_load.
 
         // Sets up the lights on first load of the form.
@@ -367,5 +519,277 @@ namespace tfm
                 }
             } // End APPR
         } // End MonitorLights.
+
+        private void speedTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void speedIntvButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_SPEED_PUSH_SWITCH, Aircraft.ClkL);
+        }
+
+        private void cmdSpdButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_SPD_SWITCH, Aircraft.ClkL);
+        }
+
+        private void autoThrottleButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_ATArm_Sw_On.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AT_ARM_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void iasMachToggleButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_IAS_MACH_SWITCH, Aircraft.ClkL);
+        }
+
+        private void thrustButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_THR_SWITCH, Aircraft.ClkL);
+        }
+
+        private void altitudeHoldButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_ALT_HOLD_SWITCH, Aircraft.ClkL);
+        }
+
+        private void flChangeButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_LVL_CHG_SWITCH, Aircraft.ClkL);
+        }
+
+        private void altitudeButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_ALTITUDE_PUSH_SWITCH, Aircraft.ClkL);
+        }
+
+        private void headingTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if(short.TryParse(headingTextBox.Text, out short heading))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_HDG_SET, heading);
+            }
+        }
+
+        private void altitudeTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void headingHoldButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_HDG_HOLD_SWITCH, Aircraft.ClkL);
+        }
+
+        private void headingButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_HEADING_PUSH_SWITCH, Aircraft.ClkL);
+        }
+
+        private void verticalSpeedTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if(short.TryParse(verticalSpeedTextBox.Text, out short vspeed))
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_VS_SET, vspeed);
+            }
+        }
+
+        private void vertSpeedHoldButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_VS_SWITCH, Aircraft.ClkL);
+        }
+
+        private void fdlButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_FD_Sw_On[0].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_FD_SWITCH_L, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_FD_SWITCH_L, Aircraft.ClkR);
+            }
+        }
+
+        private void fdrButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_FD_Sw_On[1].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_FD_SWITCH_R, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_FD_SWITCH_R, Aircraft.ClkR);
+            }
+        }
+
+        private void bankLimitButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_BankLimitSel.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_BANK_ANGLE_SELECTOR, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_BANK_ANGLE_SELECTOR, Aircraft.ClkR);    
+            }
+        }
+
+        private void disBarButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_DisengageBar.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_DISENGAGE_BAR, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_DISENGAGE_BAR, Aircraft.ClkR);
+            }
+        }
+
+        private void apLButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_AP_Sw_Pushed[0].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AP_L_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AP_L_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void apCButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_AP_Sw_Pushed[1].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AP_C_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AP_C_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void apRButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_AP_Sw_Pushed[2].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AP_R_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_AP_R_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void lNavButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_LNAV_Sw_Pushed.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_LNAV_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_LNAV_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void vNavButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_VNAV_Sw_Pushed.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_VNAV_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_VNAV_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void locHoldButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_LOC_Sw_Pushed.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_LOC_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_LOC_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void apprButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg747.MCP_APP_Sw_Pushed.Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_APP_SWITCH, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_APP_SWITCH, Aircraft.ClkR);
+            }
+        }
+
+        private void speedTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                if(int.TryParse(speedTextBox.Text, out int speed))
+                {
+                    if(speed > 10)
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_IAS_SET, speed);
+                    }
+                    else
+                    {
+                        FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_MACH_SET, speed);
+                    }
+                }
+            }
+        }
+
+        private void altitudeTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                if (int.TryParse(altitudeTextBox.Text, out int altitude))
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_ALT_SET, altitude);
+                }
+            }
+        }
+
+        private void headingTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+
+                if (short.TryParse(headingTextBox.Text, out short heading))
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_HDG_SET, heading);
+                }
+            }
+        }
+
+        private void verticalSpeedTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                if(short.TryParse(verticalSpeedTextBox.Text, out short vspeed))
+                {
+                    FSUIPCConnection.SendControlToFS(PMDG_747QOTSII_Control.EVT_MCP_VS_SET, vspeed);
+                }
+            }
+        }
     } // End form.
 } // End namespace.

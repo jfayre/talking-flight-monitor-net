@@ -34,7 +34,7 @@ namespace tfm
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.speedTextBox = new System.Windows.Forms.TextBox();
             this.speedIntvButton = new System.Windows.Forms.Button();
-            this.speedModeButton = new System.Windows.Forms.Button();
+            this.cmdSpdButton = new System.Windows.Forms.Button();
             this.iasMachToggleButton = new System.Windows.Forms.Button();
             this.autoThrottleButton = new System.Windows.Forms.Button();
             this.thrustButton = new System.Windows.Forms.Button();
@@ -43,13 +43,12 @@ namespace tfm
             this.altitudeTextBox = new System.Windows.Forms.TextBox();
             this.altitudeHoldButton = new System.Windows.Forms.Button();
             this.flChangeButton = new System.Windows.Forms.Button();
-            this.altitudeModeButton = new System.Windows.Forms.Button();
+            this.altitudeButton = new System.Windows.Forms.Button();
             this.headingGroup = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.headingTextBox = new System.Windows.Forms.TextBox();
             this.headingHoldButton = new System.Windows.Forms.Button();
             this.headingButton = new System.Windows.Forms.Button();
-            this.headingSelectButton = new System.Windows.Forms.Button();
             this.verticalSpeedGroup = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.verticalSpeedTextBox = new System.Windows.Forms.TextBox();
@@ -94,7 +93,7 @@ namespace tfm
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.MaximumSize = new System.Drawing.Size(1100, 700);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1096, 398);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1063, 398);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // speedGroup
@@ -105,7 +104,7 @@ namespace tfm
             this.speedGroup.Controls.Add(this.flowLayoutPanel2);
             this.speedGroup.Location = new System.Drawing.Point(3, 3);
             this.speedGroup.Name = "speedGroup";
-            this.speedGroup.Size = new System.Drawing.Size(423, 169);
+            this.speedGroup.Size = new System.Drawing.Size(420, 169);
             this.speedGroup.TabIndex = 0;
             this.speedGroup.TabStop = false;
             this.speedGroup.Text = "Speed";
@@ -116,14 +115,14 @@ namespace tfm
             this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel2.Controls.Add(this.speedTextBox);
             this.flowLayoutPanel2.Controls.Add(this.speedIntvButton);
-            this.flowLayoutPanel2.Controls.Add(this.speedModeButton);
+            this.flowLayoutPanel2.Controls.Add(this.cmdSpdButton);
             this.flowLayoutPanel2.Controls.Add(this.iasMachToggleButton);
             this.flowLayoutPanel2.Controls.Add(this.autoThrottleButton);
             this.flowLayoutPanel2.Controls.Add(this.thrustButton);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 35);
             this.flowLayoutPanel2.MaximumSize = new System.Drawing.Size(500, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(414, 96);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(411, 96);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
             // speedTextBox
@@ -133,6 +132,7 @@ namespace tfm
             this.speedTextBox.Name = "speedTextBox";
             this.speedTextBox.Size = new System.Drawing.Size(100, 39);
             this.speedTextBox.TabIndex = 0;
+            this.speedTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.speedTextBox_KeyDown);
             // 
             // speedIntvButton
             // 
@@ -145,18 +145,20 @@ namespace tfm
             this.speedIntvButton.TabIndex = 1;
             this.speedIntvButton.Text = "Speed (I)";
             this.speedIntvButton.UseVisualStyleBackColor = true;
+            this.speedIntvButton.Click += new System.EventHandler(this.speedIntvButton_Click);
             // 
-            // speedModeButton
+            // cmdSpdButton
             // 
-            this.speedModeButton.AccessibleName = "Speed mode";
-            this.speedModeButton.AutoSize = true;
-            this.speedModeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.speedModeButton.Location = new System.Drawing.Point(255, 3);
-            this.speedModeButton.Name = "speedModeButton";
-            this.speedModeButton.Size = new System.Drawing.Size(156, 42);
-            this.speedModeButton.TabIndex = 2;
-            this.speedModeButton.Text = "Speed (M)";
-            this.speedModeButton.UseVisualStyleBackColor = true;
+            this.cmdSpdButton.AccessibleName = "CMD SPD";
+            this.cmdSpdButton.AutoSize = true;
+            this.cmdSpdButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.cmdSpdButton.Location = new System.Drawing.Point(255, 3);
+            this.cmdSpdButton.Name = "cmdSpdButton";
+            this.cmdSpdButton.Size = new System.Drawing.Size(153, 42);
+            this.cmdSpdButton.TabIndex = 2;
+            this.cmdSpdButton.Text = "CMD SPD";
+            this.cmdSpdButton.UseVisualStyleBackColor = true;
+            this.cmdSpdButton.Click += new System.EventHandler(this.cmdSpdButton_Click);
             // 
             // iasMachToggleButton
             // 
@@ -169,6 +171,7 @@ namespace tfm
             this.iasMachToggleButton.TabIndex = 3;
             this.iasMachToggleButton.Text = "I/M toggle";
             this.iasMachToggleButton.UseVisualStyleBackColor = true;
+            this.iasMachToggleButton.Click += new System.EventHandler(this.iasMachToggleButton_Click);
             // 
             // autoThrottleButton
             // 
@@ -181,6 +184,7 @@ namespace tfm
             this.autoThrottleButton.TabIndex = 4;
             this.autoThrottleButton.Text = "AT";
             this.autoThrottleButton.UseVisualStyleBackColor = true;
+            this.autoThrottleButton.Click += new System.EventHandler(this.autoThrottleButton_Click);
             // 
             // thrustButton
             // 
@@ -193,6 +197,7 @@ namespace tfm
             this.thrustButton.TabIndex = 5;
             this.thrustButton.Text = "Thr";
             this.thrustButton.UseVisualStyleBackColor = true;
+            this.thrustButton.Click += new System.EventHandler(this.thrustButton_Click);
             // 
             // altitudeGroup
             // 
@@ -200,9 +205,9 @@ namespace tfm
             this.altitudeGroup.AutoSize = true;
             this.altitudeGroup.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.altitudeGroup.Controls.Add(this.flowLayoutPanel3);
-            this.altitudeGroup.Location = new System.Drawing.Point(432, 3);
+            this.altitudeGroup.Location = new System.Drawing.Point(429, 3);
             this.altitudeGroup.Name = "altitudeGroup";
-            this.altitudeGroup.Size = new System.Drawing.Size(446, 121);
+            this.altitudeGroup.Size = new System.Drawing.Size(416, 121);
             this.altitudeGroup.TabIndex = 1;
             this.altitudeGroup.TabStop = false;
             this.altitudeGroup.Text = "Altitude";
@@ -214,10 +219,10 @@ namespace tfm
             this.flowLayoutPanel3.Controls.Add(this.altitudeTextBox);
             this.flowLayoutPanel3.Controls.Add(this.altitudeHoldButton);
             this.flowLayoutPanel3.Controls.Add(this.flChangeButton);
-            this.flowLayoutPanel3.Controls.Add(this.altitudeModeButton);
+            this.flowLayoutPanel3.Controls.Add(this.altitudeButton);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 35);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(437, 48);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(407, 48);
             this.flowLayoutPanel3.TabIndex = 0;
             // 
             // altitudeTextBox
@@ -227,6 +232,7 @@ namespace tfm
             this.altitudeTextBox.Name = "altitudeTextBox";
             this.altitudeTextBox.Size = new System.Drawing.Size(100, 39);
             this.altitudeTextBox.TabIndex = 0;
+            this.altitudeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.altitudeTextBox_KeyDown);
             // 
             // altitudeHoldButton
             // 
@@ -239,6 +245,7 @@ namespace tfm
             this.altitudeHoldButton.TabIndex = 1;
             this.altitudeHoldButton.Text = "Alt hold";
             this.altitudeHoldButton.UseVisualStyleBackColor = true;
+            this.altitudeHoldButton.Click += new System.EventHandler(this.altitudeHoldButton_Click);
             // 
             // flChangeButton
             // 
@@ -251,18 +258,20 @@ namespace tfm
             this.flChangeButton.TabIndex = 2;
             this.flChangeButton.Text = "FlCh";
             this.flChangeButton.UseVisualStyleBackColor = true;
+            this.flChangeButton.Click += new System.EventHandler(this.flChangeButton_Click);
             // 
-            // altitudeModeButton
+            // altitudeButton
             // 
-            this.altitudeModeButton.AccessibleName = "Altitude mode";
-            this.altitudeModeButton.AutoSize = true;
-            this.altitudeModeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.altitudeModeButton.Location = new System.Drawing.Point(327, 3);
-            this.altitudeModeButton.Name = "altitudeModeButton";
-            this.altitudeModeButton.Size = new System.Drawing.Size(107, 42);
-            this.altitudeModeButton.TabIndex = 3;
-            this.altitudeModeButton.Text = "Alt (M)";
-            this.altitudeModeButton.UseVisualStyleBackColor = true;
+            this.altitudeButton.AccessibleName = "Altitude";
+            this.altitudeButton.AutoSize = true;
+            this.altitudeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.altitudeButton.Location = new System.Drawing.Point(327, 3);
+            this.altitudeButton.Name = "altitudeButton";
+            this.altitudeButton.Size = new System.Drawing.Size(77, 42);
+            this.altitudeButton.TabIndex = 3;
+            this.altitudeButton.Text = "ALT";
+            this.altitudeButton.UseVisualStyleBackColor = true;
+            this.altitudeButton.Click += new System.EventHandler(this.altitudeButton_Click);
             // 
             // headingGroup
             // 
@@ -270,7 +279,7 @@ namespace tfm
             this.headingGroup.AutoSize = true;
             this.headingGroup.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.headingGroup.Controls.Add(this.flowLayoutPanel4);
-            this.headingGroup.Location = new System.Drawing.Point(884, 3);
+            this.headingGroup.Location = new System.Drawing.Point(851, 3);
             this.headingGroup.Name = "headingGroup";
             this.headingGroup.Size = new System.Drawing.Size(209, 73);
             this.headingGroup.TabIndex = 2;
@@ -282,7 +291,6 @@ namespace tfm
             this.flowLayoutPanel4.Controls.Add(this.headingTextBox);
             this.flowLayoutPanel4.Controls.Add(this.headingHoldButton);
             this.flowLayoutPanel4.Controls.Add(this.headingButton);
-            this.flowLayoutPanel4.Controls.Add(this.headingSelectButton);
             this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 35);
             this.flowLayoutPanel4.MaximumSize = new System.Drawing.Size(200, 0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
@@ -296,6 +304,7 @@ namespace tfm
             this.headingTextBox.Name = "headingTextBox";
             this.headingTextBox.Size = new System.Drawing.Size(50, 39);
             this.headingTextBox.TabIndex = 0;
+            this.headingTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.headingTextBox_KeyDown);
             // 
             // headingHoldButton
             // 
@@ -308,6 +317,7 @@ namespace tfm
             this.headingHoldButton.TabIndex = 1;
             this.headingHoldButton.Text = "Hdg (H)";
             this.headingHoldButton.UseVisualStyleBackColor = true;
+            this.headingHoldButton.Click += new System.EventHandler(this.headingHoldButton_Click);
             // 
             // headingButton
             // 
@@ -320,18 +330,7 @@ namespace tfm
             this.headingButton.TabIndex = 2;
             this.headingButton.Text = "Hdg";
             this.headingButton.UseVisualStyleBackColor = true;
-            // 
-            // headingSelectButton
-            // 
-            this.headingSelectButton.AccessibleName = "Heading select";
-            this.headingSelectButton.AutoSize = true;
-            this.headingSelectButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.headingSelectButton.Location = new System.Drawing.Point(3, 99);
-            this.headingSelectButton.Name = "headingSelectButton";
-            this.headingSelectButton.Size = new System.Drawing.Size(121, 42);
-            this.headingSelectButton.TabIndex = 3;
-            this.headingSelectButton.Text = "Hdg (S)";
-            this.headingSelectButton.UseVisualStyleBackColor = true;
+            this.headingButton.Click += new System.EventHandler(this.headingButton_Click);
             // 
             // verticalSpeedGroup
             // 
@@ -364,6 +363,7 @@ namespace tfm
             this.verticalSpeedTextBox.Name = "verticalSpeedTextBox";
             this.verticalSpeedTextBox.Size = new System.Drawing.Size(70, 39);
             this.verticalSpeedTextBox.TabIndex = 0;
+            this.verticalSpeedTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.verticalSpeedTextBox_KeyDown);
             // 
             // vertSpeedHoldButton
             // 
@@ -376,6 +376,7 @@ namespace tfm
             this.vertSpeedHoldButton.TabIndex = 1;
             this.vertSpeedHoldButton.Text = "Vspeed (H)";
             this.vertSpeedHoldButton.UseVisualStyleBackColor = true;
+            this.vertSpeedHoldButton.Click += new System.EventHandler(this.vertSpeedHoldButton_Click);
             // 
             // navigationGroup
             // 
@@ -422,6 +423,7 @@ namespace tfm
             this.fdlButton.TabIndex = 2;
             this.fdlButton.Text = "FD/L";
             this.fdlButton.UseVisualStyleBackColor = true;
+            this.fdlButton.Click += new System.EventHandler(this.fdlButton_Click);
             // 
             // fdrButton
             // 
@@ -434,6 +436,7 @@ namespace tfm
             this.fdrButton.TabIndex = 3;
             this.fdrButton.Text = "FD/R";
             this.fdrButton.UseVisualStyleBackColor = true;
+            this.fdrButton.Click += new System.EventHandler(this.fdrButton_Click);
             // 
             // bankLimitButton
             // 
@@ -446,6 +449,7 @@ namespace tfm
             this.bankLimitButton.TabIndex = 4;
             this.bankLimitButton.Text = "BnkLim sel";
             this.bankLimitButton.UseVisualStyleBackColor = true;
+            this.bankLimitButton.Click += new System.EventHandler(this.bankLimitButton_Click);
             // 
             // disBarButton
             // 
@@ -458,6 +462,7 @@ namespace tfm
             this.disBarButton.TabIndex = 5;
             this.disBarButton.Text = "Disengage bar";
             this.disBarButton.UseVisualStyleBackColor = true;
+            this.disBarButton.Click += new System.EventHandler(this.disBarButton_Click);
             // 
             // apLButton
             // 
@@ -470,6 +475,7 @@ namespace tfm
             this.apLButton.TabIndex = 6;
             this.apLButton.Text = "AP/L";
             this.apLButton.UseVisualStyleBackColor = true;
+            this.apLButton.Click += new System.EventHandler(this.apLButton_Click);
             // 
             // apCButton
             // 
@@ -482,6 +488,7 @@ namespace tfm
             this.apCButton.TabIndex = 7;
             this.apCButton.Text = "AP/C";
             this.apCButton.UseVisualStyleBackColor = true;
+            this.apCButton.Click += new System.EventHandler(this.apCButton_Click);
             // 
             // apRButton
             // 
@@ -494,6 +501,7 @@ namespace tfm
             this.apRButton.TabIndex = 8;
             this.apRButton.Text = "AP/R";
             this.apRButton.UseVisualStyleBackColor = true;
+            this.apRButton.Click += new System.EventHandler(this.apRButton_Click);
             // 
             // lNavButton
             // 
@@ -506,6 +514,7 @@ namespace tfm
             this.lNavButton.TabIndex = 9;
             this.lNavButton.Text = "lnav";
             this.lNavButton.UseVisualStyleBackColor = true;
+            this.lNavButton.Click += new System.EventHandler(this.lNavButton_Click);
             // 
             // vNavButton
             // 
@@ -518,6 +527,7 @@ namespace tfm
             this.vNavButton.TabIndex = 10;
             this.vNavButton.Text = "vnav";
             this.vNavButton.UseVisualStyleBackColor = true;
+            this.vNavButton.Click += new System.EventHandler(this.vNavButton_Click);
             // 
             // locHoldButton
             // 
@@ -530,6 +540,7 @@ namespace tfm
             this.locHoldButton.TabIndex = 11;
             this.locHoldButton.Text = "Loc (H)";
             this.locHoldButton.UseVisualStyleBackColor = true;
+            this.locHoldButton.Click += new System.EventHandler(this.locHoldButton_Click);
             // 
             // apprButton
             // 
@@ -542,6 +553,7 @@ namespace tfm
             this.apprButton.TabIndex = 12;
             this.apprButton.Text = "Appr";
             this.apprButton.UseVisualStyleBackColor = true;
+            this.apprButton.Click += new System.EventHandler(this.apprButton_Click);
             // 
             // panelLightsListBox
             // 
@@ -565,7 +577,7 @@ namespace tfm
             this.Margin = new System.Windows.Forms.Padding(5);
             this.MaximumSize = new System.Drawing.Size(1100, 700);
             this.Name = "ctlMCP_747";
-            this.Size = new System.Drawing.Size(1099, 401);
+            this.Size = new System.Drawing.Size(1066, 401);
             this.Load += new System.EventHandler(this.ctlMCP_747_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
@@ -600,7 +612,7 @@ namespace tfm
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.TextBox speedTextBox;
         private System.Windows.Forms.Button speedIntvButton;
-        private System.Windows.Forms.Button speedModeButton;
+        private System.Windows.Forms.Button cmdSpdButton;
         private System.Windows.Forms.Button iasMachToggleButton;
         private System.Windows.Forms.Button autoThrottleButton;
         private System.Windows.Forms.Button thrustButton;
@@ -609,13 +621,12 @@ namespace tfm
         private System.Windows.Forms.TextBox altitudeTextBox;
         private System.Windows.Forms.Button altitudeHoldButton;
         private System.Windows.Forms.Button flChangeButton;
-        private System.Windows.Forms.Button altitudeModeButton;
+        private System.Windows.Forms.Button altitudeButton;
         private System.Windows.Forms.GroupBox headingGroup;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private System.Windows.Forms.TextBox headingTextBox;
         private System.Windows.Forms.Button headingHoldButton;
         private System.Windows.Forms.Button headingButton;
-        private System.Windows.Forms.Button headingSelectButton;
         private System.Windows.Forms.GroupBox verticalSpeedGroup;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
         private System.Windows.Forms.TextBox verticalSpeedTextBox;
