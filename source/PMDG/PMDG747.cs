@@ -293,22 +293,11 @@ new Dictionary<Offset<Byte>, string>
                     {"CDU",
                         new Dictionary<Offset<Byte>, string>
                         {
-                            {Aircraft.pmdg747.CDU_annunEXEC[0], "Left CDU execute" },
-                            {Aircraft.pmdg747.CDU_annunEXEC[1], "Center CDU execute" },
-                            {Aircraft.pmdg747.CDU_annunEXEC[2], "Right CDU execute" },
-                            {Aircraft.pmdg747.CDU_annunDSPY[0], "Left CDU display" },
-                            {Aircraft.pmdg747.CDU_annunDSPY[1], "Center CDU display" },
-                            {Aircraft.pmdg747.CDU_annunDSPY[2], "Right CDU display" },
-                            {Aircraft.pmdg747.CDU_annunFAIL[0], "Left CDU fail" },
-                            {Aircraft.pmdg747.CDU_annunFAIL[1], "Center CDU fail" },
-                            {Aircraft.pmdg747.CDU_annunFAIL[2], "Right CDU fail" },
-                            {Aircraft.pmdg747.CDU_annunMSG[0], "Left CDU message" },
-                            {Aircraft.pmdg747.CDU_annunMSG[1], "Center CDU message" },
-                            {Aircraft.pmdg747.CDU_annunMSG[2], "Right CDU message" },
-                            {Aircraft.pmdg747.CDU_annunOFST[0], "Left CDU offset" },
-                            {Aircraft.pmdg747.CDU_annunOFST[1], "Center CDU offset" },
-                            {Aircraft.pmdg747.CDU_annunOFST[2], "Right CDU offset" },
-                                                    } // End offsets.
+                            {Aircraft.pmdg747.CDU_annunEXEC[0], "Execute" },
+                                                                                                                                                                        {Aircraft.pmdg747.CDU_annunFAIL[0], "CDU fail" },
+                                                                                    {Aircraft.pmdg747.CDU_annunMSG[0], "CDU message" },
+                                                                                    {Aircraft.pmdg747.CDU_annunOFST[0], "CDU offset" },
+                                                                                                            } // End offsets.
                     }, // End CDU
                 } // End Forward Aisle Stand sub panels.
                             }, // End Forward Aisle Stand
