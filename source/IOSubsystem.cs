@@ -3245,28 +3245,81 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         public void ReadPmdgFMCMessage(string type = null)
         {
             PMDG_NGX_CDU_Screen cDU_Screen = new PMDG_NGX_CDU_Screen(0x5400);
-            if (type == "requested")
+            string message = string.Empty;
+
+            if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
             {
-                if (Aircraft.pmdg737.CDU_annunMSG[0].Value == 1)
+                if(Aircraft.pmdg737.CDU_annunMSG[0].Value == 1)
                 {
                     cDU_Screen.RefreshData();
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{ cDU_Screen.Rows[13].ToString()}");
+                    message = cDU_Screen.Rows[13].ToString();
                 }
+            } // End 737 check.
+            else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+            {
+                if(Aircraft.pmdg747.CDU_annunMSG[0].Value == 1)
+                {
+                    cDU_Screen.RefreshData();
+                    message = cDU_Screen.Rows[13].ToString();
+                }
+            } // End 747 check.
+            else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
+            {
+                if(Aircraft.pmdg777.CDU_annunMSG[0].Value == 1)
+                {
+                    cDU_Screen.RefreshData();
+                    message = cDU_Screen.Rows[13].ToString();
+                }
+            } // End 777 check.
+            if (type == "requested")
+            {
+                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: message);
             } // End requested.
             else
             {
-
-                if (Aircraft.pmdg737.CDU_annunMSG[0].ValueChanged)
+                if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                 {
-                    switch (Aircraft.pmdg737.CDU_annunMSG[0].Value)
+
+                    if (Aircraft.pmdg737.CDU_annunMSG[0].ValueChanged)
                     {
-                        case 1:
-                            cDU_Screen.RefreshData();
-                            fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
-                            break;
+                        switch (Aircraft.pmdg737.CDU_annunMSG[0].Value)
+                        {
+                            case 1:
+                                cDU_Screen.RefreshData();
+                                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                                break;
+                        }
                     }
-                }
-            }
+                } // End 737 check.
+                if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+                {
+
+                    if (Aircraft.pmdg747.CDU_annunMSG[0].ValueChanged)
+                    {
+                        switch (Aircraft.pmdg747.CDU_annunMSG[0].Value)
+                        {
+                            case 1:
+                                cDU_Screen.RefreshData();
+                                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                                break;
+                        }
+                    }
+                } // End 747 check.
+                if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
+                {
+
+                    if (Aircraft.pmdg777.CDU_annunMSG[0].ValueChanged)
+                    {
+                        switch (Aircraft.pmdg777.CDU_annunMSG[0].Value)
+                        {
+                            case 1:
+                                cDU_Screen.RefreshData();
+                                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                                break;
+                        }
+                    }
+                } // End 777 check.
+            } // End else
                     } // End ReadPmdgFmcMessage.
 
         private void ReadPMDG737Toggles()
