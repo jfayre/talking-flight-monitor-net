@@ -116,6 +116,7 @@ namespace tfm
                 {
                     Aircraft.pmdg737.RefreshData();
                     Aircraft.pmdg747.RefreshData();
+                    Aircraft.pmdg777.RefreshData();
                                                        }
                 inst.ReadAircraftState();
                 if(!inst.PostTakeOffChecklist())

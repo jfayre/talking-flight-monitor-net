@@ -305,6 +305,10 @@
       <DependentUpon>frmOutputHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputHistory\OutputHistory.cs" />
+    <Compile Include="PMDG\Enums\AircraftVerbosity.cs" />
+    <Compile Include="PMDG\Enums\PanelObjectType.cs" />
+    <Compile Include="PMDG\PanelObjects\NumericDisplay.cs" />
+    <Compile Include="PMDG\PanelObjects\SingleStateToggle.cs" />
     <Compile Include="PMDG\PMDG 747\747CDU.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -410,6 +414,8 @@
     <Compile Include="PMDG\PMDG777\777CDU.Designer.cs">
       <DependentUpon>777CDU.cs</DependentUpon>
     </Compile>
+    <Compile Include="PMDG\PanelObjects\PanelObject.cs" />
+    <Compile Include="PMDG\PMDG777\PMDG777.cs" />
     <Compile Include="PMDG\PmDGIndicator.cs" />
     <Compile Include="PMDG\PMDGLight.cs" />
     <Compile Include="Settings panels\ctlAircraft.cs">
