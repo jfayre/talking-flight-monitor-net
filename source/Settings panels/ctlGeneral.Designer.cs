@@ -119,7 +119,7 @@
             settings1.SettingsKey = "";
             settings1.takeOffAssistMode = "off";
             settings1.UseMetric = false;
-            settings1.UseSAPIOutput = false;
+            settings1.SpeechSystem = "ScreenReader";
             this.chkMetric.Checked = settings1.UseMetric;
             this.chkMetric.DataBindings.Add(new System.Windows.Forms.Binding("Checked", settings1, "UseMetric", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkMetric.Location = new System.Drawing.Point(3, 55);

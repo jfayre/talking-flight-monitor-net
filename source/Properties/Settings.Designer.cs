@@ -61,18 +61,6 @@ namespace tfm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseSAPIOutput {
-            get {
-                return ((bool)(this["UseSAPIOutput"]));
-            }
-            set {
-                this["UseSAPIOutput"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ReadInstrumentation {
             get {
@@ -344,6 +332,30 @@ namespace tfm.Properties {
             }
             set {
                 this["PMDGCDUKeyLayout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AzureAPIKey {
+            get {
+                return ((string)(this["AzureAPIKey"]));
+            }
+            set {
+                this["AzureAPIKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ScreenReader")]
+        public string SpeechSystem {
+            get {
+                return ((string)(this["SpeechSystem"]));
+            }
+            set {
+                this["SpeechSystem"] = value;
             }
         }
     }

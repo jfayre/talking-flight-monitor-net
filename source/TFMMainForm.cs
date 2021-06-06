@@ -19,6 +19,8 @@ using tfm.Keyboard_manager;
 using NLog;
 using NLog.Config;
 using System.Speech.Synthesis;
+using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.Speech.Audio;
 namespace tfm
 {
     public partial class TFMMainForm : Form
@@ -26,7 +28,11 @@ namespace tfm
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         // get a speech synthesis object for SAPI output
-        public static SpeechSynthesizer synth = new SpeechSynthesizer();
+        public static System.Speech.Synthesis.SpeechSynthesizer synth = new System.Speech.Synthesis.SpeechSynthesizer();
+        // objects for cognative speech services
+        static SpeechConfig azureConfig = SpeechConfig.FromSubscription("68cbc2be49a648b1931d3ef79f9ca3f3", "eastus");
+        public static Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
+
         // Create a counter for the connection timer.
         private int connectionCounter = 0;
 
@@ -795,15 +801,22 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
         } // End screenreader output event.
         private void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
         {
-            if (Properties.Settings.Default.UseSAPIOutput == true || useSAPI == true)
+            if (Properties.Settings.Default.SpeechSystem == "SAPI" || useSAPI == true)
             {
                 if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
                 synth.Rate = Properties.Settings.Default.SAPISpeechRate;
                 synth.SpeakAsync(output);
             }
-            else
+            if (Properties.Settings.Default.SpeechSystem == "ScreenReader")
             {
                 Tolk.Speak(output, interruptSpeech);
+
+            }
+            if (Properties.Settings.Default.SpeechSystem == "Azure")
+            {
+                // azureConfig.SpeechSynthesisVoiceName = "en-US-AriaNeural";
+                azureSynth.SpeakTextAsync(output);
+                
 
             }
         }

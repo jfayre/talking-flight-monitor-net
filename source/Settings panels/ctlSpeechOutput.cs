@@ -83,6 +83,23 @@ switch (Properties.Settings.Default.AttitudeAnnouncementMode)
 
         }
 
+        private void radSpeechSystem_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = sender as RadioButton;
+switch (rb.Name)
+            {
+                case "radScreenReader":
+                    Properties.Settings.Default.SpeechSystem = "ScreenReader";
+                    break;
+                case "radSAPI":
+                    Properties.Settings.Default.SpeechSystem = "sAPI";
+                    break;
+                case "radAzureSpeech":
+                    Properties.Settings.Default.SpeechSystem = "Azure";
+                    break;
 
+
+            }
+        }
     }
 }

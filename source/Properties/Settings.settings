@@ -11,9 +11,6 @@
     <Setting Name="avionics_tab" Type="System.String" Scope="User">
       <Value Profile="(Default)">simplified</Value>
     </Setting>
-    <Setting Name="UseSAPIOutput" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="ReadInstrumentation" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -82,6 +79,12 @@
     </Setting>
     <Setting Name="PMDGCDUKeyLayout" Type="System.String" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="AzureAPIKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SpeechSystem" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ScreenReader</Value>
     </Setting>
   </Settings>
 </SettingsFile>
