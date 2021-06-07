@@ -441,6 +441,12 @@
     <Compile Include="Settings panels\ctlUserInterface.Designer.cs">
       <DependentUpon>ctlUserInterface.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings panels\frmSelectAzureVoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings panels\frmSelectAzureVoice.Designer.cs">
+      <DependentUpon>frmSelectAzureVoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="sounds\AudioPlaybackEngine.cs" />
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="Autopilot\InstrumentPanel.cs" />
@@ -671,6 +677,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlUserInterface.resx">
       <DependentUpon>ctlUserInterface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings panels\frmSelectAzureVoice.resx">
+      <DependentUpon>frmSelectAzureVoice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>

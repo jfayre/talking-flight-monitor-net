@@ -86,5 +86,14 @@
     <Setting Name="SpeechSystem" Type="System.String" Scope="User">
       <Value Profile="(Default)">ScreenReader</Value>
     </Setting>
+    <Setting Name="FallbackSpeechSystem" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ScreenReader</Value>
+    </Setting>
+    <Setting Name="AzureServiceRegion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AzureVoice" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

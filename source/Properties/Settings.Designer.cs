@@ -358,5 +358,41 @@ namespace tfm.Properties {
                 this["SpeechSystem"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ScreenReader")]
+        public string FallbackSpeechSystem {
+            get {
+                return ((string)(this["FallbackSpeechSystem"]));
+            }
+            set {
+                this["FallbackSpeechSystem"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AzureServiceRegion {
+            get {
+                return ((string)(this["AzureServiceRegion"]));
+            }
+            set {
+                this["AzureServiceRegion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AzureVoice {
+            get {
+                return ((string)(this["AzureVoice"]));
+            }
+            set {
+                this["AzureVoice"] = value;
+            }
+        }
     }
 }
