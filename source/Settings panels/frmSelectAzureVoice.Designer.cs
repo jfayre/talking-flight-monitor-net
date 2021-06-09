@@ -29,24 +29,13 @@ namespace tfm
         /// </summary>
         private void InitializeComponent()
         {
-            this.lstVoices = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSample = new System.Windows.Forms.Button();
+            this.lvVoices = new System.Windows.Forms.ListView();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lstVoices
-            // 
-            this.lstVoices.AccessibleName = "Voices";
-            this.lstVoices.FormattingEnabled = true;
-            this.lstVoices.ItemHeight = 20;
-            this.lstVoices.Location = new System.Drawing.Point(3, 3);
-            this.lstVoices.Name = "lstVoices";
-            this.lstVoices.Size = new System.Drawing.Size(300, 184);
-            this.lstVoices.TabIndex = 0;
-            this.lstVoices.SelectedIndexChanged += new System.EventHandler(this.lstVoices_SelectedIndexChanged);
             // 
             // flowLayoutPanel1
             // 
@@ -93,6 +82,20 @@ namespace tfm
             this.btnSample.UseVisualStyleBackColor = true;
             this.btnSample.Click += new System.EventHandler(this.btnSample_Click);
             // 
+            // lvVoices
+            // 
+            this.lvVoices.AccessibleName = "Voices";
+            this.lvVoices.HideSelection = false;
+            this.lvVoices.Location = new System.Drawing.Point(5, 5);
+            this.lvVoices.MultiSelect = false;
+            this.lvVoices.Name = "lvVoices";
+            this.lvVoices.ShowGroups = false;
+            this.lvVoices.Size = new System.Drawing.Size(300, 200);
+            this.lvVoices.TabIndex = 0;
+            this.lvVoices.UseCompatibleStateImageBehavior = false;
+            this.lvVoices.View = System.Windows.Forms.View.List;
+            this.lvVoices.SelectedIndexChanged += new System.EventHandler(this.lvVoices_SelectedIndexChanged);
+            // 
             // frmSelectAzureVoice
             // 
             this.AcceptButton = this.btnOk;
@@ -103,9 +106,9 @@ namespace tfm
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lvVoices);
             this.Controls.Add(this.btnSample);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.lstVoices);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmSelectAzureVoice";
             this.ShowInTaskbar = false;
@@ -120,11 +123,10 @@ namespace tfm
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox lstVoices;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSample;
+        private System.Windows.Forms.ListView lvVoices;
     }
 }

@@ -26,29 +26,83 @@ namespace tfm
 
         private void frmSelectAzureVoice_Load(object sender, EventArgs e)
         {
-            lstVoices.BeginUpdate();
+            lvVoices.BeginUpdate();
             foreach (var voice in voices)
             {
-                lstVoices.Items.Add(voice.ShortName);
+                string location = null;
+                int index = 0;
+                if (voice.ShortName.StartsWith("en-"))
+                {
+                    switch (voice.Locale)
+                    {
+                        case "en-US":
+                            location = "US";
+                            break;
+                        case "en-AU":
+                            location = "Australia";
+                            break;
+                        case "en-CA":
+                            location = "Canada";
+                            break;
+
+                        case "en-GB":
+                            location = "UK";
+                            break;
+                        case "en-IE":
+                            location = "Ireland";
+                            break;
+                        case "en-IN":
+                            location = "India";
+                            break;
+
+
+
+                    }
+                    ListViewItem item = new ListViewItem();
+                    if (voice.Name.Contains("Neural"))
+                    {
+                        item.Text = $"{voice.LocalName} - Neural - {location}";
+                    }
+                    else
+                    {
+                        item.Text = $"{voice.LocalName} - {location}";
+                    }
+                    
+                    item.Tag = voice.Name;
+                    lvVoices.Items.Add(item);
+                }
+
             }
-            lstVoices.EndUpdate();
-            lstVoices.SelectedIndex = 0;
+            lvVoices.EndUpdate();
         }
 
-        private void lstVoices_SelectedIndexChanged(object sender, EventArgs e)
-        {
-             SelectedVoice = lstVoices.SelectedItem.ToString();
-        }
-
+        
         private async void btnSample_Click(object sender, EventArgs e)
         {
-            string voice = lstVoices.SelectedItem.ToString();
+            string voice = lvVoices.SelectedItems[0].Tag.ToString();
             config.SpeechSynthesisVoiceName = voice;
-using (var synth  = new SpeechSynthesizer(config))
+            using (var synth  = new SpeechSynthesizer(config))
             {
-var result = await synth.SpeakTextAsync("This is the currently selected voice");
+                using (var result = await synth.SpeakTextAsync("This is the currently selected voice"))
+                {
+                    if (result.Reason == ResultReason.Canceled)
+                    {
+                        var cancellation = SpeechSynthesisCancellationDetails.FromResult(result);
+                        MessageBox.Show($"{cancellation.Reason}");
+
+                    }
+                }
 
 
+            }
+        }
+
+        private void lvVoices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListView.SelectedListViewItemCollection voice = lvVoices.SelectedItems;
+            foreach (ListViewItem item in voice)
+            {
+                SelectedVoice = item.Tag.ToString();
             }
         }
     }

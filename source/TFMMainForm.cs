@@ -21,6 +21,8 @@ using NLog.Config;
 using System.Speech.Synthesis;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
+using System.Collections;
+
 namespace tfm
 {
     public partial class TFMMainForm : Form
@@ -29,9 +31,12 @@ namespace tfm
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         // get a speech synthesis object for SAPI output
         public static System.Speech.Synthesis.SpeechSynthesizer synth = new System.Speech.Synthesis.SpeechSynthesizer();
+
         // objects for cognative speech services
-        static SpeechConfig azureConfig = SpeechConfig.FromSubscription("68cbc2be49a648b1931d3ef79f9ca3f3", "eastus");
-        public static Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
+        private SpeechConfig azureConfig;
+        private Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth;
+        int FallbackCounter;
+        Queue<string> speechQueue = new System.Collections.Generic.Queue<string>();
 
         // Create a counter for the connection timer.
         private int connectionCounter = 0;
@@ -40,10 +45,16 @@ namespace tfm
         private IOSubsystem inst = new IOSubsystem();
         private InstrumentPanel Autopilot = new InstrumentPanel();
         private OutputHistory history = new OutputHistory();
-        
+        private bool AzureSpeaking = false;
+
         public TFMMainForm()
         {
             InitializeComponent();
+            if (Properties.Settings.Default.SpeechSystem == "Azure")
+            {
+                
+                SetupAzureSpeech();
+            }
             Aircraft.InitOffsets();
             // upgrade settings
             Properties.Settings.Default.Upgrade();
@@ -67,6 +78,26 @@ namespace tfm
             this.timerConnection.Start();
             
         }
+
+        private void SetupAzureSpeech()
+        {
+            azureConfig = SpeechConfig.FromSubscription(Properties.Settings.Default.AzureAPIKey, Properties.Settings.Default.AzureServiceRegion);
+            azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
+            // azureSynth.SynthesisCompleted += AzureSynthCompleted;
+            // azureSynth.SynthesisStarted += AzureSynthStarted;
+
+        }
+
+        private void AzureSynthStarted(object sender, SpeechSynthesisEventArgs e)
+        {
+            AzureSpeaking = true;
+        }
+
+        private void AzureSynthCompleted(object sender, SpeechSynthesisEventArgs e)
+        {
+            AzureSpeaking = false;
+        }
+
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
         {
@@ -799,7 +830,7 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
 
             } // end generic output
         } // End screenreader output event.
-        private void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
+        private async void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
         {
             if (Properties.Settings.Default.SpeechSystem == "SAPI" || useSAPI == true)
             {
@@ -814,9 +845,28 @@ if(ScreenReader == "NVDA" && FlyModes.DroppedDown == false)
             }
             if (Properties.Settings.Default.SpeechSystem == "Azure")
             {
-                // azureConfig.SpeechSynthesisVoiceName = "en-US-AriaNeural";
-                azureSynth.SpeakTextAsync(output);
-                
+                var voice = Properties.Settings.Default.AzureVoice;
+                var ssml = $"<speak version='1.0' xml:lang='en-US' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='{voice}'>{output}</voice></speak>";
+                using (var result = await azureSynth.SpeakSsmlAsync(ssml))
+                        {
+                            if (result.Reason == ResultReason.Canceled)
+                            {
+                        if (Properties.Settings.Default.FallbackSpeechSystem == "ScreenReader")
+                                {
+                                    Tolk.Speak(output, interruptSpeech);
+                                }
+                                else
+                                {
+                                    if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
+                                    synth.Rate = Properties.Settings.Default.SAPISpeechRate;
+                                    synth.SpeakAsync(output);
+
+                                }
+
+                            }
+                    }
+
+
 
             }
         }

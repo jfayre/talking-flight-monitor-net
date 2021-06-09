@@ -129,17 +129,28 @@ switch (rb.Name)
             }
         }
 
-        private void btnVoice_Click(object sender, EventArgs e)
+        private async void btnVoice_Click(object sender, EventArgs e)
         {
-            // Creates an instance of a speech config with specified subscription key and service region.
-            var config = SpeechConfig.FromSubscription(txtKey.Text, txtRegion.Text);
-            var synthesizer = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(config);
-            using (var result = synthesizer.GetVoicesAsync(""))
+            SpeechConfig config = null;
+            Microsoft.CognitiveServices.Speech.SpeechSynthesizer synthesizer = null;
+            if (txtKey.Text == "" || txtRegion.Text == "")
             {
-                if (result.Result.Reason == ResultReason.VoicesListRetrieved)
+                MessageBox.Show("Both Key and Region fields are required.");
+                return;
+            }
+            else
+            {
+                // Creates an instance of a speech config with specified subscription key and service region.
+                config = SpeechConfig.FromSubscription(txtKey.Text, txtRegion.Text);
+                synthesizer = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(config);
+
+            }
+            using (var result = await synthesizer.GetVoicesAsync(""))
+            {
+                if (result.Reason == ResultReason.VoicesListRetrieved)
                 {
                     // API key and region are valid. Open the form to select a voice, passing in the voices list and config object.
-                    System.Collections.ObjectModel.ReadOnlyCollection<Microsoft.CognitiveServices.Speech.VoiceInfo> VoicesList = result.Result.Voices;
+                    System.Collections.ObjectModel.ReadOnlyCollection<Microsoft.CognitiveServices.Speech.VoiceInfo> VoicesList = result.Voices;
                     frmSelectAzureVoice frm = new frmSelectAzureVoice(VoicesList, config);
                     frm.ShowDialog();
                     if (frm.DialogResult == DialogResult.OK)
@@ -152,6 +163,11 @@ switch (rb.Name)
                     }
 
                 }
+                else if (result.Reason == ResultReason.Canceled)
+                {
+                    MessageBox.Show($"Error retrieving voices list: {result.ErrorDetails}");
+                }
+
 
             }
 
