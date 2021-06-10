@@ -35,44 +35,26 @@ using tfm.Properties;
 using System.CodeDom;
 using System.Speech.Synthesis;
 using System.ComponentModel.Design;
-
+using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.Speech.Audio;
 namespace tfm
 {
+    /// <summary>
+    ///  this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
+    /// </summary>
     public class IOSubsystem
     {
-        // this class handles automatic reading of instrumentation, as well as reading in response to hotkeys
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+            // get a speech synthesis object for SAPI output
+        public static System.Speech.Synthesis.SpeechSynthesizer synth = new System.Speech.Synthesis.SpeechSynthesizer();
+
+        // objects for cognative speech services
+        private SpeechConfig azureConfig;
+        private Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth;
+        // speech history class
+        private OutputHistory history = new OutputHistory();
         public PMDGPanelUpdateEvent pmdg;
-        // The event that handles speech/braille output.
-        public event EventHandler<ScreenReaderOutputEventArgs> ScreenReaderOutput;
-
-
-        // The virtual method for the event. Used as a shell and fired when needed.
-        protected virtual void onScreenReaderOutput(ScreenReaderOutputEventArgs e)
-        {
-
-            EventHandler<ScreenReaderOutputEventArgs> handler = ScreenReaderOutput;
-            if (handler != null)
-            {
-                handler(this, e);
-            } // End event callback.
-        } // End onScreenReaderOutput method.
-
-        public void fireOnScreenReaderOutputEvent(string gaugeName = "", string gaugeValue = "", bool isGauge = false, string output = "", bool textOutput = true, bool useSAPI = false, bool interruptSpeech = false)
-        {
-            ScreenReaderOutputEventArgs args = new ScreenReaderOutputEventArgs();
-            args.output = output;
-            args.gaugeName = gaugeName;
-            args.gaugeValue = gaugeValue;
-            args.isGauge = isGauge;
-            args.textOutput = textOutput;
-            args.useSAPI = useSAPI;
-            args.interruptSpeech = interruptSpeech;
-            this.onScreenReaderOutput(args);
-        } // End event fire method.
-
-
         private SineWaveProvider pitchSineProvider;
         private SineWaveProvider bankSineProvider;
 
@@ -256,7 +238,6 @@ namespace tfm
         private bool apuShuttingDown;
         private bool apuOff = true;
         private bool fuelManagerActive;
-        OutputHistory history = new OutputHistory();
         WaveFileReader gpwsSound;
         private bool PMDG737Detected;
         private bool PMDG747Detected;
@@ -268,6 +249,12 @@ namespace tfm
             Logger.Debug("initializing screen reader driver");
             Tolk.TrySAPI(true);
             Tolk.Load();
+            if (Properties.Settings.Default.SpeechSystem == "Azure")
+            {
+
+                SetupAzureSpeech();
+            }
+
             // Initialize audio output
             SetupAudio();
             var version = typeof(IOSubsystem).Assembly.GetName().Version.Build;
@@ -291,6 +278,12 @@ namespace tfm
                 altitudeCalloutFlags.Add(i, false);
             }
             pmdg = new PMDGPanelUpdateEvent();
+        }
+        private void SetupAzureSpeech()
+        {
+            azureConfig = SpeechConfig.FromSubscription(Properties.Settings.Default.AzureAPIKey, Properties.Settings.Default.AzureServiceRegion);
+            azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
+
         }
 
         private void SetupAudio()
@@ -358,7 +351,7 @@ namespace tfm
                 if (Aircraft.AircraftName.ValueChanged)
                 {
                     string name = Aircraft.AircraftName.Value;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
+                    Output(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
 if (name.Contains("PMDG"))
                     {
                         if (name.Contains("737"))
@@ -466,7 +459,7 @@ if (name.Contains("PMDG"))
             else
             {
                 string name = Aircraft.AircraftName.Value;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
+                Output(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
                 if (name.Contains("PMDG"))
                 {
                     if (name.Contains("737"))
@@ -509,11 +502,11 @@ if (name.Contains("PMDG"))
         {
             if (Aircraft.StallWarning.Value == 1)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "stall warning! ");
+                Output(isGauge: false, useSAPI: true, output: "stall warning! ");
             }
             if (Aircraft.OverSpeedWarning.Value == 1)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "over speed warning! ");
+                Output(isGauge: false, useSAPI: true, output: "over speed warning! ");
             }
             if (Aircraft.StallWarning.Value == 0 && Aircraft.OverSpeedWarning.Value == 0)
             {
@@ -550,11 +543,11 @@ if (name.Contains("PMDG"))
             {
                 if (Aircraft.OnGround.Value == 1)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "on ground. ");
+                    Output(isGauge: false, useSAPI: true, output: "on ground. ");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "airborn. ");
+                    Output(isGauge: false, useSAPI: true, output: "airborn. ");
                 }
 
             }
@@ -567,7 +560,7 @@ if (name.Contains("PMDG"))
             {
                 if (apuPercent > 4 && apuStarting == false && apuRunning == false && apuShuttingDown == false && apuOff == true)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U starting. ");
+                    Output(isGauge: false, output: "A P U starting. ");
                     apuStarting = true;
                     apuOff = false;
                 }
@@ -575,13 +568,13 @@ if (name.Contains("PMDG"))
                 {
                     apuStarting = false;
                     apuRunning = true;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U at 100 percent. ");
+                    Output(isGauge: false, output: "A P U at 100 percent. ");
                 }
                 if (apuPercent < 100 && apuRunning == true)
                 {
                     apuRunning = false;
                     apuShuttingDown = true;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U shutting down. ");
+                    Output(isGauge: false, output: "A P U shutting down. ");
                 }
                 if (apuPercent == 0 && apuOff == false)
                 {
@@ -589,7 +582,7 @@ if (name.Contains("PMDG"))
                     apuStarting = false;
                     apuShuttingDown = false;
                     apuOff = true;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "A P U shut down. ");
+                    Output(isGauge: false, output: "A P U shut down. ");
                 }
 
             }
@@ -606,7 +599,7 @@ if (name.Contains("PMDG"))
             {
                 if (alt >= i - 10 && alt <= i + 10 && altitudeCalloutFlags[i] == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{i} feet. ");
+                    Output(isGauge: false, output: $"{i} feet. ");
                     altitudeCalloutFlags[i] = true;
 
                 }
@@ -682,11 +675,11 @@ if (name.Contains("PMDG"))
             {
                 if (elevator < 0)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim down {Math.Abs(Math.Round(elevator, 2)):F2}. ");
+                    Output(isGauge: false, output: $"Trim down {Math.Abs(Math.Round(elevator, 2)):F2}. ");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim up: {Math.Round(elevator, 2):F2}");
+                    Output(isGauge: false, output: $"Trim up: {Math.Round(elevator, 2):F2}");
                 }
 
             }
@@ -694,11 +687,11 @@ if (name.Contains("PMDG"))
             {
                 if (aileron < 0)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim left {Math.Abs(Math.Round(aileron, 2))}. ");
+                    Output(isGauge: false, output: $"Trim left {Math.Abs(Math.Round(aileron, 2))}. ");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"Trim right {Math.Round(aileron, 2)}");
+                    Output(isGauge: false, output: $"Trim right {Math.Round(aileron, 2)}");
                 }
             }
         }
@@ -713,7 +706,7 @@ if (name.Contains("PMDG"))
                 var isGauge = true;
                 var gaugeName = "Altimeter";
                 var gaugeValue = $"{AltHPA}, {AltInches / 100} inches. ";
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
             }
 
 
@@ -748,7 +741,7 @@ if (name.Contains("PMDG"))
                         break;
 
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Autobrake " + AbState);
+                Output(isGauge: false, output: "Autobrake " + AbState);
             }
         }
 
@@ -765,14 +758,14 @@ if (name.Contains("PMDG"))
             {
                 gaugeName = "Com1";
                 gaugeValue = com1Helper.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
 
             }
             if (Aircraft.Com2Freq.ValueChanged)
             {
                 gaugeName = "Com2";
                 gaugeValue = com2Helper.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
 
             }
             if (Properties.Settings.Default.ReadNavRadios == true)
@@ -781,14 +774,14 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "Nav1";
                     gaugeValue = nav1Helper.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
                 if (Aircraft.Nav2Freq.ValueChanged)
                 {
                     gaugeName = "Nav2";
                     gaugeValue = nav2Helper.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
 
@@ -804,7 +797,7 @@ if (name.Contains("PMDG"))
                 var gaugeName = "Transponder";
                 var gaugeValue = txHelper.ToString();
                 var isGauge = true;
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
 
             }
 
@@ -847,7 +840,7 @@ if (name.Contains("PMDG"))
             {
                 strTime = string.Format("{0:%s} seconds", TimeEnroute);
             }
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
+            Output(isGauge: false, output: $"Next waypoint: {name}.\nDistance: {strDist} nautical miles.\nBaring: {strBaring} degrees.\n{strTime}");
         }
         private void ReadLights()
         {
@@ -871,7 +864,7 @@ if (name.Contains("PMDG"))
                         {
                             state = "off";
                         }
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {state}. ");
+                        Output(isGauge: false, output: $"{name} {state}. ");
                     }
                 }
             }
@@ -889,7 +882,7 @@ if (name.Contains("PMDG"))
                     if (DoorBits.Changed[i])
                     {
                         string state = (Aircraft.Doors.Value[i]) ? "open" : "closed";
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"door {i + 1} {state}. ");
+                        Output(isGauge: false, output: $"door {i + 1} {state}. ");
                     }
                 }
             }
@@ -903,12 +896,12 @@ if (name.Contains("PMDG"))
             {
                 if (Aircraft.Nav1GS.Value == 1 && gsDetected == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "glide slope is alive. ");
+                    Output(isGauge: false, useSAPI: true, output: "glide slope is alive. ");
                     gsDetected = true;
                 }
                 if (Aircraft.Nav1Flags.Value[7] && hasLocaliser == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "nav 1 has localiser.");
+                    Output(isGauge: false, useSAPI: true, output: "nav 1 has localiser.");
                     hasLocaliser = true;
                 }
                 if (Aircraft.Nav1Signal.Value == 256 && localiserDetected == false && Aircraft.Nav1Flags.Value[7])
@@ -918,7 +911,7 @@ if (name.Contains("PMDG"))
                     double magvar = (double)Aircraft.MagneticVariation.Value * 360d / 65536d;
                     double magHeading = hdgTrue - magvar;
                     double rwyHeading = (double)Aircraft.Nav1LocaliserInverseRunwayHeading.Value * 360d / 65536d + 180d - magvar;
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "Localiser is alive. Runway heading" + rwyHeading.ToString("F0"));
+                    Output(isGauge: false, useSAPI: true, output: "Localiser is alive. Runway heading" + rwyHeading.ToString("F0"));
 
                     localiserDetected = true;
                     ilsTimer.AutoReset = true;
@@ -927,7 +920,7 @@ if (name.Contains("PMDG"))
                 }
                 if (Aircraft.Nav1Flags.Value[6] && hasGlideSlope == false)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: "nav 1 has glide slope. ");
+                    Output(isGauge: false, useSAPI: true, output: "nav 1 has glide slope. ");
                     hasGlideSlope = true;
                 }
 
@@ -964,7 +957,7 @@ if (name.Contains("PMDG"))
                     var gaugeName = "Glide slope";
                     var gaugeValue = $"up {strPercent} percent. ";
                     var isGauge = true;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
+                    Output(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
 
                 }
                 if (gsNeedle < 0 && gsNeedle > -119)
@@ -974,7 +967,7 @@ if (name.Contains("PMDG"))
                     var gaugeName = "Glide slope";
                     var gaugeValue = $"down {strPercent} percent. ";
                     var isGauge = true;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
+                    Output(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
 
                 }
                 if (locNeedle > 0 && locNeedle < 127)
@@ -984,7 +977,7 @@ if (name.Contains("PMDG"))
                     var gaugeName = "Localiser";
                     var gaugeValue = $"{strPercent} percent right. ";
                     var isGauge = true;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
+                    Output(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
                 }
                 if (locNeedle < 0 && locNeedle > -127)
                 {
@@ -993,7 +986,7 @@ if (name.Contains("PMDG"))
                     var gaugeName = "Localiser";
                     var gaugeValue = $"{strPercent} percent left. ";
                     var isGauge = true;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
+                    Output(gaugeName, gaugeValue, isGauge, useSAPI: true, textOutput: false);
                 }
 
             }
@@ -1004,11 +997,11 @@ if (name.Contains("PMDG"))
             double rate = (double)Aircraft.SimulationRate.Value / 256;
             if (TriggeredByKey)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"simulation rate: {rate}");
+                Output(isGauge: false, output: $"simulation rate: {rate}");
             }
             if (Aircraft.SimulationRate.ValueChanged && rate >= 0.25)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"simulation rate: {rate}");
+                Output(isGauge: false, output: $"simulation rate: {rate}");
             }
         }
         private void ReadSpoilers()
@@ -1016,17 +1009,17 @@ if (name.Contains("PMDG"))
             if (Aircraft.Spoilers.ValueChanged)
             {
                 uint sp = Aircraft.Spoilers.Value;
-                if (sp == 4800) fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers armed. ");
-                else if (sp == 16384) fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers deployed. ");
+                if (sp == 4800) Output(isGauge: false, output: "Spoilers armed. ");
+                else if (sp == 16384) Output(isGauge: false, output: "Spoilers deployed. ");
                 else if (sp == 0)
                 {
                     if (OldSpoilersValue == 4800)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "arm spoilers off. ");
+                        Output(isGauge: false, output: "arm spoilers off. ");
                     }
                     else
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "spoilers retracted. ");
+                        Output(isGauge: false, output: "spoilers retracted. ");
                     }
 
                 }
@@ -1038,15 +1031,15 @@ if (name.Contains("PMDG"))
             uint currentSpoilers = Aircraft.Spoilers.Value;
             if(currentSpoilers == 0)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers retracted.");
+                Output(isGauge: false, output: "Spoilers retracted.");
             }
             else if(currentSpoilers == 4800)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Spoilers armed.");
+                Output(isGauge: false, output: "Spoilers armed.");
             }
             else if(currentSpoilers >= 5620)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Spoilers: {Autopilot.SpoilerPercent}");
+                Output(isGauge: false, output: $"Spoilers: {Autopilot.SpoilerPercent}");
                             }
         }
 
@@ -1066,7 +1059,7 @@ if (name.Contains("PMDG"))
                     var gaugeName = "Flaps";
                     var gaugeValue = FlapsAngle.ToString("f0");
                     var isGauge = true;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                 }
 
             }
@@ -1082,12 +1075,12 @@ if (name.Contains("PMDG"))
                 if (Aircraft.LandingGear.Value == 0)
                 {
                     gaugeValue = "up. ";
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                 }
                 if (Aircraft.LandingGear.Value == 16383)
                 {
                     gaugeValue = "down. ";
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                 }
 
             }
@@ -1105,7 +1098,7 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "AP heading";
                     gaugeValue = Aircraft.pmdg737.MCP_Heading.Value.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
             }
@@ -1115,7 +1108,7 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "AP heading";
                     gaugeValue = Aircraft.pmdg747.MCP_Heading.Value.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
             }
@@ -1125,7 +1118,7 @@ if (name.Contains("PMDG"))
             {
                 gaugeName = "AP heading";
                 gaugeValue = Aircraft.pmdg777.MCP_Heading.Value.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
 
             }
         }
@@ -1134,7 +1127,7 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                 }
 
             // airspeed
@@ -1144,7 +1137,7 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "AP airspeed";
                     gaugeValue = Aircraft.pmdg737.MCP_IASMach.Value.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
             }
@@ -1154,7 +1147,7 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "AP airspeed";
                     gaugeValue = Aircraft.pmdg747.MCP_IASMach.Value.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
             }
@@ -1164,7 +1157,7 @@ if (name.Contains("PMDG"))
                 {
                     gaugeName = "AP airspeed";
                     gaugeValue = Aircraft.pmdg777.MCP_IASMach.Value.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
                 }
             }
@@ -1173,14 +1166,14 @@ if (name.Contains("PMDG"))
             {
                 gaugeName = "AP airspeed";
                 gaugeValue = Autopilot.ApAirspeed.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
             }
             // vertical speed
             if (Aircraft.ApVerticalSpeed.ValueChanged)
             {
                 gaugeName = "AP vertical speed";
                 gaugeValue = Autopilot.ApVerticalSpeed.ToString();
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
             }
         }
         private void readAutopilotAltitude()
@@ -1195,7 +1188,7 @@ if (name.Contains("PMDG"))
                     if (Aircraft.pmdg737.MCP_Altitude.ValueChanged)
                     {
                         var gaugeValue = Aircraft.pmdg737.MCP_Altitude.Value.ToString();
-                        fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                        Output(gaugeName, gaugeValue, isGauge);
 
                     }
                 }
@@ -1204,7 +1197,7 @@ if (name.Contains("PMDG"))
                     if (Aircraft.pmdg747.MCP_Altitude.ValueChanged)
                     {
                         var gaugeValue = Aircraft.pmdg747.MCP_Altitude.Value.ToString();
-                        fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                        Output(gaugeName, gaugeValue, isGauge);
 
                     }
                 }
@@ -1215,7 +1208,7 @@ if (name.Contains("PMDG"))
                 if (Aircraft.ApAltitude.ValueChanged)
                 {
                     var gaugeValue = Autopilot.ApAltitude.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
 
 
                 }
@@ -1249,7 +1242,7 @@ if (name.Contains("PMDG"))
 
             if (GroundSpeed > 10)
             {
-                fireOnScreenReaderOutputEvent(textOutput: false, isGauge: false, useSAPI: true, output: $"{GroundSpeed} knotts. ");
+                Output(textOutput: false, isGauge: false, useSAPI: true, output: $"{GroundSpeed} knotts. ");
             }
             if (GroundSpeed < 10 || Aircraft.OnGround.Value == 0)
             {
@@ -1277,12 +1270,12 @@ if (name.Contains("PMDG"))
                             menu += $"{count}: {item}. \r\n";
                             count++;
                         }
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: menu);
+                        Output(isGauge: false, output: menu);
                     }
                     else
                     {
                         if (Aircraft.textMenu.Message == "") return;
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: Aircraft.textMenu.Message);
+                        Output(isGauge: false, output: Aircraft.textMenu.Message);
                     }
 
                 }
@@ -1296,11 +1289,11 @@ if (name.Contains("PMDG"))
             {
                 if (toggleStateOn)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI : SAPI, output: $"{name} {OnMsg}");
+                    Output(isGauge: false, useSAPI : SAPI, output: $"{name} {OnMsg}");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, useSAPI : SAPI, output: $"{name} {OffMsg}");
+                    Output(isGauge: false, useSAPI : SAPI, output: $"{name} {OffMsg}");
                 }
             }
         }
@@ -1310,12 +1303,12 @@ if (name.Contains("PMDG"))
             {
                 if (toggleStateOn)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OnMsg}");
+                    Output(isGauge: false, output: $"{name} {OnMsg}");
                     pmdg.fireOnPMDGPanelUpdateEvent("on");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name} {OffMsg}");
+                    Output(isGauge: false, output: $"{name} {OffMsg}");
                 }
             }
         }
@@ -1355,7 +1348,7 @@ if (name.Contains("PMDG"))
                     catch (NHotkey.HotkeyAlreadyRegisteredException ex)
                     {
                         logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+                        Output(isGauge: false, output: $"hotkey error in {s.Name}");
                     }
                     
                 }
@@ -1397,7 +1390,7 @@ if (name.Contains("PMDG"))
                         catch (NHotkey.HotkeyAlreadyRegisteredException ex)
                         {
                             logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"hotkey error in {s.Name}");
+                            Output(isGauge: false, output: $"hotkey error in {s.Name}");
 
                         }
                     }
@@ -1441,7 +1434,7 @@ if (name.Contains("PMDG"))
                     gaugeName = "AP altitude";
                     gaugeValue = Autopilot.ApAltitude.ToString();
                     if (Autopilot.ApAltitudeLock) gaugeValue = " hold " + gaugeValue;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Altitude":
                     ap = new frmAutopilot("Altitude");
@@ -1459,7 +1452,7 @@ if (name.Contains("PMDG"))
                     gaugeName = "AP heading";
                     gaugeValue = Autopilot.ApHeading.ToString();
                     if (Autopilot.ApHeadingLock) gaugeValue = " hold " + gaugeValue;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Heading":
                     ap = new frmAutopilot("Heading");
@@ -1470,7 +1463,7 @@ if (name.Contains("PMDG"))
                     gaugeName = "AP airspeed";
                     gaugeValue = Autopilot.ApAirspeed.ToString();
                     if (Autopilot.ApAirspeedHold) gaugeValue = " hold " + gaugeValue;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                     break;
 
                 case "ap_Set_Airspeed":
@@ -1482,7 +1475,7 @@ if (name.Contains("PMDG"))
                     gaugeName = "AP mach";
                     gaugeValue = Autopilot.ApMachSpeed.ToString();
                     if (Autopilot.ApMachHold) gaugeValue = " hold " + gaugeValue;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                     break;
 
                 case "ap_Set_Mach_Speed":
@@ -1494,7 +1487,7 @@ if (name.Contains("PMDG"))
                     gaugeName = "AP vertical speed";
                     gaugeValue = Autopilot.ApVerticalSpeed.ToString();
                     if (Autopilot.ApVerticalSpeedHold) gaugeValue = " hold " + gaugeValue;
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                     break;
 
                 case "ap_Set_Vertical_Speed":
@@ -1503,8 +1496,8 @@ if (name.Contains("PMDG"))
                     break;
 
                 case "ap_Get_Com_Radios":
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"com 1: {Autopilot.Com1Freq.ToString()}. ");
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"com 2: {Autopilot.Com2Freq.ToString()}. ");
+                    Output(isGauge: false, output: $"com 1: {Autopilot.Com1Freq.ToString()}. ");
+                    Output(isGauge: false, output: $"com 2: {Autopilot.Com2Freq.ToString()}. ");
                     break;
 
 
@@ -1515,7 +1508,7 @@ if (name.Contains("PMDG"))
 
                 case "ap_Get_Nav_Radios":
                     string navInfo = null;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. Course: {Autopilot.Nav1Course.ToString()}. ");
+                    Output(isGauge: false, output: $"nav 1: {Autopilot.Nav1Freq.ToString()}. Course: {Autopilot.Nav1Course.ToString()}. ");
 
                     if (Aircraft.AutopilotRadioStatus.Value[6])
                     {
@@ -1536,7 +1529,7 @@ if (name.Contains("PMDG"))
                         }
 
                     }
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: navInfo);
+                    Output(isGauge: false, output: navInfo);
                     break;
                 case "ap_Set_Nav_Radios":
                     nav = new frmNavRadios();
@@ -1547,7 +1540,7 @@ if (name.Contains("PMDG"))
                 case "ap_Get_Transponder":
                     gaugeName = "Transponder";
                     gaugeValue = Autopilot.Transponder.ToString();
-                    fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                    Output(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Transponder":
                     ap = new frmAutopilot("Transponder");
@@ -1574,7 +1567,7 @@ if (name.Contains("PMDG"))
 
                     if (is737CDUOpen)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                        Output(isGauge: false, output: "The FMC window is already open!");
                         break;
                     } // End what to do when CDU is already open.
                     else
@@ -1601,7 +1594,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
 
                 if (is747CDUOpen)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                    Output(isGauge: false, output: "The FMC window is already open!");
                     break;
                 } // End what to do when CDU is already open.
                 else
@@ -1628,7 +1621,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
 
                 if (is777CDUOpen)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "The FMC window is already open!");
+                    Output(isGauge: false, output: "The FMC window is already open!");
                     break;
                 } // End what to do when CDU is already open.
                 else
@@ -1696,7 +1689,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                     }
                     if(isPlannerActive)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "Flight planner is already open!");
+                        Output(isGauge: false, output: "Flight planner is already open!");
                         break;
                     }
                     else
@@ -1717,7 +1710,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 case "Fuel_Manager":
                     if (fuelManagerActive)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel manager already open");
+                        Output(isGauge: false, output: "fuel manager already open");
                         break;
                     }
                     frmFuelManager frm = new frmFuelManager();
@@ -1733,7 +1726,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                     onAGLKey();
                     break;
                 case "Disable_Command_Key":
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "command key disabled.");
+                    Output(isGauge: false, output: "command key disabled.");
                     CommandKeyEnabled = false;
                     break;
 
@@ -1908,17 +1901,17 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (Aircraft.LandingGear.Value == 0)
             {
                 gaugeValue = "up. ";
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
             }
             if (Aircraft.LandingGear.Value == 16383)
             {
                 gaugeValue = "down. ";
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
             }
             if (Aircraft.LandingGear.Value > 0 && Aircraft.LandingGear.Value < 16383)
             {
                 gaugeValue = "in motion. ";
-                fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+                Output(gaugeName, gaugeValue, isGauge);
             }
 
         }
@@ -1929,7 +1922,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             var gaugeName = "Flaps";
             var gaugeValue = FlapsAngle.ToString("f0");
             var isGauge = true;
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
 
@@ -1939,12 +1932,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (Properties.Settings.Default.OutputBraille)
             {
                 Properties.Settings.Default.OutputBraille = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Braille output disabled. ");
+                Output(isGauge: false, output: "Braille output disabled. ");
             }
             else
             {
                 Properties.Settings.Default.OutputBraille = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Braille output enabled. ");
+                Output(isGauge: false, output: "Braille output enabled. ");
             }
         }
 
@@ -1954,7 +1947,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             string thrustValue = null;
             if (engine > Aircraft.num_engines.Value)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Only {Aircraft.num_engines.Value} available. ");
+                Output(isGauge: false, output: $"Only {Aircraft.num_engines.Value} available. ");
                 return;
             }
             if (engine == 1)
@@ -1963,28 +1956,28 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 double thrust = Aircraft.Engine1JetThrust.Value;
                 throttleValue = throttlePercent.ToString("F1");
                 thrustValue = Aircraft.Engine1JetThrust.Value.ToString("F0");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 1: {throttleValue} percent, {thrustValue} pounds thrust.");
+                Output(isGauge: false, output: $"Engine 1: {throttleValue} percent, {thrustValue} pounds thrust.");
             }
             if (engine == 2)
             {
                 double throttlePercent = (double)Aircraft.Engine2ThrottleLever.Value / 16384d * 100d;
                 throttleValue = throttlePercent.ToString("F1");
                 thrustValue = Aircraft.Engine2JetThrust.Value.ToString("F0");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 2: {throttleValue} percent, {thrustValue} pounds thrust.");
+                Output(isGauge: false, output: $"Engine 2: {throttleValue} percent, {thrustValue} pounds thrust.");
             }
             if (engine == 3)
             {
                 double throttlePercent = (double)Aircraft.Engine3ThrottleLever.Value / 16384d * 100d;
                 throttleValue = throttlePercent.ToString("F1");
                 thrustValue = Aircraft.Engine3JetThrust.Value.ToString("F0");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 3: {throttleValue} percent, {thrustValue} pounds thrust.");
+                Output(isGauge: false, output: $"Engine 3: {throttleValue} percent, {thrustValue} pounds thrust.");
             }
             if (engine == 4)
             {
                 double throttlePercent = (double)Aircraft.Engine4ThrottleLever.Value / 16384d * 100d;
                 throttleValue = throttlePercent.ToString("F1");
                 thrustValue = Aircraft.Engine4JetThrust.Value.ToString("F0");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 4: {throttleValue} percent, {thrustValue} pounds thrust.");
+                Output(isGauge: false, output: $"Engine 4: {throttleValue} percent, {thrustValue} pounds thrust.");
 
             }
 
@@ -1997,18 +1990,18 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             var gaugeName = "Ground speed";
             var gaugeValue = GroundSpeed.ToString();
             var isGauge = true;
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
         private void onRepeatLastSimconnectMessage()
         {
             if (OldSimConnectMessage != null)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: OldSimConnectMessage);
+                Output(isGauge: false, output: OldSimConnectMessage);
             }
             else
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "no recent message");
+                Output(isGauge: false, output: "no recent message");
             }
 
         }
@@ -2019,7 +2012,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             double WindDirection = (double)Aircraft.WindDirection.Value * 360d / 65536d;
             WindDirection = Math.Round(WindDirection);
             double WindGust = (double)Aircraft.WindGust.Value;
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Wind: {WindDirection} at {WindSpeed} knotts. Gusts at {WindGust} knotts.");
+            Output(isGauge: false, output: $"Wind: {WindDirection} at {WindSpeed} knotts. Gusts at {WindGust} knotts.");
 
         }
 
@@ -2043,7 +2036,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             List<AIPlaneInfo> airbornTraffic = ts.AirborneTraffic;
             if (groundtraffic.Count == 0 && airbornTraffic.Count == 0)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "no traffic available. ");
+                Output(isGauge: false, output: "no traffic available. ");
             }
             else
             {
@@ -2063,7 +2056,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             FSUIPCConnection.PayloadServices.RefreshData();
             if (tank > ActiveTanks.Count)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "tank not available");
+                Output(isGauge: false, output: "tank not available");
             }
             else
             {
@@ -2083,11 +2076,11 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 string gal = ActiveTanks[tank].LevelUSGallons.ToString("F0");
                 if (Properties.Settings.Default.UseMetric)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} kilograms, {gal} gallons.");
+                    Output(isGauge: false, output: $"{name}.  {pct} percent, {weight} kilograms, {gal} gallons.");
                 }
                 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
+                    Output(isGauge: false, output: $"{name}.  {pct} percent, {weight} pounds, {gal} gallons.");
                 }
 
             }
@@ -2100,19 +2093,19 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             double eng2 = Math.Round(Aircraft.eng2_fuel_flow.Value);
             double eng3 = Math.Round(Aircraft.eng3_fuel_flow.Value);
             double eng4 = Math.Round(Aircraft.eng4_fuel_flow.Value);
-            fireOnScreenReaderOutputEvent(isGauge: false, output: "Fuel flow (pounds per hour): ");
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 1: {eng1}. ");
+            Output(isGauge: false, output: "Fuel flow (pounds per hour): ");
+            Output(isGauge: false, output: $"Engine 1: {eng1}. ");
             if (NumEngines >= 2)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 2: {eng2}. ");
+                Output(isGauge: false, output: $"Engine 2: {eng2}. ");
             }
             if (NumEngines >= 3)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 3: {eng3}. ");
+                Output(isGauge: false, output: $"Engine 3: {eng3}. ");
             }
             if (NumEngines >= 4)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine 4: {eng4}. ");
+                Output(isGauge: false, output: $"Engine 4: {eng4}. ");
             }
 
         }
@@ -2126,11 +2119,11 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             ps.RefreshData();
             string TotalFuelWeight = ps.FuelWeightLbs.ToString("F1");
             string TotalFuelQuantity = ps.FuelLevelUSGallons.ToString("F1");
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"total fuel: {TotalFuelWeight} pounds. ");
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{TotalFuelQuantity} gallons. ");
+            Output(isGauge: false, output: $"total fuel: {TotalFuelWeight} pounds. ");
+            Output(isGauge: false, output: $"{TotalFuelQuantity} gallons. ");
             double TotalFuelFlow = (double)Aircraft.eng1_fuel_flow.Value + Aircraft.eng2_fuel_flow.Value + Aircraft.eng3_fuel_flow.Value + Aircraft.eng4_fuel_flow.Value;
             TotalFuelFlow = Math.Round(TotalFuelFlow);
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Total fuel flow: {TotalFuelFlow}");
+            Output(isGauge: false, output: $"Total fuel flow: {TotalFuelFlow}");
         }
         private void onWeightReportKey()
         {
@@ -2148,11 +2141,11 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 string MaxGrossWeight = ps.MaxGrossWeightKgs.ToString("F0");
                 if (ps.GrossWeightKgs > ps.MaxGrossWeightKgs)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Overweight warning! ");
+                    Output(isGauge: false, output: "Overweight warning! ");
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Fuel Weight: {FuelWeight} Kilograms");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Payload Weight: {PayloadWeight} kilograms. ");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} kilograms maximum.");
+                Output(isGauge: false, output: $"Fuel Weight: {FuelWeight} Kilograms");
+                Output(isGauge: false, output: $"Payload Weight: {PayloadWeight} kilograms. ");
+                Output(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} kilograms maximum.");
 
             }
             else
@@ -2164,11 +2157,11 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 string MaxGrossWeight = ps.MaxGrossWeightLbs.ToString("F0");
                 if (ps.GrossWeightLbs > ps.MaxGrossWeightLbs)
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Overweight warning! ");
+                    Output(isGauge: false, output: "Overweight warning! ");
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Fuel Weight: {FuelWeight} pounds");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Payload Weight: {PayloadWeight} pounds. ");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
+                Output(isGauge: false, output: $"Fuel Weight: {FuelWeight} pounds");
+                Output(isGauge: false, output: $"Payload Weight: {PayloadWeight} pounds. ");
+                Output(isGauge: false, output: $"Gross Weight: {GrossWeight} of {MaxGrossWeight} pounds maximum.");
 
             }
         }
@@ -2183,7 +2176,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 RunwayGuidanceTimer.Elapsed += OnRunwayGuidanceTickEvent;
                 RunwayGuidanceTimer.AutoReset = true;
                 RunwayGuidanceTrackedHeading = (double)Math.Round(Aircraft.CompassHeading.Value);
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Runway guidance enabled. current heading: {RunwayGuidanceTrackedHeading}. ");
+                Output(isGauge: false, output: $"Runway guidance enabled. current heading: {RunwayGuidanceTrackedHeading}. ");
                 // play tones for 45 degrees on either side of the tracked heading
                 HdgRight = RunwayGuidanceTrackedHeading + 45;
                 HdgLeft = RunwayGuidanceTrackedHeading - 45;
@@ -2209,7 +2202,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 mixer.RemoveAllMixerInputs();
                 RunwayGuidanceTimer.Stop();
                 runwayGuidanceEnabled = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Runway Guidance disabled. ");
+                Output(isGauge: false, output: "Runway Guidance disabled. ");
             }
 
         }
@@ -2248,12 +2241,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (Properties.Settings.Default.ReadFlaps)
             {
                 Properties.Settings.Default.ReadFlaps = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "flaps announcement disabled. ");
+                Output(isGauge: false, output: "flaps announcement disabled. ");
             }
             else
             {
                 Properties.Settings.Default.ReadFlaps = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Flaps announcement enabled. ");
+                Output(isGauge: false, output: "Flaps announcement enabled. ");
             }
         }
 
@@ -2263,12 +2256,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             {
                 Properties.Settings.Default.ReadILS = false;
                 ilsTimer.Enabled = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Read ILS disabled");
+                Output(isGauge: false, output: "Read ILS disabled");
             }
             else
             {
                 Properties.Settings.Default.ReadILS = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Read ILS enabled");
+                Output(isGauge: false, output: "Read ILS enabled");
 
             }
         }
@@ -2278,12 +2271,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (Properties.Settings.Default.ReadGPWS == false)
             {
                 Properties.Settings.Default.ReadGPWS = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "GPWS enabled");
+                Output(isGauge: false, output: "GPWS enabled");
             }
             else
             {
                 Properties.Settings.Default.ReadGPWS = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "GPWS disabled");
+                Output(isGauge: false, output: "GPWS disabled");
             }
         }
 
@@ -2297,12 +2290,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (Properties.Settings.Default.ReadAutopilot)
             {
                 Properties.Settings.Default.ReadAutopilot = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "read autopilot instruments disabled");
+                Output(isGauge: false, output: "read autopilot instruments disabled");
             }
             else
             {
                 Properties.Settings.Default.ReadAutopilot = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Read autopilot instruments enabled. ");
+                Output(isGauge: false, output: "Read autopilot instruments enabled. ");
             }
         }
 
@@ -2316,7 +2309,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 // Hook up the Elapsed event for the timer. 
                 AttitudeTimer.Elapsed += OnAttitudeModeTickEvent;
                 AttitudeTimer.AutoReset = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Attitude mode enabled. ");
+                Output(isGauge: false, output: "Attitude mode enabled. ");
                 // start audio
                 // signal generator for generating tones
                 wg = new SignalGenerator();
@@ -2337,7 +2330,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 AttitudeBankRightPlaying = false;
                 AttitudeTimer.Stop();
                 attitudeModeEnabled = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "Attitude mode disabled. ");
+                Output(isGauge: false, output: "Attitude mode disabled. ");
             }
         }
         private void OnAttitudeModeTickEvent(Object source, ElapsedEventArgs e)
@@ -2354,7 +2347,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 {
                     if (Pitch != oldPitch)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: false, interruptSpeech: true, output: $"down {Pitch}");
+                        Output(isGauge: false, textOutput: false, interruptSpeech: true, output: $"down {Pitch}");
                         oldPitch = Pitch;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2380,7 +2373,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 {
                     if (Pitch != oldPitch)
                     {
-                        fireOnScreenReaderOutputEvent(interruptSpeech: true, isGauge: false, textOutput: false, output: $"up {Math.Abs(Pitch)}");
+                        Output(interruptSpeech: true, isGauge: false, textOutput: false, output: $"up {Math.Abs(Pitch)}");
                         oldPitch = Pitch;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2406,7 +2399,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 {
                     if (Bank != oldBank)
                     {
-                        fireOnScreenReaderOutputEvent(interruptSpeech: true, isGauge: false, textOutput: false, output: $"left {Bank}");
+                        Output(interruptSpeech: true, isGauge: false, textOutput: false, output: $"left {Bank}");
                         oldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2438,7 +2431,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 {
                     if (Bank != oldBank)
                     {
-                        fireOnScreenReaderOutputEvent(interruptSpeech: true, isGauge: false, textOutput: false, output: $"right {Bank}");
+                        Output(interruptSpeech: true, isGauge: false, textOutput: false, output: $"right {Bank}");
                         oldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
@@ -2483,13 +2476,13 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             {
                 var distance = Math.Round(Aircraft.pmdg737.FMC_DistanceToDest.Value, 0);
                 var TOD = Math.Round(Aircraft.pmdg737.FMC_DistanceToTOD.Value, 0);
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"E D A: {distance}/T O D: {TOD}");
+                Output(isGauge: false, output: $"E D A: {distance}/T O D: {TOD}");
             }
             else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
             {
                 var distance = Math.Round(Aircraft.pmdg747.FMC_DistanceToDest.Value, 0);
                 var TOD = Math.Round(Aircraft.pmdg747.FMC_DistanceToTOD.Value, 0);
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"E D A: {distance}/T O D: {TOD}");
+                Output(isGauge: false, output: $"E D A: {distance}/T O D: {TOD}");
             }
             else
             {
@@ -2504,7 +2497,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                 {
                     strTime = string.Format("{0:%s} seconds", TimeEnroute);
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Time enroute to destination, {strTime}. ");
+                Output(isGauge: false, output: $"Time enroute to destination, {strTime}. ");
 
             }
         }
@@ -2513,7 +2506,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
         {
             if(Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                                fireOnScreenReaderOutputEvent(isGauge: false, output: "Not supported in PMDG aircraft. Please see the legs page of your FMC for the next waypoint.");
+                                Output(isGauge: false, output: "Not supported in PMDG aircraft. Please see the legs page of your FMC for the next waypoint.");
                 return;
             }
             ReadWayPoint();
@@ -2527,7 +2520,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             // double lon = -123.393333;
             if (Properties.Settings.Default.GeonamesUsername == "")
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "geonames username not configured");
+                Output(isGauge: false, output: "geonames username not configured");
                 return;
             }
             var geonamesUser = Properties.Settings.Default.GeonamesUsername;
@@ -2570,12 +2563,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                         double bearingTrue = aircraftPos.BearingTo(nearestCityPoint);
                         double bearingMagnetic = bearingTrue - magVarDegrees;
                         string strBearing = bearingMagnetic.ToString("F0");
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{location.Name} {location.admin1}, {location.countryName}. ");
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{distanceNM} nautical miles, {strBearing} degrees.");
+                        Output(isGauge: false, output: $"{location.Name} {location.admin1}, {location.countryName}. ");
+                        Output(isGauge: false, output: $"{distanceNM} nautical miles, {strBearing} degrees.");
                     }
                     else
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"No city nearby.");
+                        Output(isGauge: false, output: $"No city nearby.");
                     }
                 }
                 catch (Exception ex)
@@ -2593,7 +2586,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                     if (ocean.Count() > 0)
                     {
                         var currentOcean = ocean.First();
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: $"{currentOcean.Name}. ");
+                        Output(isGauge: false, output: $"{currentOcean.Name}. ");
                     }
 
                 }
@@ -2615,7 +2608,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                         try
                         {
                             string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{tzName}. ");
+                            Output(isGauge: false, output: $"{tzName}. ");
                         }
                         catch (Exception)
                         {
@@ -2636,12 +2629,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (muteSimconnect)
             {
                 muteSimconnect = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "SimConnect messages unmuted. ");
+                Output(isGauge: false, output: "SimConnect messages unmuted. ");
             }
             else
             {
                 muteSimconnect = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "SimConnect messages muted.");
+                Output(isGauge: false, output: "SimConnect messages muted.");
             }
             ResetHotkeys();
         }
@@ -2651,12 +2644,12 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             if (TrimEnabled)
             {
                 TrimEnabled = false;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "read trim disabled. ");
+                Output(isGauge: false, output: "read trim disabled. ");
             }
             else
             {
                 TrimEnabled = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, output: "trim enabled. ");
+                Output(isGauge: false, output: "trim enabled. ");
             }
             ResetHotkeys();
         }
@@ -2676,7 +2669,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             {
                 gaugeValue = tempF.ToString("F0");
             }
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
         private void onVSpeedKey()
@@ -2690,7 +2683,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
 
             //Tolk.Output(vspeed.ToString("f0") + " feet per minute. ");
             // Test the new event.
-            fireOnScreenReaderOutputEvent(gageName, gageValue, isGage);
+            Output(gageName, gageValue, isGage);
             ResetHotkeys();
 
         }
@@ -2698,7 +2691,7 @@ private void onLandingRateKey()
         {
             // convert FSUIPC unit to expected FPM value
             double vspd = Math.Round(Aircraft.LandingRate.Value * 60 * 3.28084 / 256);
-            fireOnScreenReaderOutputEvent(isGauge: false, output: $"Landing Rate: {vspd} Feet per minute");
+            Output(isGauge: false, output: $"Landing Rate: {vspd} Feet per minute");
 
         }
         private void onMachKey()
@@ -2707,7 +2700,7 @@ private void onLandingRateKey()
             var gaugeName = "Mach";
             var isGauge = true;
             var gaugeValue = mach.ToString("F2");
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
 
         }
 
@@ -2717,7 +2710,7 @@ private void onLandingRateKey()
             var gaugeName = "Airspeed true";
             var isGauge = true;
             var gaugeValue = tas.ToString("F0");
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
         private void onIASKey()
@@ -2726,13 +2719,13 @@ private void onLandingRateKey()
             var gaugeName = "Airspeed indicated";
             var isGauge = true;
             var gaugeValue = ias.ToString("F0");
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
         private void onHeadingKey()
         {
             double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
-            fireOnScreenReaderOutputEvent(isGauge: false, output: "heading: " + Autopilot.Heading);
+            Output(isGauge: false, output: "heading: " + Autopilot.Heading);
             ResetHotkeys();
         }
 
@@ -2743,7 +2736,7 @@ private void onLandingRateKey()
             var gaugeName = "AGL altitude";
             var isGauge = true;
             var gaugeValue = Math.Round(agl, 0).ToString();
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
         public void ResetHotkeys()
@@ -2773,7 +2766,7 @@ private void onLandingRateKey()
             var gaugeName = "ASL altitude";
             var gaugeValue = asl.ToString("F0");
             var isGauge = true;
-            fireOnScreenReaderOutputEvent(gaugeName, gaugeValue, isGauge);
+            Output(gaugeName, gaugeValue, isGauge);
         }
 
 
@@ -2820,7 +2813,7 @@ private void onLandingRateKey()
                         rpm = Math.Round(Aircraft.Engine1RPM.Value);
                         manifold = Aircraft.Engine1ManifoldPressure.Value / 1024;
                         output = $"Engine 1: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        Output(isGauge: false, output: output);
                         break;
 
                     case 2:
@@ -2850,7 +2843,7 @@ private void onLandingRateKey()
                         rpm = Math.Round(Aircraft.Engine2RPM.Value);
                         manifold = Aircraft.Engine2ManifoldPressure.Value / 1024;
                         output = $"Engine 2: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        Output(isGauge: false, output: output);
                         break;
 
                     case 3:
@@ -2880,7 +2873,7 @@ private void onLandingRateKey()
                         rpm = Math.Round(Aircraft.Engine3RPM.Value);
                         manifold = Aircraft.Engine3ManifoldPressure.Value / 1024;
                         output = $"Engine 3: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        Output(isGauge: false, output: output);
                         break;
 
                     case 4:
@@ -2910,7 +2903,7 @@ private void onLandingRateKey()
                         rpm = Math.Round(Aircraft.Engine4RPM.Value);
                         manifold = Aircraft.Engine4ManifoldPressure.Value / 1024;
                         output = $"Engine 4: CHT: {cht} {units}, EGT: {egt} {units}, RPM: {rpm}, manifold: {manifold} inches. ";
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: output);
+                        Output(isGauge: false, output: output);
                         break;
                 }
             }
@@ -2935,9 +2928,9 @@ private void onLandingRateKey()
                         N2 = (double)Aircraft.Eng4N2.Value;
                         break;
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"Engine {eng}. ");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"N1: {Math.Round(N1)}. ");
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"N2: {Math.Round(N2)}. ");
+                Output(isGauge: false, output: $"Engine {eng}. ");
+                Output(isGauge: false, output: $"N1: {Math.Round(N1)}. ");
+                Output(isGauge: false, output: $"N2: {Math.Round(N2)}. ");
             }
 
         }
@@ -2980,21 +2973,21 @@ private void onLandingRateKey()
 
             if (currentTaxiWay != null && currentGate == null)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
+                Output(isGauge: false, output: $"taxi way {currentTaxiWay.Name}@{currentTaxiWay.Airport.ICAO}");
             }
             else if (currentRunway != null)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
+                Output(isGauge: false, output: $"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
             }
             else if (currentGate != null)
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"gate {currentGate.ID}@{currentGate.Airport.ICAO}");
+                Output(isGauge: false, output: $"gate {currentGate.ID}@{currentGate.Airport.ICAO}");
             }
             else
             {
                 if(string.IsNullOrEmpty(Properties.Settings.Default.bingMapsAPIKey))
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Please set the Bing Maps API key in settings before using the where am I feature.");
+                    Output(isGauge: false, output: "Please set the Bing Maps API key in settings before using the where am I feature.");
                     return;
                 } // Sanity check on api keys.
                 var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
@@ -3034,7 +3027,7 @@ private void onLandingRateKey()
                     {
                     if(string.IsNullOrWhiteSpace(Properties.Settings.Default.GeonamesUsername))
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: "You must have a Geonames username to use this feature.");
+                        Output(isGauge: false, output: "You must have a Geonames username to use this feature.");
                         return;
                     }
                     try
@@ -3047,7 +3040,7 @@ private void onLandingRateKey()
                         if (ocean.Count() > 0)
                         {
                             var currentOcean = ocean.First();
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{currentOcean.Name}. ");
+                            Output(isGauge: false, output: $"{currentOcean.Name}. ");
                         }
                                             }
                     catch (Exception ex)
@@ -3058,7 +3051,7 @@ private void onLandingRateKey()
                 }
 else
                 {
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
+                    Output(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
                 }
                 var xmlTimezone = XElement.Load($"http://api.geonames.org/timezone?lat={latitude}&lng={longitude}&username={Properties.Settings.Default.GeonamesUsername}&radius=50");
                 var timezone = xmlTimezone.Descendants("timezone").Select(g => new
@@ -3073,7 +3066,7 @@ else
                         try
                         {
                             string tzName = TZConvert.IanaToWindows(currentTimezone.Name);
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: $"{tzName}. ");
+                            Output(isGauge: false, output: $"{tzName}. ");
                         }
                         catch (Exception)
                         {
@@ -3090,13 +3083,13 @@ else
         {
             if (Properties.Settings.Default.takeOffAssistMode == "off")
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist is turned off. Please change it to full or partial in settings.");
+                Output(isGauge: false, textOutput: true, output: "Takeoff assist is turned off. Please change it to full or partial in settings.");
                 takeOffAssistantActive = false;
             } // Takeoff assist is permanently turned off.
             else if (Properties.Settings.Default.takeOffAssistMode == "full")
             {
                 takeOffAssistantActive = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                Output(isGauge: false, textOutput: true, output: "Takeoff assist on.");
                 // Flaps aren't included because flap positions very between planes,
                 // and there isn't a promising way to determine flap positions.
 
@@ -3132,7 +3125,7 @@ else
                 //        Aircraft.Engine4ThrottleLever.Value = 16388;
                 //        break;
                 //    case 0:
-                //        fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                //        Output(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
                 //        break;
                 //} // End throttle engines.
                                 isTakeoffComplete = false;
@@ -3141,7 +3134,7 @@ else
 else if(Properties.Settings.Default.takeOffAssistMode == "partial")
             {
                 takeOffAssistantActive = true;
-                fireOnScreenReaderOutputEvent(isGauge: false, textOutput: true, output: "Takeoff assist on.");
+                Output(isGauge: false, textOutput: true, output: "Takeoff assist on.");
                 isTakeoffComplete = false;
                 PostTakeOffChecklist();
             } // End takeoff assist mode partial.
@@ -3166,7 +3159,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                     Aircraft.LandingGearControl.Value = 0; // Gear up.
                     takeOffAssistantActive = false;
                     isTakeoffComplete = true;
-                    fireOnScreenReaderOutputEvent(isGauge: false, output: "Takeoff assist off.");
+                    Output(isGauge: false, output: "Takeoff assist off.");
                     return isTakeoffComplete;
                                     } else
             {
@@ -3191,7 +3184,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                                                 if(en1n1 == n1Monitor)
                             {
                         if (isAnnounced) return;
-                        fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
                         isAnnounced = true;
                     }
                                                 else
@@ -3205,7 +3198,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         {
                         if (isAnnounced) break;
                         isAnnounced = true;
-                        fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
                         
                     }
                         else
@@ -3218,7 +3211,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                                                 if(en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor)
                         {
                         if (isAnnounced) return;
-                                                    fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                                                    Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
                         isAnnounced = true;
                     }
                     else
@@ -3231,7 +3224,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         if(en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor && en4n1 == n1Monitor)
                         {
                         if (isAnnounced)
-                        fireOnScreenReaderOutputEvent(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
                         isAnnounced = true;
                     }
                     else
@@ -3273,7 +3266,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
             } // End 777 check.
             if (type == "requested")
             {
-                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: message);
+                Output(isGauge: false, useSAPI: true, output: message);
             } // End requested.
             else
             {
@@ -3286,7 +3279,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         {
                             case 1:
                                 cDU_Screen.RefreshData();
-                                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                                Output(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
                                 break;
                         }
                     }
@@ -3300,7 +3293,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         {
                             case 1:
                                 cDU_Screen.RefreshData();
-                                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                                Output(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
                                 break;
                         }
                     }
@@ -3314,7 +3307,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         {
                             case 1:
                                 cDU_Screen.RefreshData();
-                                fireOnScreenReaderOutputEvent(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
+                                Output(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
                                 break;
                         }
                     }
@@ -3340,13 +3333,13 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                     switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
                     {
                         case 0:
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Battery");
+                            Output(isGauge: false, output: "Standby power: Battery");
                             break;
                         case 1:
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Off");
+                            Output(isGauge: false, output: "Standby power: Off");
                             break;
                         case 2:
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: "Standby power: Auto");
+                            Output(isGauge: false, output: "Standby power: Auto");
                             break;
                     }
 
@@ -3407,13 +3400,13 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                     switch (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.Value)
                     {
                         case 0:
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve closed");
+                            Output(isGauge: false, output: "fuel cross feed valve closed");
                             break;
                         case 1:
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve open");
+                            Output(isGauge: false, output: "fuel cross feed valve open");
                             break;
                         case 2:
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: "fuel cross feed valve in transit");
+                            Output(isGauge: false, output: "fuel cross feed valve in transit");
                             break;
                     }
                 
@@ -3437,7 +3430,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         break;
 
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"left pack {pck}");
+                Output(isGauge: false, output: $"left pack {pck}");
             }
             if (Aircraft.pmdg737.AIR_IsolationValveSwitch.ValueChanged)
             {
@@ -3455,7 +3448,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         break;
 
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"isolation valve {isol}");
+                Output(isGauge: false, output: $"isolation valve {isol}");
             }
             if (Aircraft.pmdg737.AIR_PackSwitch[1].ValueChanged)
             {
@@ -3473,7 +3466,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                         break;
 
                 }
-                fireOnScreenReaderOutputEvent(isGauge: false, output: $"right pack {pck}");
+                Output(isGauge: false, output: $"right pack {pck}");
             }
             ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[1], Aircraft.pmdg737.AIR_BleedAirSwitch[1].Value > 0, "engine 2 bleed", "on", "off");
             ReadToggle(Aircraft.pmdg737.AIR_BleedAirSwitch[0], Aircraft.pmdg737.AIR_BleedAirSwitch[0].Value > 0, "engine 1 bleed", "on", "off");
@@ -3506,5 +3499,247 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
 
 
                     } // End ReadPMDG747Toggles
-    } // End IoSubSystem class.
+        /// <summary>
+        ///  function for speech and braille output
+        /// </summary>
+        /// <param name="isGauge"></param>
+        /// <param name="gaugeName"></param>
+        /// <param name="gaugeValue"></param>
+        /// <param name="output"></param>
+        public void Output(string gaugeName = "", string gaugeValue = "", bool isGauge = false, string output = "", bool textOutput = true, bool useSAPI = false, bool interruptSpeech = false)
+        {
+            // We can do anything we want since the gage/value are broken up into different variables now.
+            // The event should take care of anything the screen reader needs to output to the user.
+
+            // when e.isGage is true, e.output is empty.
+            // Otherwise, e.output should contain a string to send to the screen reader.
+            // EX: the next waypoint feature is inappropriate for e.gageName and e.gageValue, so e.isGage will be false, and e.output will have the output for the next waypoint.
+
+            if (isGauge)
+            {
+                switch (gaugeName)
+                {
+                    case "Vertical speed":
+                        // We can implement different settings here. One of them is braille support.
+                        // After including a braille only, speech only, or both setting,
+                        // All we need to do is check for the setting and respond to it.
+                        // Braile, speech, and output can have different output without toying with the backend code.
+                        // This also makes way for message type: short or long. A pilot might not want
+                        // to hear "feet per minute" every time he/she presses ]v, so, give them a choice.
+                        // That setting would be checked here because it influences screen reader/braille output.
+                        // The log may also contain different formatting options. For now, stick with
+                        // reasonable defaults.
+
+                        speak($"{gaugeValue} feet per minute.");
+                        braille($"VSPD {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+
+                        break;
+                    case "Outside temperature":
+                        speak($"{gaugeValue} degrees");
+                        braille($"temp {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+                    case "ASL altitude":
+                        speak($"{gaugeValue} feet ASL.");
+                        braille($"ASL  {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "AGL altitude":
+                        speak($"{gaugeValue} feet AGL.");
+                        braille($"AGL {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Airspeed true":
+                        speak($"{gaugeValue} knotts true");
+                        braille($"TAS {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Airspeed indicated":
+                        speak($"{gaugeValue} knotts indicated");
+                        braille($"IAS {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Ground speed":
+                        speak($"{gaugeValue} knotts ground speed");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"gnd: {gaugeValue}\n");
+                        break;
+
+                    case "Mach":
+                        speak($"Mach {gaugeValue}. ");
+                        braille($"mach{gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Localiser":
+                        speak($"{gaugeValue}. ", useSAPI: true);
+                        braille($"loc {gaugeValue}\n");
+                        break;
+
+                    case "Glide slope":
+                        speak($"{gaugeValue}. ", useSAPI: true);
+                        braille($"gs {gaugeValue}\n");
+                        break;
+
+                    case "Altimeter":
+                        speak($"{gaugeName}: {gaugeValue}. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Flaps":
+                        speak($"{gaugeName} {gaugeValue}. ");
+                        braille($"{gaugeName} {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Gear":
+                        speak($"{gaugeName} {gaugeValue}. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "AP heading":
+                        speak($"heading {gaugeValue}. ");
+                        braille($"hdg: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "AP airspeed":
+                        speak($"{gaugeValue} knotts. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "AP mach":
+                        speak($"Mach {gaugeValue}");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "AP vertical speed":
+                        speak($"{gaugeValue} feet per minute. ");
+                        braille($"{gaugeValue} FPM\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "AP altitude":
+                        speak($"{gaugeName}: {gaugeValue} feet. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+
+                    case "Com1":
+                        speak($"{gaugeName}: {gaugeValue}. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Com2":
+                        speak($"{gaugeName}: {gaugeValue}. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Nav1":
+                        speak($"{gaugeName}: {gaugeValue}. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Nav2":
+                        speak($"{gaugeName}: {gaugeValue}. ");
+                        braille($"{gaugeName}: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+                    case "Transponder":
+                        speak($"squawk {gaugeValue}. ");
+                        braille($"Squawk: {gaugeValue}\n");
+                        history.AddItem($"{gaugeName}: {gaugeValue}\n");
+                        break;
+
+
+
+
+
+                    default:
+                        Tolk.Output("Gage or instrument not supported.\n");
+                        break;
+                }
+            } // End gage output.
+            else
+            {
+                if (useSAPI == true)
+                {
+                    speak(useSAPI: true, interruptSpeech: interruptSpeech, output: output);
+                }
+                else
+                {
+                    speak(output, interruptSpeech: interruptSpeech);
+                }
+                if (textOutput == true)
+                {
+                    history.AddItem($"{output}\n");
+                }
+
+            } // end generic output
+        } // end output method
+
+        publ
+            ic async void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
+        {
+            if (Properties.Settings.Default.SpeechSystem == "SAPI" || useSAPI == true)
+            {
+                if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
+                synth.Rate = Properties.Settings.Default.SAPISpeechRate;
+                synth.SpeakAsync(output);
+            }
+            if (Properties.Settings.Default.SpeechSystem == "ScreenReader")
+            {
+                Tolk.Speak(output, interruptSpeech);
+
+            }
+            if (Properties.Settings.Default.SpeechSystem == "Azure")
+            {
+                var voice = Properties.Settings.Default.AzureVoice;
+                var ssml = $"<speak version='1.0' xml:lang='en-US' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='{voice}'>{output}</voice></speak>";
+                using (var result = await azureSynth.SpeakSsmlAsync(ssml))
+                {
+                    if (result.Reason == ResultReason.Canceled)
+                    {
+                        if (Properties.Settings.Default.FallbackSpeechSystem == "ScreenReader")
+                        {
+                            Tolk.Speak(output, interruptSpeech);
+                        }
+                        else
+                        {
+                            if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
+                            synth.Rate = Properties.Settings.Default.SAPISpeechRate;
+                            synth.SpeakAsync(output);
+
+                        }
+
+                    }
+                }
+
+
+
+            }
+        }
+        private void braille(string output)
+        {
+            if (Properties.Settings.Default.OutputBraille)
+            {
+                Tolk.Braille(output);
+            }
+        }
+
+    } // End IOSubsystem class
 } // End TFM namespace.

@@ -29,36 +29,22 @@ namespace tfm
     {
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        // get a speech synthesis object for SAPI output
-        public static System.Speech.Synthesis.SpeechSynthesizer synth = new System.Speech.Synthesis.SpeechSynthesizer();
-
-        // objects for cognative speech services
-        private SpeechConfig azureConfig;
-        private Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth;
         int FallbackCounter;
-        Queue<string> speechQueue = new System.Collections.Generic.Queue<string>();
 
         // Create a counter for the connection timer.
         private int connectionCounter = 0;
 
         
         private IOSubsystem inst = new IOSubsystem();
-        private InstrumentPanel Autopilot = new InstrumentPanel();
-        private OutputHistory history = new OutputHistory();
+        
         private bool AzureSpeaking = false;
 
         public TFMMainForm()
         {
             InitializeComponent();
-            if (Properties.Settings.Default.SpeechSystem == "Azure")
-            {
-                
-                SetupAzureSpeech();
-            }
             Aircraft.InitOffsets();
             // upgrade settings
             Properties.Settings.Default.Upgrade();
-            synth.Rate = Properties.Settings.Default.SAPISpeechRate;
             // speak a debug message via SAPI if debug mode is turned on
             if (utility.DebugEnabled)
             {
@@ -73,31 +59,13 @@ namespace tfm
             }
 
 
-            inst.ScreenReaderOutput += onScreenReaderOutput;
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
             
         }
 
-        private void SetupAzureSpeech()
-        {
-            azureConfig = SpeechConfig.FromSubscription(Properties.Settings.Default.AzureAPIKey, Properties.Settings.Default.AzureServiceRegion);
-            azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
-            // azureSynth.SynthesisCompleted += AzureSynthCompleted;
-            // azureSynth.SynthesisStarted += AzureSynthStarted;
-
-        }
-
-        private void AzureSynthStarted(object sender, SpeechSynthesisEventArgs e)
-        {
-            AzureSpeaking = true;
-        }
-
-        private void AzureSynthCompleted(object sender, SpeechSynthesisEventArgs e)
-        {
-            AzureSpeaking = false;
-        }
-
+        
+        
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
         {
@@ -116,7 +84,7 @@ namespace tfm
                 this.timerMain.Start();
                 this.timerLowPriority.Start();
                 // load airport database
-                speak("loading airport database");
+                inst.speak("loading airport database");
                 dbLoadWorker.RunWorkerAsync();
                 // write version info to the debug log
                 logger.Debug($"simulator version: {FSUIPCConnection.FlightSimVersionConnected.ToString()}");
@@ -262,240 +230,9 @@ namespace tfm
             logger.Debug($"Setting {e.PropertyName} changed");
         }
 
-        protected void onScreenReaderOutput(object sender, ScreenReaderOutputEventArgs e)
-        {
-            // We can do anything we want since the gage/value are broken up into different variables now.
-            // The event should take care of anything the screen reader needs to output to the user.
-
-                        // when e.isGage is true, e.output is empty.
-            // Otherwise, e.output should contain a string to send to the screen reader.
-        // EX: the next waypoint feature is inappropriate for e.gageName and e.gageValue, so e.isGage will be false, and e.output will have the output for the next waypoint.
-            
-            if(e.isGauge)
-            {
-                switch(e.gaugeName)
-                {
-                    case "Vertical speed":
-                        // We can implement different settings here. One of them is braille support.
-                        // After including a braille only, speech only, or both setting,
-                        // All we need to do is check for the setting and respond to it.
-                        // Braile, speech, and output can have different output without toying with the backend code.
-                        // This also makes way for message type: short or long. A pilot might not want
-                        // to hear "feet per minute" every time he/she presses ]v, so, give them a choice.
-                        // That setting would be checked here because it influences screen reader/braille output.
-                        // The log may also contain different formatting options. For now, stick with
-                        // reasonable defaults.
-                        
-                        speak($"{e.gaugeValue} feet per minute.");
-                        braille($"VSPD {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        
-                        break;
-                    case "Outside temperature":
-                        speak($"{e.gaugeValue} degrees");
-                        braille($"temp {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                    case "ASL altitude":
-                        speak($"{e.gaugeValue} feet ASL.");
-                        braille($"ASL  {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                        
-                    case "AGL altitude":
-                        speak($"{e.gaugeValue} feet AGL.");
-                        braille($"AGL {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                        
-                    case "Airspeed true":
-                        speak($"{e.gaugeValue} knotts true");
-                        braille($"TAS {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                        
-                    case "Airspeed indicated":
-                        speak($"{e.gaugeValue} knotts indicated");
-                        braille($"IAS {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                    
-                    case "Ground speed":
-                        speak($"{e.gaugeValue} knotts ground speed");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"gnd: {e.gaugeValue}\n");
-                        break;
-                        
-                    case "Mach":
-                        speak($"Mach {e.gaugeValue}. ");
-                        braille($"mach{e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "Localiser":
-                        speak($"{e.gaugeValue}. ", useSAPI: true);
-                        braille($"loc {e.gaugeValue}\n");
-                        break;
-
-                    case "Glide slope":
-                        speak($"{e.gaugeValue}. ", useSAPI: true);
-                        braille($"gs {e.gaugeValue}\n");
-                        break;
-
-                    case "Altimeter":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                    
-                    case "Flaps":
-                        speak($"{e.gaugeName} {e.gaugeValue}. ");
-                        braille($"{e.gaugeName} {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-                    
-                    case "Gear":
-                        speak($"{e.gaugeName} {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "AP heading":
-                        speak($"heading {e.gaugeValue}. ");
-                        braille($"hdg: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "AP airspeed":
-                        speak($"{e.gaugeValue} knotts. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "AP mach":
-                        speak($"Mach {e.gaugeValue}");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "AP vertical speed":
-                        speak($"{e.gaugeValue} feet per minute. ");
-                        braille($"{e.gaugeValue} FPM\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "AP altitude":
-                        speak($"{e.gaugeName}: {e.gaugeValue} feet. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-
-                    case "Com1":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "Com2":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "Nav1":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "Nav2":
-                        speak($"{e.gaugeName}: {e.gaugeValue}. ");
-                        braille($"{e.gaugeName}: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-                    case "Transponder":
-                        speak($"squawk {e.gaugeValue}. ");
-                        braille($"Squawk: {e.gaugeValue}\n");
-                        history.AddItem ($"{e.gaugeName}: {e.gaugeValue}\n");
-                        break;
-
-
-
-
-
-                    default:
-                        Tolk.Output("Gage or instrument not supported.\n");
-                        break;
-                }
-            } // End gage output.
-            else
-            {
-                if (e.useSAPI == true)
-                {
-                    speak(useSAPI: true, interruptSpeech:  e.interruptSpeech, output: e.output);
-                }
-                else
-                {
-                    speak(e.output, interruptSpeech: e.interruptSpeech);
-                }
-                if (e.textOutput == true)
-                {
-                    history.AddItem ($"{e.output}\n");
-                }
-
-            } // end generic output
-        } // End screenreader output event.
-        private async void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
-        {
-            if (Properties.Settings.Default.SpeechSystem == "SAPI" || useSAPI == true)
-            {
-                if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
-                synth.Rate = Properties.Settings.Default.SAPISpeechRate;
-                synth.SpeakAsync(output);
-            }
-            if (Properties.Settings.Default.SpeechSystem == "ScreenReader")
-            {
-                Tolk.Speak(output, interruptSpeech);
-
-            }
-            if (Properties.Settings.Default.SpeechSystem == "Azure")
-            {
-                var voice = Properties.Settings.Default.AzureVoice;
-                var ssml = $"<speak version='1.0' xml:lang='en-US' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='{voice}'>{output}</voice></speak>";
-                using (var result = await azureSynth.SpeakSsmlAsync(ssml))
-                        {
-                            if (result.Reason == ResultReason.Canceled)
-                            {
-                        if (Properties.Settings.Default.FallbackSpeechSystem == "ScreenReader")
-                                {
-                                    Tolk.Speak(output, interruptSpeech);
-                                }
-                                else
-                                {
-                                    if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
-                                    synth.Rate = Properties.Settings.Default.SAPISpeechRate;
-                                    synth.SpeakAsync(output);
-
-                                }
-
-                            }
-                    }
-
-
-
-            }
-        }
         
-        private void braille(string output)
-        {
-            if (Properties.Settings.Default.OutputBraille)
-            {
-                Tolk.Braille(output);
-            }
-        }
-
+        
+        
             private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
