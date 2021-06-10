@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chkReadInstrumentation = new System.Windows.Forms.CheckBox();
             this.trkSpeechRate = new System.Windows.Forms.TrackBar();
             this.chkAltitude = new System.Windows.Forms.CheckBox();
@@ -54,15 +53,14 @@
             this.lblRegion = new System.Windows.Forms.Label();
             this.txtRegion = new System.Windows.Forms.TextBox();
             this.btnVoice = new System.Windows.Forms.Button();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.radScreenReader = new System.Windows.Forms.RadioButton();
-            this.radSAPI = new System.Windows.Forms.RadioButton();
-            this.radAzureSpeech = new System.Windows.Forms.RadioButton();
             this.grpFallback = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.radFBScreenReader = new System.Windows.Forms.RadioButton();
             this.radFBSAPI = new System.Windows.Forms.RadioButton();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radScreenReader = new System.Windows.Forms.RadioButton();
+            this.radSAPI = new System.Windows.Forms.RadioButton();
+            this.radAzureSpeech = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.trkSpeechRate)).BeginInit();
             this.grpAttitude.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -70,46 +68,10 @@
             this.grpSpeechSystem.SuspendLayout();
             this.grpAzure.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.grpFallback.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.chkReadInstrumentation, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.trkSpeechRate, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.chkAltitude, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.chkReadGroundSpeed, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.chkReadILS, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.chkReadGPWS, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.chkFlightFollowing, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.chkReadSimconnectMessages, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.chkAutopilot, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.chkBraille, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.grpAttitude, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.numericUpDown1, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.grpSpeechSystem, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 2);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 7;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1035, 591);
-            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // chkReadInstrumentation
             // 
@@ -117,7 +79,7 @@
             this.chkReadInstrumentation.Checked = global::tfm.Properties.Settings.Default.ReadInstrumentation;
             this.chkReadInstrumentation.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkReadInstrumentation.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "ReadInstrumentation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkReadInstrumentation.Location = new System.Drawing.Point(461, 5);
+            this.chkReadInstrumentation.Location = new System.Drawing.Point(0, 0);
             this.chkReadInstrumentation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkReadInstrumentation.Name = "chkReadInstrumentation";
             this.chkReadInstrumentation.Size = new System.Drawing.Size(188, 24);
@@ -128,7 +90,7 @@
             // trkSpeechRate
             // 
             this.trkSpeechRate.AccessibleName = "SAPI speech rate";
-            this.trkSpeechRate.Location = new System.Drawing.Point(4, 223);
+            this.trkSpeechRate.Location = new System.Drawing.Point(0, 0);
             this.trkSpeechRate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trkSpeechRate.Maximum = 20;
             this.trkSpeechRate.Name = "trkSpeechRate";
@@ -143,10 +105,10 @@
             this.chkAltitude.Checked = global::tfm.Properties.Settings.Default.AltitudeAnnouncements;
             this.chkAltitude.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAltitude.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "AltitudeAnnouncements", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkAltitude.Location = new System.Drawing.Point(461, 441);
+            this.chkAltitude.Location = new System.Drawing.Point(0, 0);
             this.chkAltitude.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAltitude.Name = "chkAltitude";
-            this.chkAltitude.Size = new System.Drawing.Size(243, 21);
+            this.chkAltitude.Size = new System.Drawing.Size(243, 24);
             this.chkAltitude.TabIndex = 9;
             this.chkAltitude.Text = "Read altitude every 1000 feet";
             this.chkAltitude.UseVisualStyleBackColor = true;
@@ -157,10 +119,10 @@
             this.chkReadGroundSpeed.Checked = global::tfm.Properties.Settings.Default.ReadGroundSpeed;
             this.chkReadGroundSpeed.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkReadGroundSpeed.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "ReadGroundSpeed", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkReadGroundSpeed.Location = new System.Drawing.Point(4, 503);
+            this.chkReadGroundSpeed.Location = new System.Drawing.Point(0, 0);
             this.chkReadGroundSpeed.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkReadGroundSpeed.Name = "chkReadGroundSpeed";
-            this.chkReadGroundSpeed.Size = new System.Drawing.Size(372, 21);
+            this.chkReadGroundSpeed.Size = new System.Drawing.Size(372, 24);
             this.chkReadGroundSpeed.TabIndex = 12;
             this.chkReadGroundSpeed.Text = "Read ground speed periodically while on ground";
             this.chkReadGroundSpeed.UseVisualStyleBackColor = true;
@@ -171,10 +133,10 @@
             this.chkReadILS.Checked = global::tfm.Properties.Settings.Default.ReadILS;
             this.chkReadILS.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkReadILS.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "ReadILS", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkReadILS.Location = new System.Drawing.Point(752, 441);
+            this.chkReadILS.Location = new System.Drawing.Point(0, 0);
             this.chkReadILS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkReadILS.Name = "chkReadILS";
-            this.chkReadILS.Size = new System.Drawing.Size(279, 21);
+            this.chkReadILS.Size = new System.Drawing.Size(279, 24);
             this.chkReadILS.TabIndex = 10;
             this.chkReadILS.Text = "Read ILS information on approach";
             this.chkReadILS.UseVisualStyleBackColor = true;
@@ -185,10 +147,10 @@
             this.chkReadGPWS.Checked = global::tfm.Properties.Settings.Default.ReadGPWS;
             this.chkReadGPWS.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkReadGPWS.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "ReadGPWS", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkReadGPWS.Location = new System.Drawing.Point(4, 441);
+            this.chkReadGPWS.Location = new System.Drawing.Point(0, 0);
             this.chkReadGPWS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkReadGPWS.Name = "chkReadGPWS";
-            this.chkReadGPWS.Size = new System.Drawing.Size(449, 21);
+            this.chkReadGPWS.Size = new System.Drawing.Size(449, 24);
             this.chkReadGPWS.TabIndex = 8;
             this.chkReadGPWS.Text = "Ground proximity warning system (GPWS) announcements";
             this.chkReadGPWS.UseVisualStyleBackColor = true;
@@ -198,7 +160,7 @@
             this.chkFlightFollowing.AutoSize = true;
             this.chkFlightFollowing.Checked = global::tfm.Properties.Settings.Default.FlightFollowing;
             this.chkFlightFollowing.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "FlightFollowing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkFlightFollowing.Location = new System.Drawing.Point(461, 223);
+            this.chkFlightFollowing.Location = new System.Drawing.Point(0, 0);
             this.chkFlightFollowing.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkFlightFollowing.Name = "chkFlightFollowing";
             this.chkFlightFollowing.Size = new System.Drawing.Size(260, 24);
@@ -212,7 +174,7 @@
             this.chkReadSimconnectMessages.Checked = global::tfm.Properties.Settings.Default.ReadSimconnectMessages;
             this.chkReadSimconnectMessages.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkReadSimconnectMessages.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "ReadSimconnectMessages", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkReadSimconnectMessages.Location = new System.Drawing.Point(752, 223);
+            this.chkReadSimconnectMessages.Location = new System.Drawing.Point(0, 0);
             this.chkReadSimconnectMessages.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkReadSimconnectMessages.Name = "chkReadSimconnectMessages";
             this.chkReadSimconnectMessages.Size = new System.Drawing.Size(242, 24);
@@ -225,10 +187,10 @@
             this.chkAutopilot.AutoSize = true;
             this.chkAutopilot.Checked = global::tfm.Properties.Settings.Default.ReadAutopilot;
             this.chkAutopilot.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "ReadAutopilot", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkAutopilot.Location = new System.Drawing.Point(461, 472);
+            this.chkAutopilot.Location = new System.Drawing.Point(0, 0);
             this.chkAutopilot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkAutopilot.Name = "chkAutopilot";
-            this.chkAutopilot.Size = new System.Drawing.Size(283, 21);
+            this.chkAutopilot.Size = new System.Drawing.Size(283, 24);
             this.chkAutopilot.TabIndex = 13;
             this.chkAutopilot.Text = "Read autopilot instrument changes";
             this.chkAutopilot.UseVisualStyleBackColor = true;
@@ -239,10 +201,10 @@
             this.chkBraille.Checked = global::tfm.Properties.Settings.Default.OutputBraille;
             this.chkBraille.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBraille.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::tfm.Properties.Settings.Default, "OutputBraille", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkBraille.Location = new System.Drawing.Point(4, 534);
+            this.chkBraille.Location = new System.Drawing.Point(0, 0);
             this.chkBraille.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.chkBraille.Name = "chkBraille";
-            this.chkBraille.Size = new System.Drawing.Size(302, 21);
+            this.chkBraille.Size = new System.Drawing.Size(302, 24);
             this.chkBraille.TabIndex = 14;
             this.chkBraille.Text = "Output tfm messages to Braile display";
             this.chkBraille.UseVisualStyleBackColor = true;
@@ -250,7 +212,7 @@
             // grpAttitude
             // 
             this.grpAttitude.Controls.Add(this.flowLayoutPanel1);
-            this.grpAttitude.Location = new System.Drawing.Point(461, 534);
+            this.grpAttitude.Location = new System.Drawing.Point(0, 0);
             this.grpAttitude.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpAttitude.Name = "grpAttitude";
             this.grpAttitude.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -312,7 +274,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 560);
+            this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(154, 20);
@@ -323,7 +285,7 @@
             // 
             this.numericUpDown1.AccessibleName = "output history size";
             this.numericUpDown1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::tfm.Properties.Settings.Default, "OutputHistoryLength", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.numericUpDown1.Location = new System.Drawing.Point(461, 565);
+            this.numericUpDown1.Location = new System.Drawing.Point(0, 0);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(141, 26);
@@ -337,7 +299,7 @@
             this.grpSpeechSystem.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grpSpeechSystem.Controls.Add(this.grpAzure);
             this.grpSpeechSystem.Controls.Add(this.flowLayoutPanel2);
-            this.grpSpeechSystem.Location = new System.Drawing.Point(3, 3);
+            this.grpSpeechSystem.Location = new System.Drawing.Point(5, 5);
             this.grpSpeechSystem.Name = "grpSpeechSystem";
             this.grpSpeechSystem.Size = new System.Drawing.Size(441, 212);
             this.grpSpeechSystem.TabIndex = 0;
@@ -418,6 +380,53 @@
             this.btnVoice.UseVisualStyleBackColor = true;
             this.btnVoice.Click += new System.EventHandler(this.btnVoice_Click);
             // 
+            // grpFallback
+            // 
+            this.grpFallback.AutoSize = true;
+            this.grpFallback.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grpFallback.Controls.Add(this.flowLayoutPanel3);
+            this.grpFallback.Location = new System.Drawing.Point(3, 103);
+            this.grpFallback.Name = "grpFallback";
+            this.grpFallback.Size = new System.Drawing.Size(234, 77);
+            this.grpFallback.TabIndex = 5;
+            this.grpFallback.TabStop = false;
+            this.grpFallback.Text = "Fallback";
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.AutoSize = true;
+            this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel3.Controls.Add(this.radFBScreenReader);
+            this.flowLayoutPanel3.Controls.Add(this.radFBSAPI);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 22);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(225, 30);
+            this.flowLayoutPanel3.TabIndex = 0;
+            // 
+            // radFBScreenReader
+            // 
+            this.radFBScreenReader.AutoSize = true;
+            this.radFBScreenReader.Location = new System.Drawing.Point(3, 3);
+            this.radFBScreenReader.Name = "radFBScreenReader";
+            this.radFBScreenReader.Size = new System.Drawing.Size(142, 24);
+            this.radFBScreenReader.TabIndex = 0;
+            this.radFBScreenReader.TabStop = true;
+            this.radFBScreenReader.Text = "Screen Reader";
+            this.radFBScreenReader.UseVisualStyleBackColor = true;
+            this.radFBScreenReader.CheckedChanged += new System.EventHandler(this.radFallbackSpeech_CheckedChanged);
+            // 
+            // radFBSAPI
+            // 
+            this.radFBSAPI.AutoSize = true;
+            this.radFBSAPI.Location = new System.Drawing.Point(151, 3);
+            this.radFBSAPI.Name = "radFBSAPI";
+            this.radFBSAPI.Size = new System.Drawing.Size(71, 24);
+            this.radFBSAPI.TabIndex = 1;
+            this.radFBSAPI.TabStop = true;
+            this.radFBSAPI.Text = "SAPI";
+            this.radFBSAPI.UseVisualStyleBackColor = true;
+            this.radFBSAPI.CheckedChanged += new System.EventHandler(this.radFallbackSpeech_CheckedChanged);
+            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.AutoSize = true;
@@ -466,64 +475,28 @@
             this.radAzureSpeech.UseVisualStyleBackColor = true;
             this.radAzureSpeech.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
             // 
-            // grpFallback
-            // 
-            this.grpFallback.AutoSize = true;
-            this.grpFallback.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grpFallback.Controls.Add(this.flowLayoutPanel3);
-            this.grpFallback.Location = new System.Drawing.Point(3, 103);
-            this.grpFallback.Name = "grpFallback";
-            this.grpFallback.Size = new System.Drawing.Size(234, 77);
-            this.grpFallback.TabIndex = 5;
-            this.grpFallback.TabStop = false;
-            this.grpFallback.Text = "Fallback";
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.AutoSize = true;
-            this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel3.Controls.Add(this.radFBScreenReader);
-            this.flowLayoutPanel3.Controls.Add(this.radFBSAPI);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 22);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(225, 30);
-            this.flowLayoutPanel3.TabIndex = 0;
-            // 
-            // radFBScreenReader
-            // 
-            this.radFBScreenReader.AutoSize = true;
-            this.radFBScreenReader.Location = new System.Drawing.Point(3, 3);
-            this.radFBScreenReader.Name = "radFBScreenReader";
-            this.radFBScreenReader.Size = new System.Drawing.Size(142, 24);
-            this.radFBScreenReader.TabIndex = 0;
-            this.radFBScreenReader.TabStop = true;
-            this.radFBScreenReader.Text = "Screen Reader";
-            this.radFBScreenReader.UseVisualStyleBackColor = true;
-            this.radFBScreenReader.CheckedChanged += new System.EventHandler(this.radFallbackSpeech_CheckedChanged);
-            // 
-            // radFBSAPI
-            // 
-            this.radFBSAPI.AutoSize = true;
-            this.radFBSAPI.Location = new System.Drawing.Point(151, 3);
-            this.radFBSAPI.Name = "radFBSAPI";
-            this.radFBSAPI.Size = new System.Drawing.Size(71, 24);
-            this.radFBSAPI.TabIndex = 1;
-            this.radFBSAPI.TabStop = true;
-            this.radFBSAPI.Text = "SAPI";
-            this.radFBSAPI.UseVisualStyleBackColor = true;
-            this.radFBSAPI.CheckedChanged += new System.EventHandler(this.radFallbackSpeech_CheckedChanged);
-            // 
             // ctlSpeechOutput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.grpSpeechSystem);
+            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.grpAttitude);
+            this.Controls.Add(this.chkBraille);
+            this.Controls.Add(this.chkAutopilot);
+            this.Controls.Add(this.chkReadSimconnectMessages);
+            this.Controls.Add(this.chkFlightFollowing);
+            this.Controls.Add(this.chkReadGPWS);
+            this.Controls.Add(this.chkReadILS);
+            this.Controls.Add(this.chkReadGroundSpeed);
+            this.Controls.Add(this.chkAltitude);
+            this.Controls.Add(this.trkSpeechRate);
+            this.Controls.Add(this.chkReadInstrumentation);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ctlSpeechOutput";
             this.Size = new System.Drawing.Size(225, 231);
             this.Load += new System.EventHandler(this.ctlSpeechOutput_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trkSpeechRate)).EndInit();
             this.grpAttitude.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -534,20 +507,18 @@
             this.grpAzure.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
             this.grpFallback.ResumeLayout(false);
             this.grpFallback.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox chkFlightFollowing;
         private System.Windows.Forms.CheckBox chkReadSimconnectMessages;
         private System.Windows.Forms.CheckBox chkReadInstrumentation;
