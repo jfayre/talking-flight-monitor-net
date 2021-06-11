@@ -3692,8 +3692,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
             } // end generic output
         } // end output method
 
-        publ
-            ic async void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
+        public async void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
         {
             if (Properties.Settings.Default.SpeechSystem == "SAPI" || useSAPI == true)
             {

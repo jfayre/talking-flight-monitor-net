@@ -68,7 +68,7 @@ namespace tfm
                         item.Text = $"{voice.LocalName} - {location}";
                     }
                     
-                    item.Tag = voice.Name;
+                    item.Tag = voice.ShortName;
                     lvVoices.Items.Add(item);
                 }
 

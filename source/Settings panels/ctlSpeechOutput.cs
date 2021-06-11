@@ -53,6 +53,10 @@ switch (Properties.Settings.Default.AttitudeAnnouncementMode)
                 case "Azure":
                     radAzureSpeech.Checked = true;
                     grpAzure.Enabled = true;
+                    if (Properties.Settings.Default.AzureVoice != "")
+                    {
+                        txtVoice.Text = Properties.Settings.Default.AzureVoice;
+                    }
                     break;
                         
             }
@@ -66,6 +70,7 @@ switch (Properties.Settings.Default.AttitudeAnnouncementMode)
                     break;
 
             }
+
         }
 
         private void trkSpeechRate_Scroll(object sender, EventArgs e)
@@ -112,7 +117,7 @@ switch (Properties.Settings.Default.AttitudeAnnouncementMode)
 
         private void radSpeechSystem_CheckedChanged(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
+                RadioButton rb = sender as RadioButton;
 switch (rb.Name)
             {
                 case "radScreenReader":
@@ -131,7 +136,7 @@ switch (rb.Name)
 
         private async void btnVoice_Click(object sender, EventArgs e)
         {
-            SpeechConfig config = null;
+                SpeechConfig config = null;
             Microsoft.CognitiveServices.Speech.SpeechSynthesizer synthesizer = null;
             if (txtKey.Text == "" || txtRegion.Text == "")
             {

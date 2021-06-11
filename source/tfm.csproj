@@ -452,7 +452,6 @@
     <Compile Include="Autopilot\InstrumentPanel.cs" />
     <Compile Include="sounds\CachedSound.cs" />
     <Compile Include="sounds\CachedSoundSampleProvider.cs" />
-    <Compile Include="Events\ScreenReaderOutputEventArgs.cs" />
     <Compile Include="Autopilot\frmAutopilot.cs">
       <SubType>Form</SubType>
     </Compile>
