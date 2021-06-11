@@ -3699,6 +3699,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 if (interruptSpeech == true) synth.SpeakAsyncCancelAll();
                 synth.Rate = Properties.Settings.Default.SAPISpeechRate;
                 synth.SpeakAsync(output);
+                return;
             }
             if (Properties.Settings.Default.SpeechSystem == "ScreenReader")
             {
@@ -3713,6 +3714,8 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                 {
                     if (result.Reason == ResultReason.Canceled)
                     {
+                        var cancellation = SpeechSynthesisCancellationDetails.FromResult(result);
+                        logger.Debug($"Error getting speech from Azure: {cancellation.Reason}");
                         if (Properties.Settings.Default.FallbackSpeechSystem == "ScreenReader")
                         {
                             Tolk.Speak(output, interruptSpeech);
