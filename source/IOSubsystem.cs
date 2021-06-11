@@ -1412,7 +1412,6 @@ if (name.Contains("PMDG"))
             frmAutopilot ap;
             frmComRadios com;
             frmNavRadios nav;
-            _737CDU cdu;
             frmAltimeter alt;
             string gaugeName;
             string gaugeValue;
