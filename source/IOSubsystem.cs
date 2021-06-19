@@ -1,5 +1,5 @@
 ﻿using DavyKager;
-    using BingMapsSDSToolkit.GeodataAPI;
+using BingMapsSDSToolkit.GeodataAPI;
 using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
 using NAudio.Wave;
@@ -46,7 +46,7 @@ namespace tfm
     {
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-            // get a speech synthesis object for SAPI output
+        // get a speech synthesis object for SAPI output
         public static System.Speech.Synthesis.SpeechSynthesizer synth = new System.Speech.Synthesis.SpeechSynthesizer();
 
         // objects for cognative speech services
@@ -69,7 +69,7 @@ namespace tfm
         private static System.Timers.Timer flightFollowingTimer;
         private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
         private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
-                private double HdgRight;
+        private double HdgRight;
         private double HdgLeft;
 
         // Audio objects
@@ -290,7 +290,7 @@ namespace tfm
             catch (Exception x)
             {
                 MessageBox.Show("error setting up Azure Speech. Either you did not enter an API key, or the settings file needs updating.\n If adding the Azure key doesn't work, try deleting your settings file and restarting TFM. ");
-logger.Debug($"Error setting up Azure speech: {x.Message}");
+                logger.Debug($"Error setting up Azure speech: {x.Message}");
 
             }
         }
@@ -298,7 +298,7 @@ logger.Debug($"Error setting up Azure speech: {x.Message}");
         private void SetupAudio()
         {
             driverOut = new WaveOutEvent() { DesiredLatency = 50 };
-            
+
             mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
             mixer.ReadFully = true;
             driverOut.Init(mixer);
@@ -361,7 +361,7 @@ logger.Debug($"Error setting up Azure speech: {x.Message}");
                 {
                     string name = Aircraft.AircraftName.Value;
                     Output(isGauge: false, output: "Current aircraft: " + Aircraft.AircraftName.Value);
-if (name.Contains("PMDG"))
+                    if (name.Contains("PMDG"))
                     {
                         if (name.Contains("737"))
                         {
@@ -396,7 +396,7 @@ if (name.Contains("PMDG"))
                 // if approach mode is on, read altitude and heading lock using SAPI
                 if (Aircraft.ApApproachHold.Value == 1)
                 {
-                        ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off", true);
+                    ReadToggle(Aircraft.ApAltitudeLock, Aircraft.ApAltitudeLock.Value > 0, "altitude lock", "active", "off", true);
                     ReadToggle(Aircraft.ApHeadingLock, Aircraft.ApHeadingLock.Value > 0, "Heading lock", "active", "off", true);
                 }
                 else
@@ -446,14 +446,14 @@ if (name.Contains("PMDG"))
                     ReadPMDG737Toggles();
                     ReadPmdgFMCMessage();
                 }
-                    
+
                 if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
                 {
-                    foreach(KeyValuePair<string, Dictionary<string, Dictionary<Offset<byte>, string>>> panel in PMDG747.Lights)
+                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<Offset<byte>, string>>> panel in PMDG747.Lights)
                     {
-                        foreach(KeyValuePair<string, Dictionary<Offset<byte>, string>> panelSection in panel.Value)
+                        foreach (KeyValuePair<string, Dictionary<Offset<byte>, string>> panelSection in panel.Value)
                         {
-                            foreach(KeyValuePair<Offset<byte>, string   > light in panelSection.Value)
+                            foreach (KeyValuePair<Offset<byte>, string> light in panelSection.Value)
                             {
                                 ReadToggle(light.Key, light.Key.Value > 0, $"{light.Value} light", "On", "Off");
                             }
@@ -486,7 +486,7 @@ if (name.Contains("PMDG"))
                     }
                 }
 
-                    DetectFuelTanks();
+                DetectFuelTanks();
                 FirstRun = false;
             }
         }
@@ -499,7 +499,7 @@ if (name.Contains("PMDG"))
                 if (Aircraft.StallWarning.Value == 1 || Aircraft.OverSpeedWarning.Value == 1)
                 {
                     WarningFlag = true;
-                    
+
                     WarningsTimer.AutoReset = true;
                     WarningsTimer.Enabled = true;
                 }
@@ -543,7 +543,7 @@ if (name.Contains("PMDG"))
             ReadToggle(Aircraft.Eng2FuelValve, Aircraft.Eng2FuelValve.Value > 0, "number 2 fuel valve", "open", "closed");
             ReadToggle(Aircraft.Eng3FuelValve, Aircraft.Eng3FuelValve.Value > 0, "number 3 fuel valve", "open", "closed");
             ReadToggle(Aircraft.Eng4FuelValve, Aircraft.Eng4FuelValve.Value > 0, "number 4 fuel valve", "open", "closed");
-            
+
 
         }
         private void readOnGround()
@@ -680,7 +680,7 @@ if (name.Contains("PMDG"))
             double elevator = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.ElevatorTrim.Value);
             double aileron = (double)Aircraft.ConvertRadiansToDegrees(Aircraft.AileronTrim.Value);
             if (Aircraft.ElevatorTrim.ValueChanged && Aircraft.ApMaster.Value != 1 && TrimEnabled)
-            
+
             {
                 if (elevator < 0)
                 {
@@ -1038,18 +1038,18 @@ if (name.Contains("PMDG"))
         private void onSpoilersKey()
         {
             uint currentSpoilers = Aircraft.Spoilers.Value;
-            if(currentSpoilers == 0)
+            if (currentSpoilers == 0)
             {
                 Output(isGauge: false, output: "Spoilers retracted.");
             }
-            else if(currentSpoilers == 4800)
+            else if (currentSpoilers == 4800)
             {
                 Output(isGauge: false, output: "Spoilers armed.");
             }
-            else if(currentSpoilers >= 5620)
+            else if (currentSpoilers >= 5620)
             {
                 Output(isGauge: false, output: $"Spoilers: {Autopilot.SpoilerPercent}");
-                            }
+            }
         }
 
 
@@ -1123,26 +1123,26 @@ if (name.Contains("PMDG"))
             }
             if (PMDG777Detected)
             {
-            if (Aircraft.pmdg777.MCP_Heading.ValueChanged)
-            {
-                gaugeName = "AP heading";
-                gaugeValue = Aircraft.pmdg777.MCP_Heading.Value.ToString();
-                Output(gaugeName, gaugeValue, isGauge);
-
-            }
-        }
-            // read non-pmdg heading    
-            if (Aircraft.ApHeading.ValueChanged)
+                if (Aircraft.pmdg777.MCP_Heading.ValueChanged)
                 {
                     gaugeName = "AP heading";
-                    gaugeValue = Autopilot.ApHeading.ToString();
+                    gaugeValue = Aircraft.pmdg777.MCP_Heading.Value.ToString();
                     Output(gaugeName, gaugeValue, isGauge);
+
                 }
+            }
+            // read non-pmdg heading    
+            if (Aircraft.ApHeading.ValueChanged)
+            {
+                gaugeName = "AP heading";
+                gaugeValue = Autopilot.ApHeading.ToString();
+                Output(gaugeName, gaugeValue, isGauge);
+            }
 
             // airspeed
             if (PMDG737Detected)
             {
-                            if (Aircraft.pmdg737.MCP_IASMach.ValueChanged)
+                if (Aircraft.pmdg737.MCP_IASMach.ValueChanged)
                 {
                     gaugeName = "AP airspeed";
                     gaugeValue = Aircraft.pmdg737.MCP_IASMach.Value.ToString();
@@ -1298,11 +1298,11 @@ if (name.Contains("PMDG"))
             {
                 if (toggleStateOn)
                 {
-                    Output(isGauge: false, useSAPI : SAPI, output: $"{name} {OnMsg}");
+                    Output(isGauge: false, useSAPI: SAPI, output: $"{name} {OnMsg}");
                 }
                 else
                 {
-                    Output(isGauge: false, useSAPI : SAPI, output: $"{name} {OffMsg}");
+                    Output(isGauge: false, useSAPI: SAPI, output: $"{name} {OffMsg}");
                 }
             }
         }
@@ -1321,7 +1321,7 @@ if (name.Contains("PMDG"))
                 }
             }
         }
-        
+
         public static double mapOneRangeToAnother(double sourceNumber, double fromA, double fromB, double toA, double toB, int decimalPrecision)
         {
             double deltaA = fromB - fromA;
@@ -1359,7 +1359,7 @@ if (name.Contains("PMDG"))
                         logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
                         Output(isGauge: false, output: $"hotkey error in {s.Name}");
                     }
-                    
+
                 }
 
 
@@ -1563,100 +1563,100 @@ if (name.Contains("PMDG"))
                 case "ap_PMDG_CDU":
                     if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                     {
-                                            var is737CDUOpen = false;
-                    foreach (Form form in Application.OpenForms)
-                    {
-                        if (form is _737CDU)
+                        var is737CDUOpen = false;
+                        foreach (Form form in Application.OpenForms)
                         {
-                            is737CDUOpen = true;
-                            break;
-                        } // End the form is valid.
-                    } // End foreach
+                            if (form is _737CDU)
+                            {
+                                is737CDUOpen = true;
+                                break;
+                            } // End the form is valid.
+                        } // End foreach
 
-                    if (is737CDUOpen)
-                    {
-                        Output(isGauge: false, output: "The FMC window is already open!");
-                        break;
-                    } // End what to do when CDU is already open.
-                    else
-                    {
+                        if (is737CDUOpen)
+                        {
+                            Output(isGauge: false, output: "The FMC window is already open!");
+                            break;
+                        } // End what to do when CDU is already open.
+                        else
+                        {
                             _737CDU _737 = new _737CDU();
                             _737.Show();
-                        is737CDUOpen = true;
+                            is737CDUOpen = true;
+                            break;
+                        } // End what to do if FMC isn't open.
+                        is737CDUOpen = false;
                         break;
-                    } // End what to do if FMC isn't open.
-                    is737CDUOpen = false;
-                    break;
-            } // End checking for PMDG 737
-else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
-            {
-                var is747CDUOpen = false;
-                foreach (Form form in Application.OpenForms)
-                {
-                    if (form is _747CDU)
+                    } // End checking for PMDG 737
+                    else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
                     {
-                        is747CDUOpen = true;
-                        break;
-                    } // End the form is valid.
-                } // End foreach
+                        var is747CDUOpen = false;
+                        foreach (Form form in Application.OpenForms)
+                        {
+                            if (form is _747CDU)
+                            {
+                                is747CDUOpen = true;
+                                break;
+                            } // End the form is valid.
+                        } // End foreach
 
-                if (is747CDUOpen)
-                {
-                    Output(isGauge: false, output: "The FMC window is already open!");
-                    break;
-                } // End what to do when CDU is already open.
-                else
-                {
-                    _747CDU _747CDU = new _747CDU();
-                    _747CDU.Show();
-                    is747CDUOpen = true;
-                    break;
-                } // End what to do if FMC isn't open.
-                is747CDUOpen = false;
-                break;
-            } // End PMDG 747.
-            else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
-            {
-                var is777CDUOpen = false;
-                foreach (Form form in Application.OpenForms)
-                {
-                    if (form is _777CDU)
+                        if (is747CDUOpen)
+                        {
+                            Output(isGauge: false, output: "The FMC window is already open!");
+                            break;
+                        } // End what to do when CDU is already open.
+                        else
+                        {
+                            _747CDU _747CDU = new _747CDU();
+                            _747CDU.Show();
+                            is747CDUOpen = true;
+                            break;
+                        } // End what to do if FMC isn't open.
+                        is747CDUOpen = false;
+                        break;
+                    } // End PMDG 747.
+                    else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
                     {
-                        is777CDUOpen = true;
-                        break;
-                    } // End the form is valid.
-                } // End foreach
+                        var is777CDUOpen = false;
+                        foreach (Form form in Application.OpenForms)
+                        {
+                            if (form is _777CDU)
+                            {
+                                is777CDUOpen = true;
+                                break;
+                            } // End the form is valid.
+                        } // End foreach
 
-                if (is777CDUOpen)
-                {
-                    Output(isGauge: false, output: "The FMC window is already open!");
+                        if (is777CDUOpen)
+                        {
+                            Output(isGauge: false, output: "The FMC window is already open!");
+                            break;
+                        } // End what to do when CDU is already open.
+                        else
+                        {
+                            _777CDU _777CDU = new _777CDU();
+                            _777CDU.Show();
+                            is777CDUOpen = true;
+                            break;
+                        } // End what to do if FMC isn't open.
+                        is777CDUOpen = false;
+                        break;
+                    } // End PMDG 777.
                     break;
-                } // End what to do when CDU is already open.
-                else
-                {
-                    _777CDU _777CDU = new _777CDU();
-                    _777CDU.Show();
-                    is777CDUOpen = true;
-                    break;
-                } // End what to do if FMC isn't open.
-                is777CDUOpen = false;
-                break;
-            } // End PMDG 777.
-            break;
-        
+
                 case "ap_PMDG_Panels":
-                    
-                    if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
+
+                    if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
                     {
                         frmCockpitPanels pnl = new frmCockpitPanels();
                         pnl.Show();
                     }
-                    else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+                    else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
                     {
                         CockPitPanels_747 cp = new CockPitPanels_747();
                         cp.Show();
                     }
-                                        break;
+                    break;
 
                 default:
                     Tolk.Output("key not defined");
@@ -1676,26 +1676,26 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
                     frmAutopilot frmAutopilot = new frmAutopilot("n1Monitor");
                     frmAutopilot.ShowDialog();
                     break;
-                                case "application_quit":
+                case "application_quit":
                     Tolk.Output("TFM is shutting down...");
                     Application.Exit();
                     break;
-                
-               case "get_spoilers":
+
+                case "get_spoilers":
                     onSpoilersKey();
                     break;
-                
+
                 case "flight_planner":
                     var isPlannerActive = false;
-                    foreach(Form form in Application.OpenForms)
+                    foreach (Form form in Application.OpenForms)
                     {
-                        if(form is FlightPlanForm)
+                        if (form is FlightPlanForm)
                         {
                             isPlannerActive = true;
-                                                        break;
+                            break;
                         }
                     }
-                    if(isPlannerActive)
+                    if (isPlannerActive)
                     {
                         Output(isGauge: false, output: "Flight planner is already open!");
                         break;
@@ -2512,9 +2512,9 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
 
         private void onWaypointKey()
         {
-            if(Aircraft.AircraftName.Value.Contains("PMDG"))
+            if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
-                                Output(isGauge: false, output: "Not supported in PMDG aircraft. Please see the legs page of your FMC for the next waypoint.");
+                Output(isGauge: false, output: "Not supported in PMDG aircraft. Please see the legs page of your FMC for the next waypoint.");
                 return;
             }
             ReadWayPoint();
@@ -2695,7 +2695,7 @@ else              if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.A
             ResetHotkeys();
 
         }
-private void onLandingRateKey()
+        private void onLandingRateKey()
         {
             // convert FSUIPC unit to expected FPM value
             double vspd = Math.Round(Aircraft.LandingRate.Value * 60 * 3.28084 / 256);
@@ -2993,7 +2993,7 @@ private void onLandingRateKey()
             }
             else
             {
-                if(string.IsNullOrEmpty(Properties.Settings.Default.bingMapsAPIKey))
+                if (string.IsNullOrEmpty(Properties.Settings.Default.bingMapsAPIKey))
                 {
                     Output(isGauge: false, output: "Please set the Bing Maps API key in settings before using the where am I feature.");
                     return;
@@ -3001,12 +3001,13 @@ private void onLandingRateKey()
                 var latitude = Aircraft.aircraftLat.Value.DecimalDegrees;
                 var longitude = Aircraft.aircraftLon.Value.DecimalDegrees;
                 // Retrieve the state/province/territory.
-                var cityRequest =new  GetBoundaryRequest() {
-                                        EntityType= BoundaryEntityType.AdminDivision2,
-                  LevelOfDetail = 3,
-                  GetAllPolygons = true,
-                  GetEntityMetadata = true,
-                  Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
+                var cityRequest = new GetBoundaryRequest()
+                {
+                    EntityType = BoundaryEntityType.AdminDivision2,
+                    LevelOfDetail = 3,
+                    GetAllPolygons = true,
+                    GetEntityMetadata = true,
+                    Coordinate = new BingMapsSDSToolkit.GeodataLocation(latitude, longitude)
                 };
 
                 var stateRequest = new GetBoundaryRequest()
@@ -3029,11 +3030,11 @@ private void onLandingRateKey()
                 var cityResponse = await GeodataManager.GetBoundary(cityRequest, Properties.Settings.Default.bingMapsAPIKey);
                 var stateResponse = await GeodataManager.GetBoundary(stateRequest, Properties.Settings.Default.bingMapsAPIKey);
                 var countryResponse = await GeodataManager.GetBoundary(countryRequest, Properties.Settings.Default.bingMapsAPIKey);
-                
+
                 // Check for existence of a country. If none present, most likely we are in a body of water.
-                if(countryResponse == null)
-                    {
-                    if(string.IsNullOrWhiteSpace(Properties.Settings.Default.GeonamesUsername))
+                if (countryResponse == null)
+                {
+                    if (string.IsNullOrWhiteSpace(Properties.Settings.Default.GeonamesUsername))
                     {
                         Output(isGauge: false, output: "You must have a Geonames username to use this feature.");
                         return;
@@ -3050,14 +3051,14 @@ private void onLandingRateKey()
                             var currentOcean = ocean.First();
                             Output(isGauge: false, output: $"{currentOcean.Name}. ");
                         }
-                                            }
+                    }
                     catch (Exception ex)
                     {
                         Logger.Debug($"error retrieving oceanic info: {ex.Message}");
 
                     }
                 }
-else
+                else
                 {
                     Output(isGauge: false, output: $"{cityResponse[0].Name.EntityName} {stateResponse[0].Name.EntityName}, {countryResponse[0].Name.EntityName}");
                 }
@@ -3082,9 +3083,9 @@ else
                             Logger.Debug($"cannot convert timezone: {currentTimezone.Name}");
                         }
                     }
-                        oldTimezone = currentTimezone.Name;
-                    }
+                    oldTimezone = currentTimezone.Name;
                 }
+            }
         }
 
         private void onTakeOffAssistant()
@@ -3107,39 +3108,39 @@ else
                 Aircraft.PitotHeat.Value = 1; // On.
                 Autopilot.ApMaster = true;
                 Autopilot.ApVerticalSpeed = 500; // Keeps most planes from bouncing.
-                                //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
+                                                 //Autopilot.ApAltitudeLock = true; // Lock altitude before setting it. Otherwise, altitude lock reverts to current altitude.
                 Autopilot.ApAltitude = 5000; // Reasonable request for a step climb until profiles are implemented.
                 Autopilot.ApAirspeed = 250; // Must be faster than takeoff speed to avoid crashing.
                 Aircraft.ParkingBrake.Value = 0; // Off.
-                                // Start the engines on the plane.
-                //switch (Aircraft.num_engines.Value)
-                //{
-                //    case 1:
-                //        Aircraft.Engine1ThrottleLever.Value = 16388;
-                //        break;
-                //    case 2:
-                //        Aircraft.Engine1ThrottleLever.Value = 16388;
-                //        Aircraft.Engine2ThrottleLever.Value = 16388;
-                //        break;
-                //    case 3:
-                //        Aircraft.Engine1ThrottleLever.Value = 16388;
-                //        Aircraft.Engine2ThrottleLever.Value = 16388;
-                //        Aircraft.Engine3ThrottleLever.Value = 16388;
-                //        break;
-                //    case 4:
-                //        Aircraft.Engine1ThrottleLever.Value = 16388;
-                //        Aircraft.Engine2ThrottleLever.Value = 16388;
-                //        Aircraft.Engine3ThrottleLever.Value = 16388;
-                //        Aircraft.Engine4ThrottleLever.Value = 16388;
-                //        break;
-                //    case 0:
-                //        Output(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
-                //        break;
-                //} // End throttle engines.
-                                isTakeoffComplete = false;
+                                                 // Start the engines on the plane.
+                                                 //switch (Aircraft.num_engines.Value)
+                                                 //{
+                                                 //    case 1:
+                                                 //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                                                 //        break;
+                                                 //    case 2:
+                                                 //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                                                 //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                                                 //        break;
+                                                 //    case 3:
+                                                 //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                                                 //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                                                 //        Aircraft.Engine3ThrottleLever.Value = 16388;
+                                                 //        break;
+                                                 //    case 4:
+                                                 //        Aircraft.Engine1ThrottleLever.Value = 16388;
+                                                 //        Aircraft.Engine2ThrottleLever.Value = 16388;
+                                                 //        Aircraft.Engine3ThrottleLever.Value = 16388;
+                                                 //        Aircraft.Engine4ThrottleLever.Value = 16388;
+                                                 //        break;
+                                                 //    case 0:
+                                                 //        Output(isGauge: false, textOutput: true, output: "The aircraft engines are off, or have problems. Try again later.");
+                                                 //        break;
+                                                 //} // End throttle engines.
+                isTakeoffComplete = false;
                 PostTakeOffChecklist();
             } // End takeoff mode is full.
-else if(Properties.Settings.Default.takeOffAssistMode == "partial")
+            else if (Properties.Settings.Default.takeOffAssistMode == "partial")
             {
                 takeOffAssistantActive = true;
                 Output(isGauge: false, textOutput: true, output: "Takeoff assist on.");
@@ -3149,124 +3150,125 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
         }
         public bool PostTakeOffChecklist()
         {
-          double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
+            double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Math.Round(Aircraft.Altitude.Value - groundAlt);
-                            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
+            if (takeOffAssistantActive && Aircraft.OnGround.Value == 0 && agl >= 100)
             {
-                    //var airSpeed = Autopilot.ApAirspeed;
-                    //Autopilot.ApAirspeed = airSpeed;
-                    Autopilot.ApAirspeedHold = true;
+                //var airSpeed = Autopilot.ApAirspeed;
+                //Autopilot.ApAirspeed = airSpeed;
+                Autopilot.ApAirspeedHold = true;
                 Autopilot.ApAltitude = 32000;
                 Autopilot.ApAltitudeLock = true;
-                    if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
-                    if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
-                    Aircraft.AutoBrake.Value = 1; // Off.    
-                    Aircraft.ApYawDamper.Value = 1; // On.
-                    Autopilot.ApVerticalSpeedHold = true;
-                    Autopilot.ApVerticalSpeed = 2500; // Slowly increase for smoother transition.
-                    Aircraft.LandingGearControl.Value = 0; // Gear up.
-                    takeOffAssistantActive = false;
-                    isTakeoffComplete = true;
-                    Output(isGauge: false, output: "Takeoff assist off.");
-                    return isTakeoffComplete;
-                                    } else
+                if (Aircraft.ApWingLeveler.Value == 1) Aircraft.ApWingLeveler.Value = 0; // Off.
+                if (!Autopilot.ApHeadingLock) Autopilot.ApHeadingLock = true;
+                Aircraft.AutoBrake.Value = 1; // Off.    
+                Aircraft.ApYawDamper.Value = 1; // On.
+                Autopilot.ApVerticalSpeedHold = true;
+                Autopilot.ApVerticalSpeed = 2500; // Slowly increase for smoother transition.
+                Aircraft.LandingGearControl.Value = 0; // Gear up.
+                takeOffAssistantActive = false;
+                isTakeoffComplete = true;
+                Output(isGauge: false, output: "Takeoff assist off.");
+                return isTakeoffComplete;
+            }
+            else
             {
                 return isTakeoffComplete;
             }
-                            
+
         } // End PostTakeoffChecklist.
 
         public void MonitorN1Limit()
         {
-                        double n1Monitor = Math.Round(Aircraft.n1MonitorValue); // The value to watch,.
-                        bool isAnnounced = false;
-            
+            double n1Monitor = Math.Round(Aircraft.n1MonitorValue); // The value to watch,.
+            bool isAnnounced = false;
+
             double en1n1 = (double)Math.Round(Aircraft.Eng1N1.Value);
             double en2n1 = (double)Math.Round(Aircraft.Eng2N1.Value);
             double en3n1 = (double)Math.Round(Aircraft.Eng3N1.Value);
             double en4n1 = (double)Math.Round(Aircraft.Eng4N1.Value);
             if (n1Monitor == 0 || isAnnounced) return;
-                                                        switch(Aircraft.num_engines.Value)
-                {
-                    case 1:
-                                                if(en1n1 == n1Monitor)
-                            {
+            switch (Aircraft.num_engines.Value)
+            {
+                case 1:
+                    if (en1n1 == n1Monitor)
+                    {
                         if (isAnnounced) return;
                         Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
                         isAnnounced = true;
                     }
-                                                else
+                    else
                     {
                         isAnnounced = false;
                     }
-                                               break;
+                    break;
 
-                    case 2:
-                        if((en1n1 == n1Monitor) && (en2n1 == n1Monitor))
-                        {
+                case 2:
+                    if ((en1n1 == n1Monitor) && (en2n1 == n1Monitor))
+                    {
                         if (isAnnounced) break;
                         isAnnounced = true;
                         Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
-                        
-                    }
-                        else
-                    {
-                        isAnnounced = false;
-                    }
-                                                break;
 
-                    case 3:
-                                                if(en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor)
-                        {
-                        if (isAnnounced) return;
-                                                    Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
-                        isAnnounced = true;
                     }
                     else
                     {
                         isAnnounced = false;
                     }
-                                               break;
+                    break;
 
-                    case 4:
-                        if(en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor && en4n1 == n1Monitor)
-                        {
-                        if (isAnnounced)
+                case 3:
+                    if (en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor)
+                    {
+                        if (isAnnounced) return;
                         Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
                         isAnnounced = true;
                     }
                     else
                     {
                         isAnnounced = false;
-                    }       
-                                               break;
-                } // End switch
-                                            } // End MonitorN1Limit.
+                    }
+                    break;
+
+                case 4:
+                    if (en1n1 == n1Monitor && en2n1 == n1Monitor && en3n1 == n1Monitor && en4n1 == n1Monitor)
+                    {
+                        if (isAnnounced)
+                            Output(useSAPI: true, isGauge: false, interruptSpeech: false, output: "N1 limits achieved.");
+                        isAnnounced = true;
+                    }
+                    else
+                    {
+                        isAnnounced = false;
+                    }
+                    break;
+            } // End switch
+        } // End MonitorN1Limit.
 
         public void ReadPmdgFMCMessage(string type = null)
         {
             PMDG_NGX_CDU_Screen cDU_Screen = new PMDG_NGX_CDU_Screen(0x5400);
             string message = string.Empty;
 
-            if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
+            if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
             {
-                if(Aircraft.pmdg737.CDU_annunMSG[0].Value == 1)
+                if (Aircraft.pmdg737.CDU_annunMSG[0].Value == 1)
                 {
                     cDU_Screen.RefreshData();
                     message = cDU_Screen.Rows[13].ToString();
                 }
             } // End 737 check.
-            else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
+            else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("747"))
             {
-                if(Aircraft.pmdg747.CDU_annunMSG[0].Value == 1)
+                if (Aircraft.pmdg747.CDU_annunMSG[0].Value == 1)
                 {
                     cDU_Screen.RefreshData();
                     message = cDU_Screen.Rows[13].ToString();
                 }
             } // End 747 check.
-            else if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
+            else if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
             {
-                if(Aircraft.pmdg777.CDU_annunMSG[0].Value == 1)
+                if (Aircraft.pmdg777.CDU_annunMSG[0].Value == 1)
                 {
                     cDU_Screen.RefreshData();
                     message = cDU_Screen.Rows[13].ToString();
@@ -3321,103 +3323,103 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
                     }
                 } // End 777 check.
             } // End else
-                    } // End ReadPmdgFmcMessage.
+        } // End ReadPmdgFmcMessage.
 
         private void ReadPMDG737Toggles()
         {
-                                        // electrical panel
-                ReadPMDGToggle(Aircraft.pmdg737.ELEC_BatSelector, Aircraft.pmdg737.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
-                ReadToggle(Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE, Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
-                ReadToggle(Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
-                ReadToggle(Aircraft.pmdg737.ELEC_CabUtilSw, Aircraft.pmdg737.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
-                ReadToggle(Aircraft.pmdg737.ELEC_IFEPassSeatSw, Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value > 0, "passenger seat power", "on", "off");
-                ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
-                ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "engine generator off bus light", "on", "off");
-                ReadToggle(Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE, Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
-                ReadToggle(Aircraft.pmdg737.ELEC_BusTransSw_AUTO, Aircraft.pmdg737.ELEC_BusTransSw_AUTO.Value > 0, "auto bus transfer", "on", "off");
-                // standby power switch
-                if (Aircraft.pmdg737.ELEC_StandbyPowerSelector.ValueChanged)
+            // electrical panel
+            ReadPMDGToggle(Aircraft.pmdg737.ELEC_BatSelector, Aircraft.pmdg737.ELEC_BatSelector.Value > 0, "Battery", "active", "off");
+            ReadToggle(Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE, Aircraft.pmdg737.ELEC_annunBAT_DISCHARGE.Value > 0, "bat discharge light", "on", "off");
+            ReadToggle(Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE, Aircraft.pmdg737.ELEC_annunGRD_POWER_AVAILABLE.Value > 0, "ground power", "available", "not available");
+            ReadToggle(Aircraft.pmdg737.ELEC_CabUtilSw, Aircraft.pmdg737.ELEC_CabUtilSw.Value > 0, "cabin utility switch", "on", "off");
+            ReadToggle(Aircraft.pmdg737.ELEC_IFEPassSeatSw, Aircraft.pmdg737.ELEC_IFEPassSeatSw.Value > 0, "passenger seat power", "on", "off");
+            ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "APU Gen 1 off bus light", "on", "off");
+            ReadToggle(Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS, Aircraft.pmdg737.ELEC_annunAPU_GEN_OFF_BUS.Value > 0, "engine generator off bus light", "on", "off");
+            ReadToggle(Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE, Aircraft.pmdg737.APU_annunLOW_OIL_PRESSURE.Value > 0, "APU low oil pressure light", "on", "off");
+            ReadToggle(Aircraft.pmdg737.ELEC_BusTransSw_AUTO, Aircraft.pmdg737.ELEC_BusTransSw_AUTO.Value > 0, "auto bus transfer", "on", "off");
+            // standby power switch
+            if (Aircraft.pmdg737.ELEC_StandbyPowerSelector.ValueChanged)
+            {
+                switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
                 {
-                    switch (Aircraft.pmdg737.ELEC_StandbyPowerSelector.Value)
-                    {
-                        case 0:
-                            Output(isGauge: false, output: "Standby power: Battery");
-                            break;
-                        case 1:
-                            Output(isGauge: false, output: "Standby power: Off");
-                            break;
-                        case 2:
-                            Output(isGauge: false, output: "Standby power: Auto");
-                            break;
-                    }
-
+                    case 0:
+                        Output(isGauge: false, output: "Standby power: Battery");
+                        break;
+                    case 1:
+                        Output(isGauge: false, output: "Standby power: Off");
+                        break;
+                    case 2:
+                        Output(isGauge: false, output: "Standby power: Auto");
+                        break;
                 }
-                // ADIRU
-                ReadToggle(Aircraft.pmdg737.IRS_aligned, Aircraft.pmdg737.IRS_aligned.Value > 0, "IRS", "aligned", "");
 
-                // MCP
+            }
+            // ADIRU
+            ReadToggle(Aircraft.pmdg737.IRS_aligned, Aircraft.pmdg737.IRS_aligned.Value > 0, "IRS", "aligned", "");
 
-                // flight director
-                ReadToggle(Aircraft.pmdg737.MCP_FDSw[0], Aircraft.pmdg737.MCP_FDSw[0].Value > 0, "left flight director", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_FDSw[1], Aircraft.pmdg737.MCP_FDSw[1].Value > 0, "right flight director", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_annunFD[0], Aircraft.pmdg737.MCP_annunFD[0].Value > 0, "left fd master", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_annunFD[1], Aircraft.pmdg737.MCP_annunFD[1].Value > 0, "right   fd master", "on", "off");
-                // auto throttle arm
-                ReadToggle(Aircraft.pmdg737.MCP_ATArmSw, Aircraft.pmdg737.MCP_ATArmSw.Value > 0, "autothrottle arm switch", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_annunATArm, Aircraft.pmdg737.MCP_annunATArm.Value > 0, "Auto throttle light", "on", "off");
-                // N1 button
-                ReadToggle(Aircraft.pmdg737.MCP_annunN1, Aircraft.pmdg737.MCP_annunN1.Value > 0, "N1 light", "on", "off");
-                // speed
-                ReadToggle(Aircraft.pmdg737.MCP_annunSPEED, Aircraft.pmdg737.MCP_annunSPEED.Value > 0, "speed light", "on", "off");
-                // LNAV
-                ReadToggle(Aircraft.pmdg737.MCP_annunLNAV, Aircraft.pmdg737.MCP_annunLNAV.Value > 0, "L Nav light", "on", "off");
-                // VNAV
-                ReadToggle(Aircraft.pmdg737.MCP_annunVNAV, Aircraft.pmdg737.MCP_annunVNAV.Value > 0, "V Nav light", "on", "off");
-                // Autopilot CMD buttons
-                ReadToggle(Aircraft.pmdg737.MCP_annunCMD_A, Aircraft.pmdg737.MCP_annunCMD_A.Value > 0, "CMD A", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_annunCMD_B, Aircraft.pmdg737.MCP_annunCMD_B.Value > 0, "CMD B", "on", "off");
-                // autopilot heading select
-                ReadToggle(Aircraft.pmdg737.MCP_annunHDG_SEL, Aircraft.pmdg737.MCP_annunHDG_SEL.Value > 0, "heading select", "on", "off");
-                // level change
-                ReadToggle(Aircraft.pmdg737.MCP_annunLVL_CHG, Aircraft.pmdg737.MCP_annunLVL_CHG.Value > 0, "level change", "on", "off");
-                // altitude hold
-                ReadToggle(Aircraft.pmdg737.MCP_annunALT_HOLD, Aircraft.pmdg737.MCP_annunALT_HOLD.Value > 0, "Altitude hold", "on", "off");
-                // approach mode
-                ReadToggle(Aircraft.pmdg737.MCP_annunAPP, Aircraft.pmdg737.MCP_annunAPP.Value > 0, "approach", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_annunVOR_LOC, Aircraft.pmdg737.MCP_annunVOR_LOC.Value > 0, "vor loc", "on", "off");
-                // CWS mode
-                ReadToggle(Aircraft.pmdg737.MCP_annunCWS_A, Aircraft.pmdg737.MCP_annunCWS_A.Value > 0, "CWS A", "on", "off");
-                ReadToggle(Aircraft.pmdg737.MCP_annunCWS_B, Aircraft.pmdg737.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
-                // CDU exec button light
-                ReadToggle(Aircraft.pmdg737.CDU_annunEXEC[0], Aircraft.pmdg737.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
-                // CDU message light
-                ReadToggle(Aircraft.pmdg737.CDU_annunMSG[0], Aircraft.pmdg737.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared", SAPI: true );
-                            // fuel panel
-                ReadToggle(Aircraft.pmdg737.FUEL_CrossFeedSw, Aircraft.pmdg737.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
-                ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[0], Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, "left forward fuel pump", "on", "off");
-                ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[1], Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value > 0, "right forward fuel pump", "on", "off");
-                ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[1], Aircraft.pmdg737.FUEL_PumpAftSw[1].Value > 0, "right aft fuel pump", "on", "off");
-                ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[0], Aircraft.pmdg737.FUEL_PumpAftSw[0].Value > 0, "left aft fuel pump", "on", "off");
-                ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[0], Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value > 0, "center left fuel pump");
-                ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[1], Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value > 0, "center right fuel pump");
+            // MCP
 
-                // fuel crossfeed valve
-                if (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
+            // flight director
+            ReadToggle(Aircraft.pmdg737.MCP_FDSw[0], Aircraft.pmdg737.MCP_FDSw[0].Value > 0, "left flight director", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_FDSw[1], Aircraft.pmdg737.MCP_FDSw[1].Value > 0, "right flight director", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_annunFD[0], Aircraft.pmdg737.MCP_annunFD[0].Value > 0, "left fd master", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_annunFD[1], Aircraft.pmdg737.MCP_annunFD[1].Value > 0, "right   fd master", "on", "off");
+            // auto throttle arm
+            ReadToggle(Aircraft.pmdg737.MCP_ATArmSw, Aircraft.pmdg737.MCP_ATArmSw.Value > 0, "autothrottle arm switch", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_annunATArm, Aircraft.pmdg737.MCP_annunATArm.Value > 0, "Auto throttle light", "on", "off");
+            // N1 button
+            ReadToggle(Aircraft.pmdg737.MCP_annunN1, Aircraft.pmdg737.MCP_annunN1.Value > 0, "N1 light", "on", "off");
+            // speed
+            ReadToggle(Aircraft.pmdg737.MCP_annunSPEED, Aircraft.pmdg737.MCP_annunSPEED.Value > 0, "speed light", "on", "off");
+            // LNAV
+            ReadToggle(Aircraft.pmdg737.MCP_annunLNAV, Aircraft.pmdg737.MCP_annunLNAV.Value > 0, "L Nav light", "on", "off");
+            // VNAV
+            ReadToggle(Aircraft.pmdg737.MCP_annunVNAV, Aircraft.pmdg737.MCP_annunVNAV.Value > 0, "V Nav light", "on", "off");
+            // Autopilot CMD buttons
+            ReadToggle(Aircraft.pmdg737.MCP_annunCMD_A, Aircraft.pmdg737.MCP_annunCMD_A.Value > 0, "CMD A", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_annunCMD_B, Aircraft.pmdg737.MCP_annunCMD_B.Value > 0, "CMD B", "on", "off");
+            // autopilot heading select
+            ReadToggle(Aircraft.pmdg737.MCP_annunHDG_SEL, Aircraft.pmdg737.MCP_annunHDG_SEL.Value > 0, "heading select", "on", "off");
+            // level change
+            ReadToggle(Aircraft.pmdg737.MCP_annunLVL_CHG, Aircraft.pmdg737.MCP_annunLVL_CHG.Value > 0, "level change", "on", "off");
+            // altitude hold
+            ReadToggle(Aircraft.pmdg737.MCP_annunALT_HOLD, Aircraft.pmdg737.MCP_annunALT_HOLD.Value > 0, "Altitude hold", "on", "off");
+            // approach mode
+            ReadToggle(Aircraft.pmdg737.MCP_annunAPP, Aircraft.pmdg737.MCP_annunAPP.Value > 0, "approach", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_annunVOR_LOC, Aircraft.pmdg737.MCP_annunVOR_LOC.Value > 0, "vor loc", "on", "off");
+            // CWS mode
+            ReadToggle(Aircraft.pmdg737.MCP_annunCWS_A, Aircraft.pmdg737.MCP_annunCWS_A.Value > 0, "CWS A", "on", "off");
+            ReadToggle(Aircraft.pmdg737.MCP_annunCWS_B, Aircraft.pmdg737.MCP_annunCWS_B.Value > 0, "CWS B", "on", "off");
+            // CDU exec button light
+            ReadToggle(Aircraft.pmdg737.CDU_annunEXEC[0], Aircraft.pmdg737.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
+            // CDU message light
+            ReadToggle(Aircraft.pmdg737.CDU_annunMSG[0], Aircraft.pmdg737.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared", SAPI: true);
+            // fuel panel
+            ReadToggle(Aircraft.pmdg737.FUEL_CrossFeedSw, Aircraft.pmdg737.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
+            ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[0], Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, "left forward fuel pump", "on", "off");
+            ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[1], Aircraft.pmdg737.FUEL_PumpFwdSw[1].Value > 0, "right forward fuel pump", "on", "off");
+            ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[1], Aircraft.pmdg737.FUEL_PumpAftSw[1].Value > 0, "right aft fuel pump", "on", "off");
+            ReadToggle(Aircraft.pmdg737.FUEL_PumpAftSw[0], Aircraft.pmdg737.FUEL_PumpAftSw[0].Value > 0, "left aft fuel pump", "on", "off");
+            ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[0], Aircraft.pmdg737.FUEL_PumpCtrSw[0].Value > 0, "center left fuel pump");
+            ReadToggle(Aircraft.pmdg737.FUEL_PumpCtrSw[1], Aircraft.pmdg737.FUEL_PumpCtrSw[1].Value > 0, "center right fuel pump");
 
+            // fuel crossfeed valve
+            if (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.ValueChanged)
+
+            {
+                switch (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.Value)
                 {
-                    switch (Aircraft.pmdg737.FUEL_annunXFEED_VALVE_OPEN.Value)
-                    {
-                        case 0:
-                            Output(isGauge: false, output: "fuel cross feed valve closed");
-                            break;
-                        case 1:
-                            Output(isGauge: false, output: "fuel cross feed valve open");
-                            break;
-                        case 2:
-                            Output(isGauge: false, output: "fuel cross feed valve in transit");
-                            break;
-                    }
-                
+                    case 0:
+                        Output(isGauge: false, output: "fuel cross feed valve closed");
+                        break;
+                    case 1:
+                        Output(isGauge: false, output: "fuel cross feed valve open");
+                        break;
+                    case 2:
+                        Output(isGauge: false, output: "fuel cross feed valve in transit");
+                        break;
+                }
+
             }
             // hydraulics
             ReadToggle(Aircraft.pmdg737.HYD_PumpSw_elec[1], Aircraft.pmdg737.HYD_PumpSw_elec[1].Value > 0, "electrical hydraulic pump 1", "on", "off");
@@ -3506,7 +3508,7 @@ else if(Properties.Settings.Default.takeOffAssistMode == "partial")
             // IRS.
 
 
-                    } // End ReadPMDG747Toggles
+        } // End ReadPMDG747Toggles
         /// <summary>
         ///  function for speech and braille output
         /// </summary>

@@ -34,9 +34,9 @@ namespace tfm
         // Create a counter for the connection timer.
         private int connectionCounter = 0;
 
-        
+
         private IOSubsystem inst = new IOSubsystem();
-        
+
         private bool AzureSpeaking = false;
 
         public TFMMainForm()
@@ -61,11 +61,11 @@ namespace tfm
 
             // Start the connection timer to look for a flight sim
             this.timerConnection.Start();
-            
+
         }
 
-        
-        
+
+
         // This method is called every 1 second by the connection timer.
         private void timerConnection_Tick(object sender, EventArgs e)
         {
@@ -95,18 +95,19 @@ namespace tfm
             }
             catch (Exception ex)
             {
-                if (connectionCounter <= 5) { 
-                logger.Debug($"Connection failed [attempt #{connectionCounter}]: {ex.Message}");
+                if (connectionCounter <= 5)
+                {
+                    logger.Debug($"Connection failed [attempt #{connectionCounter}]: {ex.Message}");
                     //logger.Debug($"Inner exception {ex.InnerException.Message}");
-            }
-            else if(connectionCounter == 35) 
-            {
-                Tolk.Output("Connection timed out. See the TFM log for more details. Please restart TFM or manually connect to continue.");
+                }
+                else if (connectionCounter == 35)
+                {
+                    Tolk.Output("Connection timed out. See the TFM log for more details. Please restart TFM or manually connect to continue.");
                     logger.Debug("Connection timeout: The simulator or fsuipc are not running. Make sure they are running before starting TFM.");
-                this.timerConnection.Stop();
+                    this.timerConnection.Stop();
+                }
             }
-            }
-                    }
+        }
 
         // This method runs 10 times per second (every 100ms). This is set on the timerMain properties.
         private void timerMain_Tick(object sender, EventArgs e)
@@ -121,15 +122,15 @@ namespace tfm
                 {
                     Aircraft.pmdg737.RefreshData();
                     Aircraft.pmdg747.RefreshData();
-                                                       }
+                }
                 inst.ReadAircraftState();
-                if(!inst.PostTakeOffChecklist())
+                if (!inst.PostTakeOffChecklist())
                 {
                     inst.PostTakeOffChecklist();
                 }
 
-                                
-                
+
+
             }
 
 
@@ -138,7 +139,7 @@ namespace tfm
                 // An error occured. Tell the user and stop this timer.
                 this.timerMain.Stop();
                 logger.Debug($"High priority instruments failed to read: {ex.Message}");
-                                                // Update the connection status
+                // Update the connection status
                 // start the connection timer
                 this.timerConnection.Start();
             }
@@ -150,7 +151,7 @@ namespace tfm
             {
                 FSUIPCConnection.Process("LowPriority");
                 inst.ReadLowPriorityInstruments();
-                            }
+            }
             catch (Exception ex)
             {
                 // Stop the timer.
@@ -171,21 +172,21 @@ namespace tfm
             FSUIPCConnection.Close();
         }
 
-        private void QuitMenuItem_Click     (object sender, EventArgs e)
+        private void QuitMenuItem_Click(object sender, EventArgs e)
         {
             this.Dispose();
         }
 
         private void TFMMainForm_KeyDown(object sender, KeyEventArgs e)
         {
-                    } //End KeyDown event.
+        } //End KeyDown event.
 
-        
+
         private void TFMMainForm_Load(object sender, EventArgs e)
         {
-                    }
+        }
 
-                        private void AboutMenuItem_Click(object sender, EventArgs e)
+        private void AboutMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox about = new AboutBox();
             about.ShowDialog();
@@ -193,7 +194,7 @@ namespace tfm
 
         private void WebsiteMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net");                       
+            System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net");
         }
 
         private void ReportIssueMenuItem_Click(object sender, EventArgs e)
@@ -201,7 +202,7 @@ namespace tfm
             System.Diagnostics.Process.Start("https://github.com/jfayre/talking-flight-monitor-net/issues");
         }
 
-         //End sending data to the simulator.
+        //End sending data to the simulator.
         private void SettingsMenuItem_Click(object sender, EventArgs e)
         {
             Settings.Default.PropertyChanged += onChange;
@@ -219,9 +220,9 @@ namespace tfm
             else
             {
                 Properties.Settings.Default.Reload();
-                
+
             }
-            
+
 
         }
 
@@ -230,10 +231,10 @@ namespace tfm
             logger.Debug($"Setting {e.PropertyName} changed");
         }
 
-        
-        
-        
-            private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+
+
+
+        private void dbLoadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -247,7 +248,7 @@ namespace tfm
             catch (Exception ex)
             {
                 Tolk.Output("could not load airport database.");
-                
+
             }
 
         }
@@ -327,11 +328,11 @@ namespace tfm
 
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-                        this.WindowState = FormWindowState.Normal;            
+            this.WindowState = FormWindowState.Normal;
             this.Show();
             this.Focus();
             trayIcon.Visible = false;
-                    }
+        }
 
         private void TFMMainForm_Resize(object sender, EventArgs e)
         {
@@ -340,7 +341,7 @@ namespace tfm
                 if (this.WindowState == FormWindowState.Minimized)
                 {
                     trayIcon.Visible = true;
-                                        trayIcon.ShowBalloonTip(500);
+                    trayIcon.ShowBalloonTip(500);
                     this.Hide();
                 }
             }
