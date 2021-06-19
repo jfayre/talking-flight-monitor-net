@@ -308,8 +308,15 @@ namespace tfm
         {
             if (FSUIPCConnection.IsOpen == true)
             {
-                frmFuelManager frm = new frmFuelManager();
-                frm.ShowDialog();
+                if (Aircraft.AircraftName.Value.Contains("PMDG"))
+                {
+                    MessageBox.Show("Fuel manager is not available on PMDG aircraft. Please use the FMC to load fuel.", "error");
+                }
+                else
+                {
+                    frmFuelManager frm = new frmFuelManager();
+                    frm.ShowDialog();
+                }
             }
             else
             {

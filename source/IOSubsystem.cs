@@ -281,9 +281,18 @@ namespace tfm
         }
         private void SetupAzureSpeech()
         {
-            azureConfig = SpeechConfig.FromSubscription(Properties.Settings.Default.AzureAPIKey, Properties.Settings.Default.AzureServiceRegion);
-            azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
+            try
+            {
+                azureConfig = SpeechConfig.FromSubscription(Properties.Settings.Default.AzureAPIKey, Properties.Settings.Default.AzureServiceRegion);
+                azureSynth = new Microsoft.CognitiveServices.Speech.SpeechSynthesizer(azureConfig);
 
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("error setting up Azure Speech. Either you did not enter an API key, or the settings file needs updating.\n If adding the Azure key doesn't work, try deleting your settings file and restarting TFM. ");
+logger.Debug($"Error setting up Azure speech: {x.Message}");
+
+            }
         }
 
         private void SetupAudio()
@@ -451,10 +460,10 @@ if (name.Contains("PMDG"))
                         }
                     }
 
-                                        //ReadPMDG747Toggles();
+                    //ReadPMDG747Toggles();
                     //ReadPmdgFMCMessage();
-                                                        } // End read 747 toggles.
-                               
+                } // End read 747 toggles.
+
             }
             else
             {
