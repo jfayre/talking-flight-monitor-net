@@ -1721,11 +1721,21 @@ namespace tfm
                         Output(isGauge: false, output: "fuel manager already open");
                         break;
                     }
-                    frmFuelManager frm = new frmFuelManager();
-                    fuelManagerActive = true;
-                    frm.ShowDialog();
-                    fuelManagerActive = false;
-                    break;
+                    if (Aircraft.AircraftName.Value.Contains("PMDG"))
+                    {
+                        MessageBox.Show("Fuel manager is not available on PMDG aircraft. Please use the FMC to load fuel.", "error");
+                        break;
+
+                    }
+                    else
+                    {
+                        frmFuelManager frm = new frmFuelManager();
+                        fuelManagerActive = true;
+                        frm.ShowDialog();
+                        fuelManagerActive = false;
+                        break;
+                    }
+
 
                 case "Current_Location":
                     onCurrentLocation();
