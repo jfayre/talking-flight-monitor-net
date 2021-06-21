@@ -464,8 +464,11 @@ if (name.Contains("PMDG"))
                 {
                     foreach(tfm.PMDG.PanelObjects.PanelObject control in PMDG777.PanelControls)
                     {
-                        fireOnScreenReaderOutputEvent(isGauge: false, output: control.ToString());
-                                                                    }
+                        if(control.Offset.ValueChanged)
+                        {
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: control.ToString());
+                        }
+                    }
                 } // End PMDG 777 toggles.
             }
             else

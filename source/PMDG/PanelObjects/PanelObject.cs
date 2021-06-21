@@ -16,12 +16,13 @@ abstract class PanelObject
         private string _panelSection = string.Empty;
         private AircraftVerbosity _verbosity = AircraftVerbosity.None;
         private PanelObjectType _type;
-        
-                                public string Name { get => _name; set => _name = value; }
+        private Offset _offset;
+
+                                        public string Name { get => _name; set => _name = value; }
         public string PanelName { get => _panelName; set => _panelName = value; }
         public string PanelSection { get => _panelSection; set => _panelSection = value; }
 public AircraftVerbosity Verbosity { get => _verbosity; set => _verbosity = value; }
-        public virtual  PanelObjectType Type { get => _type;}
-
+        public virtual  PanelObjectType Type { get => _type; set => this._type = value; }
+        public  virtual  Offset Offset { get => _offset; set => _offset = value; }
     } // End PanelObject.
 } // End namespace.

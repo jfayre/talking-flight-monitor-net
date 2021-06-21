@@ -10,5 +10,11 @@ namespace tfm.PMDG
     {
         SingleState = 1,
         NumericDisplay,
+        Annunciator,
+        Switch,
+        MomintaryPushButton,
+        PushButton,
+        Slider,
+        Dial,
     }
 }
