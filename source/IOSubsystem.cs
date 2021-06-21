@@ -37,6 +37,7 @@ using System.Speech.Synthesis;
 using System.ComponentModel.Design;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
+
 namespace tfm
 {
     /// <summary>
@@ -462,8 +463,17 @@ namespace tfm
 
                     //ReadPMDG747Toggles();
                     //ReadPmdgFMCMessage();
-                } // End read 747 toggles.
-
+                                                        } // End read 747 toggles.
+                    if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
+                {
+                    foreach(tfm.PMDG.PanelObjects.PanelObject control in PMDG777.PanelControls)
+                    {
+                        if(control.Offset.ValueChanged)
+                        {
+                            fireOnScreenReaderOutputEvent(isGauge: false, output: control.ToString());
+                        }
+                    }
+                } // End PMDG 777 toggles.
             }
             else
             {
