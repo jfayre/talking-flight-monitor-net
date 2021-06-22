@@ -470,7 +470,7 @@ namespace tfm
                     {
                         if(control.Offset.ValueChanged)
                         {
-                            fireOnScreenReaderOutputEvent(isGauge: false, output: control.ToString());
+                            Output(isGauge: false, output: control.ToString());
                         }
                     }
                 } // End PMDG 777 toggles.
@@ -3740,7 +3740,7 @@ namespace tfm
             {
                 var voice = Properties.Settings.Default.AzureVoice;
                 var ssml = $"<speak version='1.0' xml:lang='en-US' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='{voice}'>{output}</voice></speak>";
-                using (var result = await azureSynth.SpeakSsmlAsync(ssml))
+                using (SpeechSynthesisResult result = await azureSynth.SpeakSsmlAsync(ssml))
                 {
                     if (result.Reason == ResultReason.Canceled)
                     {

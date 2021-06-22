@@ -122,12 +122,15 @@ switch (rb.Name)
             {
                 case "radScreenReader":
                     Properties.Settings.Default.SpeechSystem = "ScreenReader";
+                    grpAzure.Enabled = false;
                     break;
                 case "radSAPI":
                     Properties.Settings.Default.SpeechSystem = "sAPI";
+                    grpAzure.Enabled = false;
                     break;
                 case "radAzureSpeech":
                     Properties.Settings.Default.SpeechSystem = "Azure";
+                    grpAzure.Enabled = true;
                     break;
 
 

@@ -231,7 +231,7 @@ namespace tfm
         {
             logger.Debug($"Setting {e.PropertyName} changed");
         }
-
+    
 
 
 
