@@ -35,8 +35,8 @@ using tfm.Properties;
 using System.CodeDom;
 using System.Speech.Synthesis;
 using System.ComponentModel.Design;
-using Microsoft.CognitiveServices.Speech;
-using Microsoft.CognitiveServices.Speech.Audio;
+// using Microsoft.CognitiveServices.Speech;
+// using Microsoft.CognitiveServices.Speech.Audio;
 
 namespace tfm
 {
@@ -51,8 +51,8 @@ namespace tfm
         public static System.Speech.Synthesis.SpeechSynthesizer synth = new System.Speech.Synthesis.SpeechSynthesizer();
 
         // objects for cognative speech services
-        private SpeechConfig azureConfig;
-        private Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth;
+        // private SpeechConfig azureConfig;
+        // private Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth;
         // speech history class
         private OutputHistory history = new OutputHistory();
         public PMDGPanelUpdateEvent pmdg;
@@ -252,8 +252,9 @@ namespace tfm
             Tolk.Load();
             if (Properties.Settings.Default.SpeechSystem == "Azure")
             {
-
-                SetupAzureSpeech();
+                // disabling Azure speech for now since we're trying to debug issues. If speech is set to azure, we force it to screen reader.
+                // SetupAzureSpeech();
+                Properties.Settings.Default.SpeechSystem = "ScreenReader";
             }
 
             // Initialize audio output
@@ -280,7 +281,7 @@ namespace tfm
             }
             pmdg = new PMDGPanelUpdateEvent();
         }
-        private void SetupAzureSpeech()
+        /*private void SetupAzureSpeech()
         {
             try
             {
@@ -295,7 +296,7 @@ namespace tfm
 
             }
         }
-
+*/
         private void SetupAudio()
         {
             driverOut = new WaveOutEvent() { DesiredLatency = 50 };
@@ -3736,7 +3737,7 @@ namespace tfm
                 Tolk.Speak(output, interruptSpeech);
 
             }
-            if (Properties.Settings.Default.SpeechSystem == "Azure")
+            /*if (Properties.Settings.Default.SpeechSystem == "Azure")
             {
                 var voice = Properties.Settings.Default.AzureVoice;
                 var ssml = $"<speak version='1.0' xml:lang='en-US' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='{voice}'>{output}</voice></speak>";
@@ -3763,7 +3764,7 @@ namespace tfm
 
 
 
-            }
+            }*/
         }
         private void braille(string output)
         {
