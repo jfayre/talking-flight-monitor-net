@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
-using Microsoft.CognitiveServices.Speech;
+// using Microsoft.CognitiveServices.Speech;
 using System.Collections.ObjectModel;
 
 namespace tfm
@@ -128,18 +128,19 @@ switch (rb.Name)
                     Properties.Settings.Default.SpeechSystem = "sAPI";
                     grpAzure.Enabled = false;
                     break;
-                case "radAzureSpeech":
+                /* Disabling azure for now while we debug.
+                 * case "radAzureSpeech":
                     Properties.Settings.Default.SpeechSystem = "Azure";
                     grpAzure.Enabled = true;
                     break;
-
+*/
 
             }
         }
 
         private async void btnVoice_Click(object sender, EventArgs e)
         {
-                SpeechConfig config = null;
+                /* SpeechConfig config = null;
             Microsoft.CognitiveServices.Speech.SpeechSynthesizer synthesizer = null;
             if (txtKey.Text == "" || txtRegion.Text == "")
             {
@@ -178,7 +179,7 @@ switch (rb.Name)
 
 
             }
-
+*/
         }
 
         private void radFallbackSpeech_CheckedChanged(object sender, EventArgs e)

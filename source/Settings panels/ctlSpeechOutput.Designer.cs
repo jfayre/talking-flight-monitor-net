@@ -46,6 +46,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.grpSpeechSystem = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radScreenReader = new System.Windows.Forms.RadioButton();
+            this.radSAPI = new System.Windows.Forms.RadioButton();
+            this.radAzureSpeech = new System.Windows.Forms.RadioButton();
             this.grpAzure = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.lblAzureKey = new System.Windows.Forms.Label();
@@ -56,26 +60,22 @@
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.radFBScreenReader = new System.Windows.Forms.RadioButton();
             this.radFBSAPI = new System.Windows.Forms.RadioButton();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.radScreenReader = new System.Windows.Forms.RadioButton();
-            this.radSAPI = new System.Windows.Forms.RadioButton();
-            this.radAzureSpeech = new System.Windows.Forms.RadioButton();
-            this.grpVerbosity = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.lblVoice = new System.Windows.Forms.Label();
             this.txtVoice = new System.Windows.Forms.TextBox();
             this.btnVoice = new System.Windows.Forms.Button();
+            this.grpVerbosity = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.trkSpeechRate)).BeginInit();
             this.grpAttitude.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.grpSpeechSystem.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.grpAzure.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.grpFallback.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.grpVerbosity.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
@@ -308,13 +308,67 @@
             this.grpSpeechSystem.Controls.Add(this.flowLayoutPanel2);
             this.grpSpeechSystem.Controls.Add(this.grpAzure);
             this.grpSpeechSystem.Location = new System.Drawing.Point(254, 5);
-            this.grpSpeechSystem.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpSpeechSystem.Margin = new System.Windows.Forms.Padding(5);
             this.grpSpeechSystem.Name = "grpSpeechSystem";
-            this.grpSpeechSystem.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpSpeechSystem.Padding = new System.Windows.Forms.Padding(5);
             this.grpSpeechSystem.Size = new System.Drawing.Size(639, 353);
             this.grpSpeechSystem.TabIndex = 0;
             this.grpSpeechSystem.TabStop = false;
             this.grpSpeechSystem.Text = "Speech System";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel2.Controls.Add(this.radScreenReader);
+            this.flowLayoutPanel2.Controls.Add(this.radSAPI);
+            this.flowLayoutPanel2.Controls.Add(this.radAzureSpeech);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(8, 148);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(5);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(621, 47);
+            this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // radScreenReader
+            // 
+            this.radScreenReader.AutoSize = true;
+            this.radScreenReader.Location = new System.Drawing.Point(5, 5);
+            this.radScreenReader.Margin = new System.Windows.Forms.Padding(5);
+            this.radScreenReader.Name = "radScreenReader";
+            this.radScreenReader.Size = new System.Drawing.Size(200, 37);
+            this.radScreenReader.TabIndex = 0;
+            this.radScreenReader.TabStop = true;
+            this.radScreenReader.Text = "Screen Reader";
+            this.radScreenReader.UseVisualStyleBackColor = true;
+            this.radScreenReader.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
+            // 
+            // radSAPI
+            // 
+            this.radSAPI.AutoSize = true;
+            this.radSAPI.Location = new System.Drawing.Point(215, 5);
+            this.radSAPI.Margin = new System.Windows.Forms.Padding(5);
+            this.radSAPI.Name = "radSAPI";
+            this.radSAPI.Size = new System.Drawing.Size(99, 37);
+            this.radSAPI.TabIndex = 1;
+            this.radSAPI.TabStop = true;
+            this.radSAPI.Text = "SAPI";
+            this.radSAPI.UseVisualStyleBackColor = true;
+            this.radSAPI.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
+            // 
+            // radAzureSpeech
+            // 
+            this.radAzureSpeech.AutoSize = true;
+            this.radAzureSpeech.Enabled = false;
+            this.radAzureSpeech.Location = new System.Drawing.Point(324, 5);
+            this.radAzureSpeech.Margin = new System.Windows.Forms.Padding(5);
+            this.radAzureSpeech.Name = "radAzureSpeech";
+            this.radAzureSpeech.Size = new System.Drawing.Size(292, 37);
+            this.radAzureSpeech.TabIndex = 2;
+            this.radAzureSpeech.TabStop = true;
+            this.radAzureSpeech.Text = "Azure Speech Services";
+            this.radAzureSpeech.UseVisualStyleBackColor = true;
+            this.radAzureSpeech.Visible = false;
+            this.radAzureSpeech.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
             // 
             // grpAzure
             // 
@@ -323,9 +377,9 @@
             this.grpAzure.Controls.Add(this.flowLayoutPanel4);
             this.grpAzure.Enabled = false;
             this.grpAzure.Location = new System.Drawing.Point(8, 66);
-            this.grpAzure.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpAzure.Margin = new System.Windows.Forms.Padding(5);
             this.grpAzure.Name = "grpAzure";
-            this.grpAzure.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpAzure.Padding = new System.Windows.Forms.Padding(5);
             this.grpAzure.Size = new System.Drawing.Size(348, 244);
             this.grpAzure.TabIndex = 1;
             this.grpAzure.TabStop = false;
@@ -342,7 +396,7 @@
             this.flowLayoutPanel4.Controls.Add(this.txtVoice);
             this.flowLayoutPanel4.Controls.Add(this.btnVoice);
             this.flowLayoutPanel4.Location = new System.Drawing.Point(5, 36);
-            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(333, 165);
             this.flowLayoutPanel4.TabIndex = 0;
@@ -361,7 +415,7 @@
             // 
             this.txtKey.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::tfm.Properties.Settings.Default, "AzureAPIKey", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtKey.Location = new System.Drawing.Point(157, 5);
-            this.txtKey.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.txtKey.Margin = new System.Windows.Forms.Padding(5);
             this.txtKey.Name = "txtKey";
             this.txtKey.Size = new System.Drawing.Size(164, 40);
             this.txtKey.TabIndex = 1;
@@ -381,7 +435,7 @@
             // 
             this.txtRegion.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::tfm.Properties.Settings.Default, "AzureServiceRegion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtRegion.Location = new System.Drawing.Point(115, 55);
-            this.txtRegion.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.txtRegion.Margin = new System.Windows.Forms.Padding(5);
             this.txtRegion.Name = "txtRegion";
             this.txtRegion.Size = new System.Drawing.Size(164, 40);
             this.txtRegion.TabIndex = 3;
@@ -393,9 +447,9 @@
             this.grpFallback.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grpFallback.Controls.Add(this.flowLayoutPanel3);
             this.grpFallback.Location = new System.Drawing.Point(5, 105);
-            this.grpFallback.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpFallback.Margin = new System.Windows.Forms.Padding(5);
             this.grpFallback.Name = "grpFallback";
-            this.grpFallback.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.grpFallback.Padding = new System.Windows.Forms.Padding(5);
             this.grpFallback.Size = new System.Drawing.Size(334, 126);
             this.grpFallback.TabIndex = 5;
             this.grpFallback.TabStop = false;
@@ -408,7 +462,7 @@
             this.flowLayoutPanel3.Controls.Add(this.radFBScreenReader);
             this.flowLayoutPanel3.Controls.Add(this.radFBSAPI);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(5, 36);
-            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(5);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(319, 47);
             this.flowLayoutPanel3.TabIndex = 0;
@@ -417,7 +471,7 @@
             // 
             this.radFBScreenReader.AutoSize = true;
             this.radFBScreenReader.Location = new System.Drawing.Point(5, 5);
-            this.radFBScreenReader.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radFBScreenReader.Margin = new System.Windows.Forms.Padding(5);
             this.radFBScreenReader.Name = "radFBScreenReader";
             this.radFBScreenReader.Size = new System.Drawing.Size(200, 37);
             this.radFBScreenReader.TabIndex = 0;
@@ -430,7 +484,7 @@
             // 
             this.radFBSAPI.AutoSize = true;
             this.radFBSAPI.Location = new System.Drawing.Point(215, 5);
-            this.radFBSAPI.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.radFBSAPI.Margin = new System.Windows.Forms.Padding(5);
             this.radFBSAPI.Name = "radFBSAPI";
             this.radFBSAPI.Size = new System.Drawing.Size(99, 37);
             this.radFBSAPI.TabIndex = 1;
@@ -438,100 +492,6 @@
             this.radFBSAPI.Text = "SAPI";
             this.radFBSAPI.UseVisualStyleBackColor = true;
             this.radFBSAPI.CheckedChanged += new System.EventHandler(this.radFallbackSpeech_CheckedChanged);
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.AutoSize = true;
-            this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel2.Controls.Add(this.radScreenReader);
-            this.flowLayoutPanel2.Controls.Add(this.radSAPI);
-            this.flowLayoutPanel2.Controls.Add(this.radAzureSpeech);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(8, 148);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(621, 47);
-            this.flowLayoutPanel2.TabIndex = 0;
-            // 
-            // radScreenReader
-            // 
-            this.radScreenReader.AutoSize = true;
-            this.radScreenReader.Location = new System.Drawing.Point(5, 5);
-            this.radScreenReader.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.radScreenReader.Name = "radScreenReader";
-            this.radScreenReader.Size = new System.Drawing.Size(200, 37);
-            this.radScreenReader.TabIndex = 0;
-            this.radScreenReader.TabStop = true;
-            this.radScreenReader.Text = "Screen Reader";
-            this.radScreenReader.UseVisualStyleBackColor = true;
-            this.radScreenReader.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
-            // 
-            // radSAPI
-            // 
-            this.radSAPI.AutoSize = true;
-            this.radSAPI.Location = new System.Drawing.Point(215, 5);
-            this.radSAPI.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.radSAPI.Name = "radSAPI";
-            this.radSAPI.Size = new System.Drawing.Size(99, 37);
-            this.radSAPI.TabIndex = 1;
-            this.radSAPI.TabStop = true;
-            this.radSAPI.Text = "SAPI";
-            this.radSAPI.UseVisualStyleBackColor = true;
-            this.radSAPI.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
-            // 
-            // radAzureSpeech
-            // 
-            this.radAzureSpeech.AutoSize = true;
-            this.radAzureSpeech.Location = new System.Drawing.Point(324, 5);
-            this.radAzureSpeech.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.radAzureSpeech.Name = "radAzureSpeech";
-            this.radAzureSpeech.Size = new System.Drawing.Size(292, 37);
-            this.radAzureSpeech.TabIndex = 2;
-            this.radAzureSpeech.TabStop = true;
-            this.radAzureSpeech.Text = "Azure Speech Services";
-            this.radAzureSpeech.UseVisualStyleBackColor = true;
-            this.radAzureSpeech.CheckedChanged += new System.EventHandler(this.radSpeechSystem_CheckedChanged);
-            // 
-            // grpVerbosity
-            // 
-            this.grpVerbosity.Controls.Add(this.flowLayoutPanel5);
-            this.grpVerbosity.Location = new System.Drawing.Point(20, 108);
-            this.grpVerbosity.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.grpVerbosity.Name = "grpVerbosity";
-            this.grpVerbosity.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.grpVerbosity.Size = new System.Drawing.Size(333, 165);
-            this.grpVerbosity.TabIndex = 19;
-            this.grpVerbosity.TabStop = false;
-            this.grpVerbosity.Text = "groupBox1";
-            // 
-            // flowLayoutPanel5
-            // 
-            this.flowLayoutPanel5.AutoSize = true;
-            this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel5.Controls.Add(this.chkReadInstrumentation);
-            this.flowLayoutPanel5.Controls.Add(this.chkAltitude);
-            this.flowLayoutPanel5.Controls.Add(this.chkReadGroundSpeed);
-            this.flowLayoutPanel5.Controls.Add(this.chkReadILS);
-            this.flowLayoutPanel5.Controls.Add(this.chkReadGPWS);
-            this.flowLayoutPanel5.Controls.Add(this.chkFlightFollowing);
-            this.flowLayoutPanel5.Controls.Add(this.chkBraille);
-            this.flowLayoutPanel5.Controls.Add(this.chkReadSimconnectMessages);
-            this.flowLayoutPanel5.Controls.Add(this.chkAutopilot);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(8, 9);
-            this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(4128, 55);
-            this.flowLayoutPanel5.TabIndex = 15;
-            // 
-            // flowLayoutPanel6
-            // 
-            this.flowLayoutPanel6.AutoSize = true;
-            this.flowLayoutPanel6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel6.Controls.Add(this.grpAttitude);
-            this.flowLayoutPanel6.Controls.Add(this.grpSpeechSystem);
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(5, 5);
-            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(898, 363);
-            this.flowLayoutPanel6.TabIndex = 0;
             // 
             // lblVoice
             // 
@@ -563,6 +523,48 @@
             this.btnVoice.UseVisualStyleBackColor = true;
             this.btnVoice.Click += new System.EventHandler(this.btnVoice_Click);
             // 
+            // grpVerbosity
+            // 
+            this.grpVerbosity.Controls.Add(this.flowLayoutPanel5);
+            this.grpVerbosity.Location = new System.Drawing.Point(20, 108);
+            this.grpVerbosity.Margin = new System.Windows.Forms.Padding(5);
+            this.grpVerbosity.Name = "grpVerbosity";
+            this.grpVerbosity.Padding = new System.Windows.Forms.Padding(5);
+            this.grpVerbosity.Size = new System.Drawing.Size(333, 165);
+            this.grpVerbosity.TabIndex = 19;
+            this.grpVerbosity.TabStop = false;
+            this.grpVerbosity.Text = "groupBox1";
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.AutoSize = true;
+            this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel5.Controls.Add(this.chkReadInstrumentation);
+            this.flowLayoutPanel5.Controls.Add(this.chkAltitude);
+            this.flowLayoutPanel5.Controls.Add(this.chkReadGroundSpeed);
+            this.flowLayoutPanel5.Controls.Add(this.chkReadILS);
+            this.flowLayoutPanel5.Controls.Add(this.chkReadGPWS);
+            this.flowLayoutPanel5.Controls.Add(this.chkFlightFollowing);
+            this.flowLayoutPanel5.Controls.Add(this.chkBraille);
+            this.flowLayoutPanel5.Controls.Add(this.chkReadSimconnectMessages);
+            this.flowLayoutPanel5.Controls.Add(this.chkAutopilot);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(8, 9);
+            this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(5);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(4128, 55);
+            this.flowLayoutPanel5.TabIndex = 15;
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.AutoSize = true;
+            this.flowLayoutPanel6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel6.Controls.Add(this.grpAttitude);
+            this.flowLayoutPanel6.Controls.Add(this.grpSpeechSystem);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(5, 5);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(898, 363);
+            this.flowLayoutPanel6.TabIndex = 0;
+            // 
             // ctlSpeechOutput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 33F);
@@ -586,6 +588,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.grpSpeechSystem.ResumeLayout(false);
             this.grpSpeechSystem.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.grpAzure.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
@@ -593,8 +597,6 @@
             this.grpFallback.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
             this.grpVerbosity.ResumeLayout(false);
             this.grpVerbosity.PerformLayout();
             this.flowLayoutPanel5.ResumeLayout(false);
