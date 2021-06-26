@@ -426,6 +426,30 @@
       <DependentUpon>777CDU.cs</DependentUpon>
     </Compile>
     <Compile Include="PMDG\PanelObjects\PanelObject.cs" />
+    <Compile Include="PMDG\PMDG777\McpComponents\AltitudeBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\AltitudeBox.Designer.cs">
+      <DependentUpon>AltitudeBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\HeadingBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\HeadingBox.Designer.cs">
+      <DependentUpon>HeadingBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\SpeedBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\SpeedBox.Designer.cs">
+      <DependentUpon>SpeedBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\VerticalSpeedBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PMDG\PMDG777\McpComponents\VerticalSpeedBox.Designer.cs">
+      <DependentUpon>VerticalSpeedBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="PMDG\PMDG777\PMDG777.cs" />
     <Compile Include="PMDG\PmDGIndicator.cs" />
     <Compile Include="PMDG\PMDGLight.cs" />
@@ -664,6 +688,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PMDG\PMDG777\777CDU.resx">
       <DependentUpon>777CDU.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PMDG\PMDG777\McpComponents\SpeedBox.resx">
+      <DependentUpon>SpeedBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings panels\ctlAircraft.resx">
       <DependentUpon>ctlAircraft.cs</DependentUpon>

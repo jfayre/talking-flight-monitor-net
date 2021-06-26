@@ -158,7 +158,16 @@ static class PMDG777
             {2, "increase" },
         };
 
-
+        public static Dictionary<string, System.Windows.Forms.Form> McpComponents
+        {
+            get => new Dictionary<string, System.Windows.Forms.Form>
+            {
+                {"altitude", new tfm.PMDG.PMDG777.McpComponents.AltitudeBox() },
+                {"speed", new tfm.PMDG.PMDG777.McpComponents.SpeedBox() },
+                {"heading", new tfm.PMDG.PMDG777.McpComponents.HeadingBox()     },
+                {"vertical", new tfm.PMDG.PMDG777.McpComponents.VerticalSpeedBox() },
+            };
+        } // End McpComponents.
 public static  PanelObject[] PanelControls
         {
             get => new PanelObject[]
