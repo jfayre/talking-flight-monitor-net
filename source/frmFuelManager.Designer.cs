@@ -161,7 +161,7 @@
             this.lvFuel.TabIndex = 3;
             this.lvFuel.UseCompatibleStateImageBehavior = false;
             this.lvFuel.View = System.Windows.Forms.View.Details;
-            this.lvFuel.SelectedIndexChanged += new System.EventHandler(this.lvFuel_SelectedIndexChanged);
+            this.lvFuel.SelectedIndexChanged += new System.EventHandler(this.LvFuel_SelectedIndexChanged);
             // 
             // colTank
             // 
@@ -213,7 +213,7 @@
             this.btnSetFuelTank.TabIndex = 2;
             this.btnSetFuelTank.Text = "Set Fuel Tank";
             this.btnSetFuelTank.UseVisualStyleBackColor = true;
-            this.btnSetFuelTank.Click += new System.EventHandler(this.btnSetFuelTank_Click);
+            this.btnSetFuelTank.Click += new System.EventHandler(this.BtnSetFuelTank_Click);
             // 
             // tabPayload
             // 

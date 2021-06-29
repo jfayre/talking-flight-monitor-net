@@ -17,7 +17,6 @@ namespace tfm
         FsFuelTanksCollection FuelTanks = null;
         // list to store fuel tanks present on the aircraft
         List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
-        ListView.SelectedListViewItemCollection selectedKey;
         PayloadServices ps = FSUIPCConnection.PayloadServices;
         // Create a variable to hold the payload station data
         List<FsPayloadStation> payloadStations = null;
@@ -155,7 +154,7 @@ private void refreshTankList()
             }
         }
 
-        private void lvFuel_SelectedIndexChanged(object sender, EventArgs e)
+        private void LvFuel_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.lvFuel.SelectedIndices.Count > 0)
             {
@@ -177,7 +176,7 @@ private void refreshTankList()
 
         }
 
-        private void btnSetFuelTank_Click(object sender, EventArgs e)
+        private void BtnSetFuelTank_Click(object sender, EventArgs e)
         {
             int index = this.lvFuel.SelectedIndices[0];
             FsFuelTank tank = ActiveTanks[index];

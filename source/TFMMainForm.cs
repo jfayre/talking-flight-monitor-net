@@ -29,15 +29,14 @@ namespace tfm
     {
         // get a logger object for this class
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        int FallbackCounter;
 
         // Create a counter for the connection timer.
         private int connectionCounter = 0;
 
 
-        private IOSubsystem inst = new IOSubsystem();
+        private readonly IOSubsystem inst = new IOSubsystem();
 
-        private bool AzureSpeaking = false;
+        private readonly bool AzureSpeaking = false;
 
         public TFMMainForm()
         {
@@ -67,7 +66,7 @@ namespace tfm
 
 
         // This method is called every 1 second by the connection timer.
-        private void timerConnection_Tick(object sender, EventArgs e)
+        private void TimerConnection_Tick(object sender, EventArgs e)
         {
 
             // The connection counter prevents excessive instances of an error
@@ -84,12 +83,12 @@ namespace tfm
                 this.timerMain.Start();
                 this.timerLowPriority.Start();
                 // load airport database
-                inst.speak("loading airport database");
+                inst.Speak("loading airport database");
                 dbLoadWorker.RunWorkerAsync();
                 // write version info to the debug log
-                logger.Debug($"simulator version: {FSUIPCConnection.FlightSimVersionConnected.ToString()}");
-                logger.Debug($"FSUIPC version: {FSUIPCConnection.FSUIPCVersion.ToString()}");
-                logger.Debug($"FSUIPC .net DLL version: {FSUIPCConnection.DLLVersion.ToString()}");
+                logger.Debug($"simulator version: {FSUIPCConnection.FlightSimVersionConnected}");
+                logger.Debug($"FSUIPC version: {FSUIPCConnection.FSUIPCVersion}");
+                logger.Debug($"FSUIPC .net DLL version: {FSUIPCConnection.DLLVersion}");
 
 
             }
@@ -159,7 +158,7 @@ namespace tfm
                 this.timerLowPriority.Stop();
 
                 // Make a log entry since notifying the user is pointless.
-                logger.Debug("Low priority instruments failed to read. Probable causes include simulator shutdown, loss of network access, or a fsuipc problem.");
+                logger.Debug($"Low priority instruments failed to read. Probable causes include simulator shutdown, loss of network access, or a fsuipc problem. {ex.Message}");
                 this.timerConnection.Start();
             }
         }

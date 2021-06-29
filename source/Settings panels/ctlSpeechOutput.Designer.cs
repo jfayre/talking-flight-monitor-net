@@ -105,7 +105,7 @@
             this.trkSpeechRate.Size = new System.Drawing.Size(235, 69);
             this.trkSpeechRate.TabIndex = 1;
             this.trkSpeechRate.Value = 10;
-            this.trkSpeechRate.Scroll += new System.EventHandler(this.trkSpeechRate_Scroll);
+            this.trkSpeechRate.Scroll += new System.EventHandler(this.TrkSpeechRate_Scroll);
             // 
             // chkAltitude
             // 
@@ -580,7 +580,7 @@
             this.Margin = new System.Windows.Forms.Padding(7, 9, 7, 9);
             this.Name = "ctlSpeechOutput";
             this.Size = new System.Drawing.Size(906, 371);
-            this.Load += new System.EventHandler(this.ctlSpeechOutput_Load);
+            this.Load += new System.EventHandler(this.CtlSpeechOutput_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trkSpeechRate)).EndInit();
             this.grpAttitude.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
