@@ -1,4 +1,5 @@
-﻿using DavyKager;
+﻿using tfm.PMDG.PanelObjects;
+using DavyKager;
 using BingMapsSDSToolkit.GeodataAPI;
 using BingMapsRESTToolkit.Extensions;
 using FSUIPC;
@@ -467,11 +468,12 @@ namespace tfm
                                                         } // End read 747 toggles.
                     if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
                 {
-                    foreach(tfm.PMDG.PanelObjects.PanelObject control in PMDG777.PanelControls)
+                    foreach(tfm.PMDG.PanelObjects.PanelObject control in PMDG777Aircraft.PanelControls)
                     {
                         if(control.Offset.ValueChanged)
                         {
-                            Output(isGauge: false, output: control.ToString());
+                            SingleStateToggle toggle = (SingleStateToggle)control;
+                                                        Output(isGauge: false, output: control.ToString());
                         }
                     }
                 } // End PMDG 777 toggles.
@@ -1178,7 +1180,12 @@ namespace tfm
                     gaugeName = "AP airspeed";
                     gaugeValue = Aircraft.pmdg777.MCP_IASMach.Value.ToString();
                     Output(gaugeName, gaugeValue, isGauge);
-
+                                    }
+                if (Aircraft.pmdg777.MCP_FPA.ValueChanged)
+                {
+                    gaugeName = "AP Flight path angle";
+                    gaugeValue = Aircraft.pmdg777.MCP_FPA.Value.ToString();
+                    Output(gaugeName, gaugeValue, isGauge);
                 }
             }
             // handle speed for standard aircraft
@@ -1219,6 +1226,14 @@ namespace tfm
                         var gaugeValue = Aircraft.pmdg747.MCP_Altitude.Value.ToString();
                         Output(gaugeName, gaugeValue, isGauge);
 
+                    }
+                }
+                if (PMDG777Detected)
+                {
+                    if (Aircraft.pmdg777.MCP_Altitude.ValueChanged)
+                    {
+                        var gaugeValue = Aircraft.pmdg777.MCP_Altitude.Value.ToString();
+                        Output(gaugeName, gaugeValue, isGauge);
                     }
                 }
             }
@@ -1456,10 +1471,26 @@ namespace tfm
                     Output(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Altitude":
-                    ap = new frmAutopilot("Altitude");
-                    ap.ShowDialog();
+
+                    if (PMDG777Detected)
+                    {
+                        if (PMDG777Aircraft.McpComponents["altitude"].Visible)
+                        {
+                            Output(isGauge: false, output: "The altitude box is already open!");
+                        }
+                        else
+                        {
+                            PMDG777Aircraft.ShowAltitudeBox();
+                        }
+                                            } // End PMDG777.
+                    else
+                    {
+                        ap = new frmAutopilot("Altitude");
+                        ap.ShowDialog();
+                        break;
+                    }
                     break;
-                case "ap_Get_Altimeter":
+                                    case "ap_Get_Altimeter":
                     ReadAltimeter(true);
                     break;
                 case "ap_Set_Altimeter":
@@ -1474,8 +1505,23 @@ namespace tfm
                     Output(gaugeName, gaugeValue, isGauge);
                     break;
                 case "ap_Set_Heading":
-                    ap = new frmAutopilot("Heading");
-                    ap.ShowDialog();
+
+                    if (PMDG777Detected)
+                    {
+                        if (PMDG777Aircraft.McpComponents["heading"].Visible)
+                        {
+                            Output(isGauge: false, output: "The heading box is already open!");
+                        }
+                        else
+                        {
+                            PMDG777Aircraft.McpComponents["heading"].Show();
+                        }
+                    } // End PMDG777 check.
+                    else
+                    {
+                        ap = new frmAutopilot("Heading");
+                        ap.ShowDialog();
+                    } // End freeware.
                     break;
 
                 case "ap_Get_Airspeed":
@@ -1486,9 +1532,25 @@ namespace tfm
                     break;
 
                 case "ap_Set_Airspeed":
-                    ap = new frmAutopilot("Airspeed");
-                    ap.ShowDialog();
-                    break;
+                    if(PMDG777Detected)
+                    {
+
+                        if(PMDG777Aircraft.McpComponents["speed"].Visible)
+                        {
+                            Output(isGauge: false, output: "Speed box already open!");
+                            history.AddItem("Speed box already open!");
+                        }
+                        else
+                        {
+                            PMDG777Aircraft.ShowSpeedBox();
+                        }
+                                            } // End PMDG 777.
+                    else
+                    {
+                        ap = new frmAutopilot("Airspeed");
+                        ap.ShowDialog();
+                    } // End freeware planes.
+                                        break;
 
                 case "ap_Get_Mach_Speed":
                     gaugeName = "AP mach";
@@ -1510,10 +1572,25 @@ namespace tfm
                     break;
 
                 case "ap_Set_Vertical_Speed":
-                    ap = new frmAutopilot("Vertical speed");
-                    ap.ShowDialog();
-                    break;
 
+                    if (PMDG777Detected)
+                    {
+                        if (PMDG777Aircraft.McpComponents["vertical"].Visible)
+                        {
+                            Output(isGauge: false, output: "The vertical speed box is already open!");
+                        }
+                        else
+                        {
+                            PMDG777Aircraft.McpComponents["vertical"].Show();
+                        }
+                    } // End PMDG777 check.
+                    else
+                    {
+                        ap = new frmAutopilot("Vertical speed");
+                        ap.ShowDialog();
+                    } // End freeware check.
+
+                    break;
                 case "ap_Get_Com_Radios":
                     Output(isGauge: false, output: $"com 1: {Autopilot.Com1Freq.ToString()}. ");
                     Output(isGauge: false, output: $"com 2: {Autopilot.Com2Freq.ToString()}. ");

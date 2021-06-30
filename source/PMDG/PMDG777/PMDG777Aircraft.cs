@@ -1,5 +1,6 @@
 ﻿using tfm.PMDG;
 using tfm.PMDG.PanelObjects;
+using FSUIPC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,16 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace tfm
 {
-static class PMDG777
+static class PMDG777Aircraft
     {
+
+        // The MCP dialogs.
+        private static System.Windows.Forms.Form speedBox = new tfm.PMDG.PMDG777.McpComponents.SpeedBox();
+        private static System.Windows.Forms.Form altitudeBox = new tfm.PMDG.PMDG777.McpComponents.AltitudeBox();
+        private static System.Windows.Forms.Form headingBox = new tfm.PMDG.PMDG777.McpComponents.HeadingBox();
+        private static System.Windows.Forms.Form verticalSpeedBox = new tfm.PMDG.PMDG777.McpComponents.VerticalSpeedBox();
+
+
 /* State dictionaries -
  * The state dictionaries are designed
  * to make creating panel objects eaiser. Each dictionary
@@ -22,7 +31,7 @@ static class PMDG777
  *values are present for a panel object state, it is named after the panel control. EX:
  *_backupPowerStates is used with the backup power switch. */
 
-        private static  Dictionary<byte, string> _onOrOffStates = new Dictionary<byte, string>
+        private static  Dictionary<byte, string> _onOrOffStates = new Dictionary<byte, string>()
         {
             {0, "off" },
             {1, "on" },
@@ -73,7 +82,7 @@ static class PMDG777
 
         private static Dictionary<byte, string> _momentaryControlState = new Dictionary<byte, string>
         {
-            {1, "activated" },
+            {1, "pressed" },
         };
 
         private static Dictionary<byte, string> _connectOrDisconnectStates = new Dictionary<byte, string>
@@ -162,10 +171,10 @@ static class PMDG777
         {
             get => new Dictionary<string, System.Windows.Forms.Form>
             {
-                {"altitude", new tfm.PMDG.PMDG777.McpComponents.AltitudeBox() },
-                {"speed", new tfm.PMDG.PMDG777.McpComponents.SpeedBox() },
-                {"heading", new tfm.PMDG.PMDG777.McpComponents.HeadingBox()     },
-                {"vertical", new tfm.PMDG.PMDG777.McpComponents.VerticalSpeedBox() },
+                {"altitude", altitudeBox },
+                {"speed", speedBox },
+                {"heading", headingBox },
+                {"vertical", verticalSpeedBox },
             };
         } // End McpComponents.
 public static  PanelObject[] PanelControls
@@ -299,8 +308,123 @@ new SingleStateToggle{Name = "FWD outflow valve selector", PanelName = "Overhead
 new SingleStateToggle{Name = "AFT outflow valve selector", PanelName = "Overhead", PanelSection = "Pressurization", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.AIR_OutflowValveManual_Selector[1], AvailableStates = _neutralClosedOrOpenStates},
 new SingleStateToggle{Name = "Landing altitude pressurization", PanelName = "Overhead", PanelSection = "Pressurization", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.AIR_LdgAlt_Sw_Pulled, AvailableStates = _onOrOffStates},
 new SingleStateToggle{Name = "Landing altitude", PanelName = "Overhead", PanelSection = "Pressurization", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.AIR_LdgAlt_Selector, AvailableStates = _neutralIncreaseOrDecrease},
-
+new SingleStateToggle{Name = "Left Flight director", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_FD_Sw_On[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Right Flight director", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_FD_Sw_On[1], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Left autothrottle", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_ATArm_Sw_On[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Right autothrottle", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_ATArm_Sw_On[1], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Disengage autopilot", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Switch, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_DisengageBar, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Left Autopilot", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.MomintaryPushButton, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_AP_Sw_Pushed[0], AvailableStates = _momentaryControlState},
+new SingleStateToggle{Name = "Right Autopilot", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.MomintaryPushButton, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_AP_Sw_Pushed[1], AvailableStates = _momentaryControlState},
+new SingleStateToggle{Name = "Left autopilot", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunAP[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Right autopilot", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunAP[1], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Autothrottle", PanelName = "Glare shield", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunAT, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "LNav", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunLNAV, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "VNav", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunVNAV, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Level change", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunFLCH, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Heading hold", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunHDG_HOLD, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "VS/FPA", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunVS_FPA, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Altitude hold", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunALT_HOLD, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Localizer hold", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunLOC, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Approach mode", PanelName = "Glare shield", PanelSection = "MCP", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.MCP_annunAPP, AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Left master warning", PanelName = "Glare shield", PanelSection = "Warnings", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.WARN_annunMASTER_WARNING[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Right master warning", PanelName = "Glare shield", PanelSection = "Warnings", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.WARN_annunMASTER_WARNING[1], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Left master caution", PanelName = "Glare shield", PanelSection = "Warnings", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.WARN_annunMASTER_CAUTION[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Right master caution", PanelName = "Glare shield", PanelSection = "Warnings", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.WARN_annunMASTER_CAUTION[1], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "Execute key", PanelName = "Forward Aisle Stand", PanelSection = "CDU", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.CDU_annunEXEC[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "CDU message light", PanelName = "Forward Aisle Stand", PanelSection = "CDU", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.CDU_annunMSG[0], AvailableStates = _onOrOffStates},
+new SingleStateToggle{Name = "CDU offset light", PanelName = "Forward Aisle Stand", PanelSection = "CDU", Type = PanelObjectType.Annunciator, Verbosity = AircraftVerbosity.Low, Offset = Aircraft.pmdg777.CDU_annunOFST[0], AvailableStates = _onOrOffStates},
             };
         } // End PanelControls.
+
+        public static void ShowSpeedBox()
+        {
+                            // Show the speed box.
+                McpComponents["speed"].Show();
+                    } // End ShowSpeedBox.
+
+        public static void ShowAltitudeBox()
+        {
+            McpComponents["altitude"].Show();
+        } // End ShowAltitudeBox.
+
+        public static void ShowVerticalSpeedBox()
+        {
+            McpComponents["vertical"].Show();
+        } // End ShowVerticalSpeedBox.
+        public static  int CalculateMachParameter(float machSpeed)
+        {
+            return (int)(machSpeed / 0.01);
+        } // End CalculateMachParameter.
+
+        public static void AltitudeIntervene()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_ALTITUDE_PUSH_SWITCH, Aircraft.ClkL);
+        } // End AltitudeInterVene
+
+        public  static void VerticalSpeed_FPAIntervene()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_VS_SWITCH, Aircraft.ClkL);
+        } // End VerticalSpeed_FPAIntervene.
+
+        public static void ToggleVNav()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_VNAV_SWITCH, Aircraft.ClkL);
+        } // End ToggleVNav.
+
+        public static void ToggleAltitudeHold()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_ALT_HOLD_SWITCH, Aircraft.ClkL);
+        } // End ToggleAltitudeHold.
+
+        public static void ToggleLevelChange()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_LVL_CHG_SWITCH, Aircraft.ClkL);
+        } // End ToggleLevelChange.
+        public static void SetAltitude(string altitudeText)
+        {
+            short.TryParse(altitudeText, out short altitude);
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_ALT_SET, altitude);
+        } // End SetAltitude().
+
+        public static void ToggleVsFPAMode()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_VS_FPA_SWITCH, Aircraft.ClkL);
+        } // End ToggleVs_FPAMode.
+
+public static int CalculateVerticalSpeedParameter(ushort vs)
+        {
+            return vs + 10000;
+        } // End CalculateVerticalSpeedParameter.
+
+        public static double CalculateFPAParameter(float FPA)
+        {
+            return (FPA + 10) / 0.1;
+        } // End CalculateFPAParameter.
+
+        public static void SetHeading(string headingText)
+        {
+            ushort.TryParse(headingText, out ushort heading);
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_HDGTRK_SET, heading);
+        } // End SetHeading.
+
+        public static void HeadingIntervene()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_HEADING_PUSH_SWITCH, Aircraft.ClkL);
+        } // End HeadingIntervene.
+
+        public static void ToggleHeadingHold()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_HDG_HOLD_SWITCH, Aircraft.ClkL);
+        } // End ToggleHeadingHold.
+
+        public static void ToggleLNav()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_LNAV_SWITCH, Aircraft.ClkL);
+        } // End ToggleLnav.
+
+        public static void ToggleHeadingTrack()
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_HDG_TRK_SWITCH, Aircraft.ClkL);
+        } // End ToggleHeadingTrack.
     } // End PMDG777 class.
 } // End namespace.

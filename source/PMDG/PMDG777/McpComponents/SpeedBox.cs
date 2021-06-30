@@ -1,4 +1,6 @@
-﻿using System;
+﻿using tfm.PMDG.PMDG777;
+using FSUIPC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,8 +49,8 @@ namespace tfm.PMDG.PMDG777.McpComponents
                 if(Aircraft.pmdg777.MCP_IASMach.ValueChanged)
                 {
                     speedTextBox.Text = $"{Math.Round(Aircraft.pmdg777.MCP_IASMach.Value, 2)}";
-                    modeButton.Text = "&mode [IAS]";
-                    modeButton.AccessibleName = "mode [IAS]";
+                    modeButton.Text = "&mode [mach]";
+                    modeButton.AccessibleName = "mode [mach]";
                 } // End value changed.
                                             } // End mach mode.
             if(Aircraft.pmdg777.MCP_ATArm_Sw_On[0].ValueChanged)
@@ -76,6 +78,21 @@ namespace tfm.PMDG.PMDG777.McpComponents
                     case 1:
                         autoThrottleRButton.Text = "&right on";
                         autoThrottleRButton.AccessibleName = "right on";
+                        break;
+                }
+            }
+
+            if(Aircraft.pmdg777.MCP_annunAT.ValueChanged)
+            {
+                switch(Aircraft.pmdg777.MCP_annunAT.Value)
+                {
+                    case 0:
+                        autoThrottleButton.Text = "&autothrottle off";
+                        autoThrottleButton.AccessibleName = "Autothrottle off";
+                        break;
+                    case 1:
+                        autoThrottleButton.Text = "&Autothrottle on";
+                        autoThrottleButton.AccessibleName = "Autothrottle on";
                         break;
                 }
             }
@@ -126,11 +143,111 @@ namespace tfm.PMDG.PMDG777.McpComponents
                 modeButton.Text = "&mode [mach]";
                 modeButton.AccessibleName = "mode [mach]";
             }
+
+            if(Aircraft.pmdg777.MCP_annunAT.Value == 0)
+            {
+                autoThrottleButton.Text = "&Autothrottle off";
+                autoThrottleButton.AccessibleName = "Autothrottle off";
+            }
+            else
+            {
+                autoThrottleButton.Text = "&Autothrottle on";
+                autoThrottleButton.AccessibleName = "Autothrottle on";
+            } // End autothrottle.
         } // End SpeedBox_Load.
 
         private void modeButton_Click(object sender, EventArgs e)
         {
+                        if(Aircraft.pmdg777.MCP_IASMach.Value < 10)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_IAS_MACH_SWITCH, Aircraft.ClkR);
+                _isAirspeedMode = false;
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_IAS_MACH_SWITCH, Aircraft.ClkL);
+                _isAirspeedMode = true;
+            }
+        } // End modeButton click.
 
+        private void SpeedBox_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+                    } // End closing event.
+
+        private void speedButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_SPEED_PUSH_SWITCH, Aircraft.ClkL);
         }
+
+        private void autoThrottleLButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg777.MCP_ATArm_Sw_On[0].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_AT_ARM_SWITCH_L, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_AT_ARM_SWITCH_L, Aircraft.ClkR);
+            }
+        }
+
+        private void autoThrottleRButton_Click(object sender, EventArgs e)
+        {
+            if(Aircraft.pmdg777.MCP_ATArm_Sw_On[1].Value == 0)
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_AT_ARM_SWITCH_R, Aircraft.ClkL);
+            }
+            else
+            {
+                FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_AT_ARM_SWITCH_R, Aircraft.ClkR);
+            }
+        }
+
+        private void autoThrottleButton_Click(object sender, EventArgs e)
+        {
+            FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_AT_SWITCH, Aircraft.ClkL);
+            if (Aircraft.pmdg777.MCP_annunAT.Value == 0)
+            {
+                autoThrottleButton.Text = "&Autothrottle on";
+                autoThrottleButton.AccessibleName = "Autothrottle on";
+            }
+            else
+            {
+                                autoThrottleButton.Text = "&Autothrottle off";
+                autoThrottleButton.AccessibleName = "Autothrottle off";
+            }
+        }
+
+        private void speedTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+                        if(e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                if (Aircraft.pmdg777.MCP_IASMach.Value < 10)
+                {
+                    float.TryParse(speedTextBox.Text, out float mach);
+                    FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_MACH_SET, PMDG777Aircraft.CalculateMachParameter(mach));
+                } // End mach.
+                else
+                {
+                    int.TryParse(speedTextBox.Text, out int speed);
+                    FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_IAS_SET, speed);
+                } // End airspeed.
+            } // End key check.
+        } // End key down event.
+
+        private void SpeedBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if((e.Alt) && (e.KeyCode == Keys.E))
+            {
+                e.SuppressKeyPress = true;
+                speedTextBox.Focus();
+            }
+        } // End SpeedBox key down event.
     } // End SpeedBox form.
 } // End namespace.

@@ -22,29 +22,15 @@ namespace tfm.PMDG.PanelObjects
             {
                                 KeyValuePair<byte, string> item = new KeyValuePair<byte, string>();
 
-                if (this._type == PanelObjectType.Dial)
+                foreach (KeyValuePair<byte, string> pair in this._availableStates)
                 {
-                    
-                    // Convert offset value to a percent.
-                    double percent = ((this._offset.Value - 1) * 100) / (150 - 1);
-
-                    // Round it to the nearest whole number.
-                    percent = Math.Round(percent, 0);
-                    item = new KeyValuePair<byte, string>(this._offset.Value, $"{percent}%");
-                                                        }
-                else
-                {
-
-                    foreach (KeyValuePair<byte, string> pair in this._availableStates)
+                    if (_offset.Value == pair.Key)
                     {
-                        if (Aircraft.pmdg777.BRAKES_ParkingBrakeLeverOn.Value == pair.Key)
-                        {
-                            item = pair;
-                            break;
-                        }
+                        item = pair;
+                        break;
                     }
-                }                                    
-                return item;
+                }
+                                return item;
             } // End Get    
         } // End CurrentState.
                 public override PanelObjectType Type => this._type;
@@ -62,7 +48,7 @@ namespace tfm.PMDG.PanelObjects
 
         public override string ToString()
         {
-                return $"{this.Name}: {this.CurrentState.Value}";
+                            return $"{this.Name} {this.CurrentState.Value}";
                                 } // End ToString.
            } // End SingleStateToggle.
 }// End namespace.
