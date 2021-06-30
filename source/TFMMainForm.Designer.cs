@@ -76,7 +76,7 @@
             // timerConnection
             // 
             this.timerConnection.Interval = 1000;
-            this.timerConnection.Tick += new System.EventHandler(this.timerConnection_Tick);
+            this.timerConnection.Tick += new System.EventHandler(this.TimerConnection_Tick);
             // 
             // TFMMainMenu
             // 

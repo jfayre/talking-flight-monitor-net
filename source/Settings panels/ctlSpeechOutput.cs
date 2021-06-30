@@ -15,7 +15,7 @@ namespace tfm
 {
     public partial class ctlSpeechOutput : UserControl, iSettingsPage
     {
-        System.Speech.Synthesis.SpeechSynthesizer synthSAPI = new System.Speech.Synthesis.SpeechSynthesizer();
+        readonly System.Speech.Synthesis.SpeechSynthesizer synthSAPI = new System.Speech.Synthesis.SpeechSynthesizer();
 
         public ctlSpeechOutput()
         {
@@ -27,7 +27,7 @@ namespace tfm
         {
             
         }
-        private void ctlSpeechOutput_Load(object sender, EventArgs e)
+        private void CtlSpeechOutput_Load(object sender, EventArgs e)
         {
 switch (Properties.Settings.Default.AttitudeAnnouncementMode)
             {
@@ -73,7 +73,7 @@ switch (Properties.Settings.Default.AttitudeAnnouncementMode)
 
         }
 
-        private void trkSpeechRate_Scroll(object sender, EventArgs e)
+        private void TrkSpeechRate_Scroll(object sender, EventArgs e)
         {
             synthSAPI.SpeakAsyncCancelAll();
             int val = trkSpeechRate.Value;

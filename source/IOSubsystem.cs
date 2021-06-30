@@ -55,29 +55,28 @@ namespace tfm
         // private SpeechConfig azureConfig;
         // private Microsoft.CognitiveServices.Speech.SpeechSynthesizer azureSynth;
         // speech history class
-        private OutputHistory history = new OutputHistory();
+        private readonly OutputHistory history = new OutputHistory();
         public PMDGPanelUpdateEvent pmdg;
         private SineWaveProvider pitchSineProvider;
-        private SineWaveProvider bankSineProvider;
 
 
 
 
         // timers
         private static System.Timers.Timer RunwayGuidanceTimer;
-        private static System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
-        private static System.Timers.Timer WarningsTimer = new System.Timers.Timer(5000); // 5 seconds;
+        private static readonly System.Timers.Timer GroundSpeedTimer = new System.Timers.Timer(3000); // 3 seconds;
+        private static readonly System.Timers.Timer WarningsTimer = new System.Timers.Timer(5000); // 5 seconds;
         private static System.Timers.Timer AttitudeTimer;
         private static System.Timers.Timer flightFollowingTimer;
-        private static System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
-        private static System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
+        private static readonly System.Timers.Timer ilsTimer = new System.Timers.Timer(TimeSpan.FromSeconds(double.Parse(Properties.Settings.Default.ILSAnnouncementTimeInterval)).TotalMilliseconds);
+        private static readonly System.Timers.Timer waypointTransitionTimer = new System.Timers.Timer(5000);
         private double HdgRight;
         private double HdgLeft;
 
         // Audio objects
         private static IWavePlayer driverOut;
         private static SignalGenerator wg;
-        private static SignalGenerator BankWG;
+        // private static readonly SignalGenerator BankWG;
         private static PanningSampleProvider pan;
         private static OffsetSampleProvider pulse;
         private static MixingSampleProvider mixer;
@@ -87,16 +86,18 @@ namespace tfm
         // readonly SoundPlayer apCmdSound = new SoundPlayer(@"sounds\ap_command.wav");
         private static WaveFileReader cmdSound;
         private static WaveFileReader apCmdSound;
+
         // list to store registered hotkey identifiers
-        List<string> hotkeys = new List<string>();
-        List<string> autopilotHotkeys = new List<string>();
+        readonly List<string> hotkeys = new List<string>();
+        readonly List<string> autopilotHotkeys = new List<string>();
         FsFuelTanksCollection FuelTanks = null;
+
         // list to store fuel tanks present on the aircraft
-        List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
-        InstrumentPanel Autopilot = new InstrumentPanel();
+        readonly List<FsFuelTank> ActiveTanks = new List<FsFuelTank>();
+        readonly InstrumentPanel Autopilot = new InstrumentPanel();
         // dictionaries for altitude and GPWS callouts
-        private Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
-        private Dictionary<int, bool> gpwsFlags = new Dictionary<int, bool>() {
+        private readonly Dictionary<int, bool> altitudeCalloutFlags = new Dictionary<int, bool>();
+        private readonly Dictionary<int, bool> gpwsFlags = new Dictionary<int, bool>() {
             {2500, false },
             {1000, false },
             {500, false },
@@ -112,27 +113,17 @@ namespace tfm
         };
 
         static bool FirstRun = true;
-        private string nextWaypoint;
         private bool waypointTransition;
-
-        // flags for tfm features   
-
-        private bool FlightFollowingEnabled;
-        private bool InstrumentationEnabled;
-        private bool SimConnectMessagesEnabled;
-        private bool calloutsEnabled;
-        private bool ILSEnabled;
+        private readonly bool InstrumentationEnabled;
         private bool groundSpeedActive;
         private bool takeOffAssistantActive = false;
         private bool isTakeoffComplete = true; // Always true unless takeoff assist is Active.
-        private bool onGround;
         private bool TrimEnabled = true;
         private bool FlapsMoving;
-        private bool flapsEnabled = true;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private bool muteSimconnect;
-        private bool flightFollowingOnline;
+        private readonly bool flightFollowingOnline;
         private bool runwayGuidanceEnabled;
         private bool attitudeModeEnabled;
         private bool localiserDetected;
@@ -197,16 +188,15 @@ namespace tfm
             }
         }
 
-        public double oldBank { get; private set; }
+        public double OldBank { get; private set; }
 
         public double CurrentHeading;
 
         public ReverseGeoCode<ExtendedGeoName> r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@".\data\cities1000.txt"));
-        private int OldSpoilersValue;
+        private readonly int OldSpoilersValue;
         private double RunwayGuidanceTrackedHeading;
         private string OldSimConnectMessage;
-        private double apHeading;
-        private double apAltitude;
+        private readonly double apHeading;
         private bool AttitudeBankRightPlaying;
         private bool readNavRadios;
         private double groundSpeed;
@@ -226,14 +216,11 @@ namespace tfm
         public bool CommandKeyEnabled = true;
 
         private int attitudeModeSelect;
-
-        private int RunwayGuidanceModeSelect;
         private double oldPitch;
         private string oldTimezone;
         private bool gsDetected;
         private bool hasLocaliser;
         private bool hasGlideSlope;
-        private int waypointLoopCount;
         private bool readWaypointFlag;
         private bool apuStarting;
         private bool apuRunning;
@@ -302,8 +289,10 @@ namespace tfm
         {
             driverOut = new WaveOutEvent() { DesiredLatency = 50 };
 
-            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-            mixer.ReadFully = true;
+            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2))
+            {
+                ReadFully = true
+            };
             driverOut.Init(mixer);
             // start the mixer. We can then add audio sources as needed.
             driverOut.Play();
@@ -340,7 +329,7 @@ namespace tfm
             // this just reads the flight following info, same as the hotkey
 
             if (Properties.Settings.Default.GeonamesUsername == "") return;
-            onCityKey();
+            OnCityKey();
         }
 
         private void OffsetTest(object sender, HotkeyEventArgs e)
@@ -1382,7 +1371,7 @@ namespace tfm
                     }
                     catch (NHotkey.HotkeyAlreadyRegisteredException ex)
                     {
-                        logger.Debug($"Cannot register {s.Name}. Probably duplicated key.");
+                        logger.Debug($"Cannot register {s.Name}. Probably duplicated key. {ex.Message}");
                         Output(isGauge: false, output: $"hotkey error in {s.Name}");
                     }
 
@@ -1801,7 +1790,7 @@ namespace tfm
                     onTakeOffAssistant();
                     break;
                 case "ASL_Altitude":
-                    onASLKey();
+                    OnASLKey();
                     break;
                 case "Fuel_Manager":
                     if (fuelManagerActive)
@@ -1826,10 +1815,10 @@ namespace tfm
 
 
                 case "Current_Location":
-                    onCurrentLocation();
+                    OnCurrentLocation();
                     break;
                 case "AGL_Altitude":
-                    onAGLKey();
+                    OnAGLKey();
                     break;
                 case "Disable_Command_Key":
                     Output(isGauge: false, output: "command key disabled.");
@@ -1837,10 +1826,10 @@ namespace tfm
                     break;
 
                 case "Aircraft_Heading":
-                    onHeadingKey();
+                    OnHeadingKey();
                     break;
                 case "Indicated_Airspeed":
-                    onIASKey();
+                    OnIASKey();
                     break;
                 case "Read_Simulation_Rate":
                     ReadSimulationRate(true);
@@ -1850,16 +1839,16 @@ namespace tfm
                     break;
 
                 case "True_Airspeed":
-                    onTASKey();
+                    OnTASKey();
                     break;
                 case "Mach_Speed":
-                    onMachKey();
+                    OnMachKey();
                     break;
                 case "Vertical_Speed":
-                    onVSpeedKey();
+                    OnVSpeedKey();
                     break;
                 case "Landing_Rate":
-                    onLandingRateKey();
+                    OnLandingRateKey();
                     break;
 
                 case "Outside_Temperature":
@@ -1869,7 +1858,7 @@ namespace tfm
                     onTrimKey();
                     break;
                 case "Mute_Simconnect_Messages":
-                    onMuteSimconnectKey();
+                    OnMuteSimconnectKey();
                     break;
                 case "Repeat_Last_Simconnect_Message":
                     onRepeatLastSimconnectMessage();
@@ -1880,13 +1869,13 @@ namespace tfm
                     break;
 
                 case "Nearest_City":
-                    onCityKey();
+                    OnCityKey();
                     break;
                 case "Next_Waypoint":
-                    onWaypointKey();
+                    OnWaypointKey();
                     break;
                 case "Destination_Info":
-                    onDestinationKey();
+                    OnDestinationKey();
                     break;
                 case "Attitude_Mode":
                     onAttitudeKey();
@@ -1979,16 +1968,16 @@ namespace tfm
                     break;
 
                 case "Engine_1_Info":
-                    onEngineInfoKey(1);
+                    OnEngineInfoKey(1);
                     break;
                 case "Engine_2_Info":
-                    onEngineInfoKey(2);
+                    OnEngineInfoKey(2);
                     break;
                 case "Engine_3_Info":
-                    onEngineInfoKey(3);
+                    OnEngineInfoKey(3);
                     break;
                 case "Engine_4_Info":
-                    onEngineInfoKey(4);
+                    OnEngineInfoKey(4);
                     break;
                 case "Toggle_Braille_Output":
                     onBrailleOutputKey();
@@ -2295,9 +2284,11 @@ namespace tfm
                     HdgLeft = HdgLeft + 360;
                 }
                 // start audio
-                wg = new SignalGenerator();
-                wg.Type = SignalGeneratorType.Square;
-                wg.Gain = 0.1;
+                wg = new SignalGenerator
+                {
+                    Type = SignalGeneratorType.Square,
+                    Gain = 0.1
+                };
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
                 // we use an OffsetSampleProvider to allow playing beep tones
@@ -2418,9 +2409,11 @@ namespace tfm
                 Output(isGauge: false, output: "Attitude mode enabled. ");
                 // start audio
                 // signal generator for generating tones
-                wg = new SignalGenerator();
-                wg.Type = SignalGeneratorType.Square;
-                wg.Gain = 0.1;
+                wg = new SignalGenerator
+                {
+                    Type = SignalGeneratorType.Square,
+                    Gain = 0.1
+                };
                 // set up panning provider, with the signal generator as input
                 pan = new PanningSampleProvider(wg.ToMono());
 
@@ -2503,10 +2496,10 @@ namespace tfm
             {
                 if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    if (Bank != oldBank)
+                    if (Bank != OldBank)
                     {
                         Output(interruptSpeech: true, isGauge: false, textOutput: false, output: $"left {Bank}");
-                        oldBank = Bank;
+                        OldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
                 }
@@ -2535,10 +2528,10 @@ namespace tfm
                 Bank = Math.Abs(Bank);
                 if (attitudeModeSelect == 2 || attitudeModeSelect == 3)
                 {
-                    if (Bank != oldBank)
+                    if (Bank != OldBank)
                     {
                         Output(interruptSpeech: true, isGauge: false, textOutput: false, output: $"right {Bank}");
-                        oldBank = Bank;
+                        OldBank = Bank;
                         if (attitudeModeSelect == 2) return;
                     }
                 }
@@ -2576,7 +2569,7 @@ namespace tfm
         }
 
 
-        private void onDestinationKey()
+        private void OnDestinationKey()
         {
             if (Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("737"))
             {
@@ -2608,7 +2601,7 @@ namespace tfm
             }
         }
 
-        private void onWaypointKey()
+        private void OnWaypointKey()
         {
             if (Aircraft.AircraftName.Value.Contains("PMDG"))
             {
@@ -2618,7 +2611,7 @@ namespace tfm
             ReadWayPoint();
         }
 
-        private void onCityKey()
+        private void OnCityKey()
         {
             double lat = Aircraft.aircraftLat.Value.DecimalDegrees;
             double lon = Aircraft.aircraftLon.Value.DecimalDegrees;
@@ -2730,7 +2723,7 @@ namespace tfm
 
             }
         }
-        private void onMuteSimconnectKey()
+        private void OnMuteSimconnectKey()
         {
             if (muteSimconnect)
             {
@@ -2766,7 +2759,7 @@ namespace tfm
             double tempF = 9.0 / 5.0 * tempC + 32;
             var gaugeName = "Outside temperature";
             var isGauge = true;
-            var gaugeValue = "";
+            string gaugeValue;
             if (Properties.Settings.Default.UseMetric)
             {
                 gaugeValue = tempC.ToString("F0");
@@ -2778,7 +2771,7 @@ namespace tfm
             Output(gaugeName, gaugeValue, isGauge);
         }
 
-        private void onVSpeedKey()
+        private void OnVSpeedKey()
         {
             double vspeed = (double)Aircraft.VerticalSpeed.Value * 3.28084d * -1;
 
@@ -2793,14 +2786,14 @@ namespace tfm
             ResetHotkeys();
 
         }
-        private void onLandingRateKey()
+        private void OnLandingRateKey()
         {
             // convert FSUIPC unit to expected FPM value
             double vspd = Math.Round(Aircraft.LandingRate.Value * 60 * 3.28084 / 256);
             Output(isGauge: false, output: $"Landing Rate: {vspd} Feet per minute");
 
         }
-        private void onMachKey()
+        private void OnMachKey()
         {
             double mach = (double)Aircraft.AirspeedMach.Value / 20480d;
             var gaugeName = "Mach";
@@ -2810,7 +2803,7 @@ namespace tfm
 
         }
 
-        private void onTASKey()
+        private void OnTASKey()
         {
             double tas = (double)Aircraft.AirspeedTrue.Value / 128d;
             var gaugeName = "Airspeed true";
@@ -2819,7 +2812,7 @@ namespace tfm
             Output(gaugeName, gaugeValue, isGauge);
         }
 
-        private void onIASKey()
+        private void OnIASKey()
         {
             double ias = (double)Aircraft.AirspeedIndicated.Value / 128d;
             var gaugeName = "Airspeed indicated";
@@ -2828,14 +2821,13 @@ namespace tfm
             Output(gaugeName, gaugeValue, isGauge);
         }
 
-        private void onHeadingKey()
+        private void OnHeadingKey()
         {
-            double hdgTrue = (double)Aircraft.Heading.Value * 360d / (65536d * 65536d);
             Output(isGauge: false, output: "heading: " + Autopilot.Heading);
             ResetHotkeys();
         }
 
-        private void onAGLKey()
+        private void OnAGLKey()
         {
             double groundAlt = (double)Aircraft.GroundAltitude.Value / 256d * 3.28084d;
             double agl = (double)Aircraft.Altitude.Value - groundAlt;
@@ -2866,7 +2858,7 @@ namespace tfm
         }
 
 
-        private void onASLKey()
+        private void OnASLKey()
         {
             double asl = Math.Round((double)Aircraft.Altitude.Value, 0);
             var gaugeName = "ASL altitude";
@@ -2876,20 +2868,20 @@ namespace tfm
         }
 
 
-        private void onEngineInfoKey(int eng)
+        private void OnEngineInfoKey(int eng)
         {
             double N1 = 0;
             double N2 = 0;
-            double cht = 0;
-            double egt = 0;
-            double manifold = 0;
-            double rpm = 0;
             bool metric = Properties.Settings.Default.UseMetric;
-            string units = null;
             string output = null;
             // check engine type. 0 - piston, 1- jet
             if (Aircraft.EngineType.Value == 0)
             {
+                double cht;
+                double egt;
+                double manifold;
+                double rpm;
+                string units;
                 switch (eng)
                 {
                     case 1:
@@ -2898,12 +2890,10 @@ namespace tfm
                         if (metric == true)
                         {
                             egt = Math.Round((egt - 491.67) * 5d / 9d);
-                            units = "C";
                         }
                         else
                         {
                             egt = Math.Round(egt - 459.67);
-                            units = "F";
                         }
                         cht = Aircraft.Engine1CHT.Value;
                         if (Properties.Settings.Default.UseMetric == true)
@@ -2928,12 +2918,10 @@ namespace tfm
                         if (metric == true)
                         {
                             egt = Math.Round((egt - 491.67) * 5d / 9d);
-                            units = "C";
                         }
                         else
                         {
                             egt = Math.Round(egt - 459.67);
-                            units = "F";
                         }
                         cht = Aircraft.Engine2CHT.Value;
                         if (Properties.Settings.Default.UseMetric == true)
@@ -2958,12 +2946,10 @@ namespace tfm
                         if (metric == true)
                         {
                             egt = Math.Round((egt - 491.67) * 5d / 9d);
-                            units = "C";
                         }
                         else
                         {
                             egt = Math.Round(egt - 459.67);
-                            units = "F";
                         }
                         cht = Aircraft.Engine3CHT.Value;
                         if (Properties.Settings.Default.UseMetric == true)
@@ -2988,12 +2974,10 @@ namespace tfm
                         if (metric == true)
                         {
                             egt = Math.Round((egt - 491.67) * 5d / 9d);
-                            units = "C";
                         }
                         else
                         {
                             egt = Math.Round(egt - 459.67);
-                            units = "F";
                         }
                         cht = Aircraft.Engine4CHT.Value;
                         if (Properties.Settings.Default.UseMetric == true)
@@ -3041,7 +3025,7 @@ namespace tfm
 
         }
 
-        private async void onCurrentLocation()
+        private async void OnCurrentLocation()
         {
             var database = FSUIPCConnection.AirportsDatabase;
             database.SetReferenceLocation();
@@ -3083,7 +3067,7 @@ namespace tfm
             }
             else if (currentRunway != null)
             {
-                Output(isGauge: false, output: $"runway {currentRunway.ID.ToString()}@{currentRunway.Airport.ICAO}");
+                Output(isGauge: false, output: $"runway {currentRunway.ID}@{currentRunway.Airport.ICAO}");
             }
             else if (currentGate != null)
             {
@@ -3337,7 +3321,6 @@ namespace tfm
                     }
                     else
                     {
-                        isAnnounced = false;
                     }
                     break;
             } // End switch
@@ -3638,137 +3621,137 @@ namespace tfm
                         // The log may also contain different formatting options. For now, stick with
                         // reasonable defaults.
 
-                        speak($"{gaugeValue} feet per minute.");
+                        Speak($"{gaugeValue} feet per minute.");
                         braille($"VSPD {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
 
                         break;
                     case "Outside temperature":
-                        speak($"{gaugeValue} degrees");
+                        Speak($"{gaugeValue} degrees");
                         braille($"temp {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
                     case "ASL altitude":
-                        speak($"{gaugeValue} feet ASL.");
+                        Speak($"{gaugeValue} feet ASL.");
                         braille($"ASL  {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "AGL altitude":
-                        speak($"{gaugeValue} feet AGL.");
+                        Speak($"{gaugeValue} feet AGL.");
                         braille($"AGL {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Airspeed true":
-                        speak($"{gaugeValue} knotts true");
+                        Speak($"{gaugeValue} knotts true");
                         braille($"TAS {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Airspeed indicated":
-                        speak($"{gaugeValue} knotts indicated");
+                        Speak($"{gaugeValue} knotts indicated");
                         braille($"IAS {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Ground speed":
-                        speak($"{gaugeValue} knotts ground speed");
+                        Speak($"{gaugeValue} knotts ground speed");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"gnd: {gaugeValue}\n");
                         break;
 
                     case "Mach":
-                        speak($"Mach {gaugeValue}. ");
+                        Speak($"Mach {gaugeValue}. ");
                         braille($"mach{gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Localiser":
-                        speak($"{gaugeValue}. ", useSAPI: true);
+                        Speak($"{gaugeValue}. ", useSAPI: true);
                         braille($"loc {gaugeValue}\n");
                         break;
 
                     case "Glide slope":
-                        speak($"{gaugeValue}. ", useSAPI: true);
+                        Speak($"{gaugeValue}. ", useSAPI: true);
                         braille($"gs {gaugeValue}\n");
                         break;
 
                     case "Altimeter":
-                        speak($"{gaugeName}: {gaugeValue}. ");
+                        Speak($"{gaugeName}: {gaugeValue}. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Flaps":
-                        speak($"{gaugeName} {gaugeValue}. ");
+                        Speak($"{gaugeName} {gaugeValue}. ");
                         braille($"{gaugeName} {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Gear":
-                        speak($"{gaugeName} {gaugeValue}. ");
+                        Speak($"{gaugeName} {gaugeValue}. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "AP heading":
-                        speak($"heading {gaugeValue}. ");
+                        Speak($"heading {gaugeValue}. ");
                         braille($"hdg: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "AP airspeed":
-                        speak($"{gaugeValue} knotts. ");
+                        Speak($"{gaugeValue} knotts. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "AP mach":
-                        speak($"Mach {gaugeValue}");
+                        Speak($"Mach {gaugeValue}");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "AP vertical speed":
-                        speak($"{gaugeValue} feet per minute. ");
+                        Speak($"{gaugeValue} feet per minute. ");
                         braille($"{gaugeValue} FPM\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "AP altitude":
-                        speak($"{gaugeName}: {gaugeValue} feet. ");
+                        Speak($"{gaugeName}: {gaugeValue} feet. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
 
                     case "Com1":
-                        speak($"{gaugeName}: {gaugeValue}. ");
+                        Speak($"{gaugeName}: {gaugeValue}. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Com2":
-                        speak($"{gaugeName}: {gaugeValue}. ");
+                        Speak($"{gaugeName}: {gaugeValue}. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Nav1":
-                        speak($"{gaugeName}: {gaugeValue}. ");
+                        Speak($"{gaugeName}: {gaugeValue}. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Nav2":
-                        speak($"{gaugeName}: {gaugeValue}. ");
+                        Speak($"{gaugeName}: {gaugeValue}. ");
                         braille($"{gaugeName}: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
 
                     case "Transponder":
-                        speak($"squawk {gaugeValue}. ");
+                        Speak($"squawk {gaugeValue}. ");
                         braille($"Squawk: {gaugeValue}\n");
                         history.AddItem($"{gaugeName}: {gaugeValue}\n");
                         break;
@@ -3786,11 +3769,11 @@ namespace tfm
             {
                 if (useSAPI == true)
                 {
-                    speak(useSAPI: true, interruptSpeech: interruptSpeech, output: output);
+                    Speak(useSAPI: true, interruptSpeech: interruptSpeech, output: output);
                 }
                 else
                 {
-                    speak(output, interruptSpeech: interruptSpeech);
+                    Speak(output, interruptSpeech: interruptSpeech);
                 }
                 if (textOutput == true)
                 {
@@ -3800,7 +3783,7 @@ namespace tfm
             } // end generic output
         } // end output method
 
-        public async void speak(string output, bool useSAPI = false, bool interruptSpeech = false)
+        public async void Speak(string output, bool useSAPI = false, bool interruptSpeech = false)
         {
             if (Properties.Settings.Default.SpeechSystem == "SAPI" || useSAPI == true)
             {
