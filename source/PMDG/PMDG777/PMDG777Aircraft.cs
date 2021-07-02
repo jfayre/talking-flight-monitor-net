@@ -382,7 +382,7 @@ new SingleStateToggle{Name = "CDU offset light", PanelName = "Forward Aisle Stan
         } // End ToggleLevelChange.
         public static void SetAltitude(string altitudeText)
         {
-            short.TryParse(altitudeText, out short altitude);
+            ushort.TryParse(altitudeText, out ushort altitude);
             FSUIPCConnection.SendControlToFS(PMDG_777X_Control.EVT_MCP_ALT_SET, altitude);
         } // End SetAltitude().
 
