@@ -207,7 +207,7 @@ namespace tfm
             this.btnRte.Name = "btnRte";
             this.btnRte.Size = new System.Drawing.Size(75, 23);
             this.btnRte.TabIndex = 1;
-            this.btnRte.Text = "&RTE";
+            this.btnRte.Text = "R&TE";
             this.btnRte.UseVisualStyleBackColor = true;
             this.btnRte.Click += new System.EventHandler(this.btnRte_Click);
             // 

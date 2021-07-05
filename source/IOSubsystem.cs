@@ -453,7 +453,7 @@ namespace tfm
                     }
 
                     //ReadPMDG747Toggles();
-                    //ReadPmdgFMCMessage();
+                    ReadPmdgFMCMessage();
                                                         } // End read 747 toggles.
                     if(Aircraft.AircraftName.Value.Contains("PMDG") && Aircraft.AircraftName.Value.Contains("777"))
                 {
@@ -462,9 +462,11 @@ namespace tfm
                         if(control.Offset.ValueChanged)
                         {
                             SingleStateToggle toggle = (SingleStateToggle)control;
+                    
                                                         Output(isGauge: false, output: control.ToString());
                         }
                     }
+                    ReadPmdgFMCMessage();
                 } // End PMDG 777 toggles.
             }
             else
@@ -3369,7 +3371,9 @@ namespace tfm
                         switch (Aircraft.pmdg737.CDU_annunMSG[0].Value)
                         {
                             case 1:
+                                Thread.Sleep(1000);
                                 cDU_Screen.RefreshData();
+                                
                                 Output(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
                                 break;
                         }
@@ -3397,6 +3401,7 @@ namespace tfm
                         switch (Aircraft.pmdg777.CDU_annunMSG[0].Value)
                         {
                             case 1:
+                                Thread.Sleep(1000);
                                 cDU_Screen.RefreshData();
                                 Output(isGauge: false, useSAPI: true, output: $"{cDU_Screen.Rows[13].ToString()}");
                                 break;
