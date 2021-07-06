@@ -3480,6 +3480,11 @@ namespace tfm
             ReadToggle(Aircraft.pmdg737.CDU_annunEXEC[0], Aircraft.pmdg737.CDU_annunEXEC[0].Value > 0, "execute key", "available", "off");
             // CDU message light
             ReadToggle(Aircraft.pmdg737.CDU_annunMSG[0], Aircraft.pmdg737.CDU_annunMSG[0].Value > 0, "CDU message", "displayed", "cleared", SAPI: true);
+            // auto land lights
+            ReadToggle(Aircraft.pmdg737.HGS_annun_AIII, Aircraft.pmdg737.HGS_annun_AIII.Value > 0, "auto land", "active", "off");
+            ReadToggle(Aircraft.pmdg737.HGS_annun_FLARE, Aircraft.pmdg737.HGS_annun_FLARE.Value > 0, "flare", "active", "off");
+            ReadToggle(Aircraft.pmdg737.HGS_annun_RO, Aircraft.pmdg737.HGS_annun_RO.Value > 0, "roll out", "active", "off");
+
             // fuel panel
             ReadToggle(Aircraft.pmdg737.FUEL_CrossFeedSw, Aircraft.pmdg737.FUEL_CrossFeedSw.Value > 0, "fuel cross feed", "on", "off");
             ReadToggle(Aircraft.pmdg737.FUEL_PumpFwdSw[0], Aircraft.pmdg737.FUEL_PumpFwdSw[0].Value > 0, "left forward fuel pump", "on", "off");
